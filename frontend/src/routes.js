@@ -14,6 +14,7 @@ import ProductForm from './components/CategoryForm/ProductForm';
 import HomePage from './pages/user/HomePage';
 import { UserListHead } from './sections/@dashboard/user';
 import UserCategoryPage from './pages/user/UserCategoryPage';
+import UserImageDownload from './pages/user/Carousel/UserImageDownload';
 
 // ----------------------------------------------------------------------
 
@@ -26,11 +27,12 @@ export default function Router() {
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
-        //    { path: 'categoryform', element: <CategoryForm /> },
-        //  { path: 'productform', element: <ProductForm /> },
+           { path: 'categoryform', element: <CategoryForm /> },
+         { path: 'productform', element: <ProductForm /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'userpage', element: <HomePage /> },
-        // { path: 'usercategorypage', element: <UserCategoryPage /> },
+        { path: 'userimgdown', element: <UserImageDownload /> },
+        { path: 'usercategorypage', element: <UserCategoryPage /> },
       ],
     },
     {

@@ -19,7 +19,7 @@ const HomePage = () => {
      
     
   return (
-      <div style={{display: "flex", justifyContent:"", flexWrap:"wrap"}}>
+      <div style={{display: "flex", justifyContent:"center", flexWrap:"wrap"}}>
           {userCat && userCat?.map((item) => {
               return (
                     <Card style={{margin:"5px"}} key={item._id} >

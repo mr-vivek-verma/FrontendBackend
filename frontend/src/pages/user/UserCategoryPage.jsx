@@ -27,6 +27,8 @@ const sorting = [
    
   ];
 
+  const query= ?""+
+
 const UserCategoryPage = () => {
   const { userCat } = useSelector(store => store.usercategory);
     const dispatch = useDispatch();
