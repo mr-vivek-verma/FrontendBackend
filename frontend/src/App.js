@@ -20,10 +20,10 @@ export default function App() {
       {/* <CategoryForm/> */}
       {/* <ScrollToTop /> */}
       {/* <Categories /> */}
-      <HomePage/>
+      {/* <HomePage/> */}
       {/* <UserImageDownload/> */}
       {/* <UserCategoryPage /> */}
-      {/* <Router/> */}
+      <Router/>
       
     </ThemeProvider>
   );

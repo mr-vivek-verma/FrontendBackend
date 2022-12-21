@@ -10,6 +10,7 @@ import { getUserCategory } from "../../slice/userSlice/userSlice";
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { UserProduct } from "src/slice/userSlice/userProductSlice";
+import { useParams } from "react-router-dom";
 
 
 const sorting = [
@@ -30,10 +31,15 @@ const sorting = [
 const UserCategoryPage = () => {
    const { product } = useSelector((store) => store.product);
   const dispatch = useDispatch();
-console.log("por", product)
+const id= useParams();
+const categoryId= id?.id;
+
+  const queryParams= "?category_id=" + `${categoryId}`
+
+
   useEffect(() => {
     // console.log('user');
-    dispatch(UserProduct());
+    dispatch(UserProduct(queryParams));
   }, []);
 
   return (

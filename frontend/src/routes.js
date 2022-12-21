@@ -32,7 +32,7 @@ export default function Router() {
         { path: 'products', element: <ProductsPage /> },
         { path: 'userpage', element: <HomePage /> },
         { path: 'userimgdown', element: <UserImageDownload /> },
-        { path: 'usercategorypage', element: <UserCategoryPage /> },
+        { path: 'usercategorypage/:id', element: <UserCategoryPage /> },
       ],
     },
     {

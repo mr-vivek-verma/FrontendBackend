@@ -16,10 +16,10 @@ const initialState = {
 // const id =useParams();
 
 
-export const UserProduct = createAsyncThunk('product/getProductList', async (_, thunkAPI) => {
+export const UserProduct = createAsyncThunk('product/getProductList', async (data, thunkAPI) => {
   try {
     const response = await axios.get(
-      'https://api.chapshopapp.com/api/v1/user/productList',
+      `https://api.chapshopapp.com/api/v1/user/productList${data}`,
       authHeader(thunkAPI)
     );
 
