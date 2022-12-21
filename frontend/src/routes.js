@@ -9,11 +9,11 @@ import LoginPage from './pages/LoginPage';
 
 import ProductsPage from './pages/Categories';
 import DashboardAppPage from './pages/DashboardAppPage';
-import CategoryForm from './components/CategoryForm/CategoryForm';
-import ProductForm from './components/CategoryForm/ProductForm';
+import CategoryForm from './components/Form/CategoryForm';
+import ProductForm from './components/Form/ProductForm';
 import HomePage from './pages/user/HomePage';
 import { UserListHead } from './sections/@dashboard/user';
-import UserCategoryPage from './pages/user/UserCategoryPage';
+import UserCategoryPage from './pages/user/UserProductPage';
 import UserImageDownload from './pages/user/Carousel/UserImageDownload';
 
 // ----------------------------------------------------------------------
@@ -28,7 +28,7 @@ export default function Router() {
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
            { path: 'categoryform', element: <CategoryForm /> },
-         { path: 'productform', element: <ProductForm /> },
+         { path: 'productform', element: <ProductForm/>  },
         { path: 'products', element: <ProductsPage /> },
         { path: 'userpage', element: <HomePage /> },
         { path: 'userimgdown', element: <UserImageDownload /> },

@@ -30,6 +30,7 @@ import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
+import { Link } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -74,6 +75,8 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPage() {
+  const [form, setForm] = useState("");
+
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -140,6 +143,10 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
+  const handleChangeForm = (event) => {
+
+  }
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
@@ -157,9 +164,9 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
           Product Management
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            Create New
-          </Button>
+          <Link to="/dashboard/productform" variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+           <button> Create New </button>
+          </Link>
         </Stack>
 
         <Card>

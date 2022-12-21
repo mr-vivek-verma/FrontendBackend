@@ -7,6 +7,7 @@ import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import { useDispatch, useSelector } from 'react-redux';
 import  {getUserCategory}  from '../../slice/userSlice/userSlice';
+import { Navigate } from 'react-router-dom';
 
 const HomePage = () => {
   const { userCat } = useSelector(store => store.usercategory);
@@ -17,12 +18,15 @@ const HomePage = () => {
     dispatch(getUserCategory ());
   }, []);
      
-    
+  const handleClick=(prop)=>{
+    Navigate(`/dashboard/usercategorypage?${prop}`)
+  }  
+
   return (
       <div style={{display: "flex", justifyContent:"center", flexWrap:"wrap"}}>
           {userCat && userCat?.map((item) => {
               return (
-                    <Card style={{margin:"5px"}} key={item._id} >
+                    <Card style={{margin:"5px"}} key={item._id} onClick={(e)=>{handleClick(item._id)}}>
                       {item && item?.category_image && item.category_image ? (
                           <img style={{width:"300px"}}
                               className="custom-card-img rounded-1"

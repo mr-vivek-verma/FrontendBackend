@@ -9,11 +9,12 @@ import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } fro
 // mock
 import PRODUCTS from '../_mock/products';
 import CategoryTable from '../components/CategoryTable/CategoryTable';
-import CategoryForm from '../components/CategoryForm/CategoryForm';
+import CategoryForm from '../components/Form/CategoryForm';
 
 import Iconify from '../components/iconify/Iconify';
 import ImageUpload from '../components/ImageUploader/ImageUpload';
-import Popup from '../components/CategoryForm/Popup';
+import Popup from '../components/Form/Popup';
+import { Link } from 'react-router-dom';
 // ----------------------------------------------------------------------
 
 export default function Categories() {
@@ -46,9 +47,9 @@ export default function Categories() {
         </Typography>
         <Typography sx={{ display: 'flex', justifyContent: ' end', m: 2 }}>
           {/* <Button onClick={handleOpenFilter} sx={{background:"blue", color:"#ffff"}}>Create New</Button> */}
-          <Button onClick={() => setOpenPopup(true)} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            Create New
-          </Button>
+          <Link to="/dashboard/categoryform" variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+           <button> Create New </button>
+          </Link>
         </Typography>
         <Typography sx={{ display: 'flex', justifyContent: ' end', m: 2 }}>
           <input style={{ height: '30px' }} placeholder="Search" />
