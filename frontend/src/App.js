@@ -21,8 +21,8 @@ export default function App() {
       {/* <ScrollToTop /> */}
       {/* <Categories /> */}
       {/* <HomePage/> */}
-      {/* <UserImageDownload/> */}
-      {/* <UserCategoryPage /> */}
+      {/* <UserImageDownload/>  */}
+      <UserCategoryPage />
       <Router/>
       
     </ThemeProvider>

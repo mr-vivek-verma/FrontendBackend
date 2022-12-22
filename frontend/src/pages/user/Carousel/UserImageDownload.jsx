@@ -1,4 +1,5 @@
 import * as React from "react";
+import "../../../App.css"
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MobileStepper from "@mui/material/MobileStepper";
@@ -125,7 +126,7 @@ function SwipeableTextMobileStepper() {
           </IconButton>
         }
       />
-      <Card style={{ display: "flex" }}>
+      {/* <Card style={{ display: "flex" }}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             Word of the Day
@@ -140,8 +141,20 @@ function SwipeableTextMobileStepper() {
             {'"a benevolent smile"'}
           </Typography>
         </CardContent>
-      </Card>
+      </Card> */}
+      <Box
+      sx={{
+        width: 300,
+        height: 300,
+        backgroundColor: 'primary.light',
+        '&:hover': {
+          backgroundColor: 'primary.main',
+          opacity: [0.9, 0.8, 0.7],
+        },
+      }}
+    />
     </Box>
+    
   );
 }
 

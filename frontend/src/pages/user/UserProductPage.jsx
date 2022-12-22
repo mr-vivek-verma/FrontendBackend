@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -12,30 +12,27 @@ import TextField from "@mui/material/TextField";
 import { UserProduct } from "src/slice/userSlice/userProductSlice";
 import { useParams } from "react-router-dom";
 
-
 const sorting = [
   {
-    value: "Sort By",
-    label: "Sort By",
-  },
-  {
-    value: "FILTER",
-    label: "Filter Max to Min Price",
-  },
-  {
-    value: "FILTER",
+    value: "asc",
     label: "Filter Min to Max Price",
+  },
+  {
+    value: "desc",
+    label: "Filter Max to Min Price",
   },
 ];
 
 const UserCategoryPage = () => {
-   const { product } = useSelector((store) => store.product);
+
+  const { product } = useSelector((store) => store.product);
   const dispatch = useDispatch();
-const id= useParams();
-const categoryId= id?.id;
+  const id = useParams();
+  const categoryId = id?.id;
 
-  const queryParams= "?category_id=" + `${categoryId}`
+const sortby = "asc"
 
+  const queryParams = "?filter=" + sortby +"&category_id=" +categoryId;
 
   useEffect(() => {
     // console.log('user');
@@ -52,13 +49,17 @@ const categoryId= id?.id;
       </Button>
       <br />
       <TextField id="outlined-basic" placeholder="Search" variant="outlined" />
+      <p></p>
       <br />
       <TextField
         style={{ marginTop: "10px" }}
         id="outlined-select-sorting"
         select
         //   label="select"
-        defaultValue="Sort By"
+        onChange={(e) => {
+          dispatch(UserProduct(queryParams(e.target.value, categoryId)));
+        }}
+        defaultValue="SortBy"
         SelectProps={{
           native: true,
         }}
@@ -69,22 +70,41 @@ const categoryId= id?.id;
           </option>
         ))}
       </TextField>
-     <Typography>
-      {product.map((item)=>{
-        return(<Card>
-        <Typography>
-        {item.product_name}
-        </Typography>
-        <div>
-          {item.sizes.map((op)=>{
-            return(<>
-              <div>{op}</div>
-                          </>)
-          })}
-        </div>
-        </Card>)
-      })}
-     </Typography>
+      <Typography>
+        {product.map((item) => {
+          return (
+            <Card>
+              {item && item?.main_image && item.main_image ? (
+                <img
+                  style={{ width: "300px" }}
+                  className="custom-card-img rounded-1"
+                  src={
+                    "http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" +
+                    `${item?.main_image?.filename}`
+                  }
+                  alt={item?.product_name}
+                />
+              ) : (
+                ""
+              )}
+              <Typography style={{ width: "400px" }}>
+                {item.main_image.filename}
+              </Typography>
+              <Typography>{item.product_name}</Typography>
+              <Typography>{item.buying_price}</Typography>
+              <div>
+                {item.sizes.map((op) => {
+                  return (
+                    <>
+                      <div>{op}</div>
+                    </>
+                  );
+                })}
+              </div>
+            </Card>
+          );
+        })}
+      </Typography>
     </>
   );
 };
