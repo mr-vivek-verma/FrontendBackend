@@ -22,7 +22,7 @@ export default function App() {
       {/* <Categories /> */}
       {/* <HomePage/> */}
       {/* <UserImageDownload/>  */}
-      <UserCategoryPage />
+      {/* <UserCategoryPage /> */}
       <Router/>
       
     </ThemeProvider>

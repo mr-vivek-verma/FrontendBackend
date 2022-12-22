@@ -10,7 +10,7 @@ import { getUserCategory } from "../../slice/userSlice/userSlice";
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { UserProduct } from "src/slice/userSlice/userProductSlice";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const sorting = [
   {
@@ -18,85 +18,106 @@ const sorting = [
     label: "Filter Min to Max Price",
   },
   {
-    value: "desc",
+    value: "des",
     label: "Filter Max to Min Price",
   },
 ];
 
 const UserCategoryPage = () => {
-
+const [inputData, setInputData] =useState("");
+const [sortData, setSortData] =useState("");
+const navigate=useNavigate()
   const { product } = useSelector((store) => store.product);
   const dispatch = useDispatch();
   const id = useParams();
   const categoryId = id?.id;
 
-const sortby = "asc"
+const handleChange = (e) =>{
+  console.log("chnage")
+  setInputData(e.target.value);
+}
 
-  const queryParams = "?filter=" + sortby +"&category_id=" +categoryId;
+const handlesort=(e)=>{
+  console.log("filter", e.target.value)
+setSortData(e.target.value)
+}
+
+  const queryParams = "?filter=" + sortData +"&category_id=" +categoryId + "&product_name=" + inputData;
 
   useEffect(() => {
     // console.log('user');
     dispatch(UserProduct(queryParams));
-  }, []);
+  }, [inputData, sortData]);
+console.log("product", product)
+
+const handleDetailpage = (id) =>{
+  navigate(`/dashboard/userimgdown/${id}`)
+}
+
+const handleBack = (id) =>{
+  navigate(`/dashboard/userpage`)
+}
 
   return (
     <>
       <Button
         style={{ display: "flex", marginTop: "10px" }}
         variant="contained"
+        onClick={()=>{handleBack()}}
       >
         Back
       </Button>
       <br />
-      <TextField id="outlined-basic" placeholder="Search" variant="outlined" />
-      <p></p>
-      <br />
+      <TextField id="outlined-basic" placeholder="Search here" variant="outlined" defaultValue={inputData}
+       onChange={(e)=>{handleChange(e)}} />
+       <br />
       <TextField
         style={{ marginTop: "10px" }}
         id="outlined-select-sorting"
         select
-        //   label="select"
-        onChange={(e) => {
-          dispatch(UserProduct(queryParams(e.target.value, categoryId)));
-        }}
-        defaultValue="SortBy"
+        defaultValue={sortData}
+        onChange={(e)=>{handlesort(e)}}
         SelectProps={{
           native: true,
         }}
       >
         {sorting.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option key={option.value} value={option.value} >
             {option.label}
+            
           </option>
         ))}
       </TextField>
-      <Typography>
+      <div style={{display: "flex"}}>
         {product.map((item) => {
           return (
-            <Card>
-              {item && item?.main_image && item.main_image ? (
+            <Card key={item?.id} style={{ maxWidth:"301px", height:"450px", color:'red', "marginLeft":"5px"}} 
+            onClick={()=>{handleDetailpage(item.id)}}>
+              {product? (
                 <img
-                  style={{ width: "300px" }}
+                  style={{ width: "300px", height:"250px" }}
                   className="custom-card-img rounded-1"
                   src={
                     "http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" +
-                    `${item?.main_image?.filename}`
+                    `${item?.main_image?.[0].filename}`
                   }
                   alt={item?.product_name}
                 />
               ) : (
-                ""
+               <img
+                  style={{ width: "300px" }}
+                  className="custom-card-img rounded-1"
+                  src="https://www.shutterstock.com/image-vector/shopping-cart-vector-icon-flat-600w-1690453492.jpg"
+                  alt={item?.product_name}
+                />
               )}
-              <Typography style={{ width: "400px" }}>
-                {item.main_image.filename}
-              </Typography>
-              <Typography>{item.product_name}</Typography>
-              <Typography>{item.buying_price}</Typography>
+               <Typography>{item.product_name}</Typography>
+              <Typography>Price: {item.buying_price}</Typography>
               <div>
-                {item.sizes.map((op) => {
+                {item.sizes.map((size) => {
                   return (
                     <>
-                      <div>{op}</div>
+                      <div key={size}>{size}</div>
                     </>
                   );
                 })}
@@ -104,7 +125,7 @@ const sortby = "asc"
             </Card>
           );
         })}
-      </Typography>
+      </div>
     </>
   );
 };

@@ -31,7 +31,7 @@ export default function Router() {
          { path: 'productform', element: <ProductForm/>  },
         { path: 'products', element: <ProductsPage /> },
         { path: 'userpage', element: <HomePage /> },
-        { path: 'userimgdown', element: <UserImageDownload /> },
+        { path: 'userimgdown/:id', element: <UserImageDownload /> },
         { path: 'usercategorypage/:id', element: <UserCategoryPage /> },
       ],
     },

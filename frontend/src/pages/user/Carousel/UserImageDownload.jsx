@@ -15,6 +15,9 @@ import ForwardIcon from "@material-ui/icons/NavigateNext";
 import BackIcon from "@material-ui/icons/NavigateBefore";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { UserProductDetail } from "src/slice/userSlice/userProductSlice";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -41,6 +44,8 @@ function SwipeableTextMobileStepper() {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = images.length;
+   const { productDetail } = useSelector((store) => store.product);
+const dispatch=useDispatch();
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -53,6 +58,14 @@ function SwipeableTextMobileStepper() {
   const handleStepChange = (step) => {
     setActiveStep(step);
   };
+
+  const id = useParams();
+
+  React.useEffect(() => {
+    // console.log('user');
+    dispatch(UserProductDetail(id.id));
+  }, []);
+
 
   return (
     <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
