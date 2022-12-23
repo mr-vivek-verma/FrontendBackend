@@ -1,11 +1,11 @@
 export const COLUMNS = [
     {
       Header: "Category Name",
-      accessor: "name",
+      accessor: "Category Name",
     },
     {
       Header: "Sizes",
-      accessor: "phone",
+      accessor: "Sizes",
     },
     {
       Header: "Action",

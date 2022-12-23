@@ -4,14 +4,29 @@ import { useMemo } from "react";
 import { useSortBy, useTable, usePagination } from "react-table";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { COLUMNS } from "../CategoryTable/Colums";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategory } from "src/slice/categorySlice/categorySlice";
+import { useSelect } from "@mui/base";
 const CategotyTable = () => {
+  const dispatch=useDispatch();
   const columns = useMemo(() => COLUMNS, []);
   const [post, setPost] = useState([]);
+  const {category}=useSelector((state)=>state.category)
+  
+  
+  useEffect(()=>{
+dispatch(getCategory())
+  })
+  //const res = await fetch("https://jsonplaceholder.typicode.com/users");
+  // const userData = await res.json();
+  
+  
   const getUser = async () => {
-    const res = await fetch("https://jsonplaceholder.typicode.com/users");
-    const userData = await res.json();
-    setPost(userData);
+   setPost(category);
   };
+
+
+  
   useEffect(() => {
     getUser();
   }, []);

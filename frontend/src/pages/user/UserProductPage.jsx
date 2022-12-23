@@ -48,8 +48,7 @@ setSortData(e.target.value)
     // console.log('user');
     dispatch(UserProduct(queryParams));
   }, [inputData, sortData]);
-
-  console.log("product", product)
+console.log("product", product)
 
 const handleDetailpage = (id) =>{
   navigate(`/dashboard/userimgdown/${id}`)

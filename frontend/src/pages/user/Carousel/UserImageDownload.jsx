@@ -43,10 +43,7 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 function SwipeableTextMobileStepper() {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  
    const { detailProduct } = useSelector((store) => store.product);
-
-   
 const dispatch=useDispatch();
 
   const handleNext = () => {
