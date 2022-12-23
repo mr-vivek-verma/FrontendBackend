@@ -15,32 +15,39 @@ import ForwardIcon from "@material-ui/icons/NavigateNext";
 import BackIcon from "@material-ui/icons/NavigateBefore";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { UserProductDetail } from "src/slice/userSlice/userProductSlice";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const images = [
-  {
-    imgPath:
-      "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
-  },
-  {
-    imgPath:
-      "https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60",
-  },
-  {
-    imgPath:
-      "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250",
-  },
-  {
-    imgPath:
-      "https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60",
-  },
-];
+// const images = [
+//   {
+//     imgPath:
+//       "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
+//   },
+//   {
+//     imgPath:
+//       "https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60",
+//   },
+//   {
+//     imgPath:
+//       "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250",
+//   },
+//   {
+//     imgPath:
+//       "https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60",
+//   },
+// ];
 
 function SwipeableTextMobileStepper() {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const maxSteps = images.length;
+  
+   const { detailProduct } = useSelector((store) => store.product);
+
+   
+const dispatch=useDispatch();
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -53,6 +60,18 @@ function SwipeableTextMobileStepper() {
   const handleStepChange = (step) => {
     setActiveStep(step);
   };
+
+  const id = useParams();
+
+  React.useEffect(() => {
+    // console.log('user');
+    dispatch(UserProductDetail(id.id));
+  }, []);
+
+const images = detailProduct?.sharing_images?.map((item)=>{
+  return({imgPath: `http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/${item.filename}`} )
+})
+const maxSteps = images?.length;
 
   return (
     <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
@@ -67,7 +86,7 @@ function SwipeableTextMobileStepper() {
           bgcolor: "background.default",
         }}
       >
-        <Typography>{images[activeStep].label}</Typography>
+        <Typography>{ images?.length>0 && images[activeStep]?.label}</Typography>
       </Paper>
       <AutoPlaySwipeableViews
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
@@ -75,7 +94,7 @@ function SwipeableTextMobileStepper() {
         onChangeIndex={handleStepChange}
         enableMouseEvents
       >
-        {images.map((step, index) => (
+        {images?.map((step, index) => (
           <div key={step.label}>
             {Math.abs(activeStep - index) <= 2 ? (
               <Box
@@ -142,17 +161,7 @@ function SwipeableTextMobileStepper() {
           </Typography>
         </CardContent>
       </Card> */}
-      <Box
-      sx={{
-        width: 300,
-        height: 300,
-        backgroundColor: 'primary.light',
-        '&:hover': {
-          backgroundColor: 'primary.main',
-          opacity: [0.9, 0.8, 0.7],
-        },
-      }}
-    />
+    
     </Box>
     
   );

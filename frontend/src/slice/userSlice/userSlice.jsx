@@ -30,8 +30,7 @@ export const getUserCategory = createAsyncThunk('user/getUserCategory', async (_
   try {
     const response = await axios.get(
       'http://localhost:5001/api/v1/user/categoryList'
-      
-    );
+          );
     return response.data;
   } catch (e) {
     return thunkAPI.rejectWithValue(e.response.data.msg);

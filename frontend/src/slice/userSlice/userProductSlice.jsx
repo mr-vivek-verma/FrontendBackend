@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
 import authHeader from '../../utils/authHeader/authHeader';
 import { customAxios } from '../../utils/customAxios';
 
@@ -11,6 +10,7 @@ const initialState = {
   loading: false,
   product: [],
   error: false,
+  detailProduct:[]
 };
 
 // const id =useParams();
@@ -19,7 +19,20 @@ const initialState = {
 export const UserProduct = createAsyncThunk('product/getProductList', async (data, thunkAPI) => {
   try {
     const response = await axios.get(
-      `https://api.chapshopapp.com/api/v1/user/productList${data}`,
+      `http://localhost:5001/api/v1/user/productList/${data}`,
+        );
+    return response.data;
+  } catch (e) {
+    return thunkAPI.rejectWithValue(e.response.data.msg);
+  }
+});
+
+
+
+export const UserProductDetail = createAsyncThunk('user/getProduct', async (data, thunkAPI) => {
+  try {
+    const response = await axios.get(
+     `http://localhost:5001/api/v1/user/getProduct/${data}`,
       authHeader(thunkAPI)
     );
 
@@ -28,6 +41,8 @@ export const UserProduct = createAsyncThunk('product/getProductList', async (dat
     return thunkAPI.rejectWithValue(e.response.data.msg);
   }
 });
+
+
 
 const UserProductSlice = createSlice({
   name: "product",
@@ -39,7 +54,17 @@ const UserProductSlice = createSlice({
     },
     [UserProduct.fulfilled]: (state, { payload }) => {
       state.product = payload.data;
+      // console.log("data prod", payload)
     },
+    [UserProductDetail.pending]: (state) => {
+      state.loading = true;
+    },
+    [UserProductDetail.fulfilled]: (state, { payload }) => {
+      state.detailProduct = payload.data;
+    },
+
+
+
   },
 });
 

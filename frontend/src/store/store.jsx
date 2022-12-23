@@ -8,8 +8,8 @@ import userCategorySlice from "../slice/userSlice/userSlice"
 const store = configureStore({
   reducer: {
     category: categorySlice,   // admin
-    usercategory: userCategorySlice,  // landing page
-    product: userProductSlice
+    usercategory: userCategorySlice,  // landing page user category
+    product: userProductSlice  // user product all products slices
   },
 });
 export default store;
