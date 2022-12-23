@@ -16,7 +16,7 @@ import BackIcon from "@material-ui/icons/NavigateBefore";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { UserProductDetail } from "src/slice/userSlice/userProductSlice";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
@@ -41,6 +41,7 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 // ];
 
 function SwipeableTextMobileStepper() {
+  const navigate=useNavigate()
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
    const { detailProduct } = useSelector((store) => store.product);
@@ -58,6 +59,9 @@ const dispatch=useDispatch();
     setActiveStep(step);
   };
 
+  const handleBackPage = (id) =>{
+    navigate(`/dashboard/usercategorypage/${id}`)
+  }
   const id = useParams();
 
   React.useEffect(() => {
@@ -71,7 +75,8 @@ const images = detailProduct?.sharing_images?.map((item)=>{
 const maxSteps = images?.length;
 
   return (
-    <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
+    
+    <Box sx={{ maxWidth: "100%", flexGrow: 1 }}>
       <Paper
         square
         elevation={0}
@@ -142,6 +147,10 @@ const maxSteps = images?.length;
           </IconButton>
         }
       />
+     <Typography sx={{width:"300px"}}>{detailProduct.product_name}</Typography>
+     <Typography>Reselling Price:{detailProduct.reselling_price}</Typography>
+     <Typography>Sizes:{detailProduct.sizes}</Typography>
+     <Typography>Product Id:{detailProduct._id}</Typography>
       {/* <Card style={{ display: "flex" }}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
@@ -158,7 +167,14 @@ const maxSteps = images?.length;
           </Typography>
         </CardContent>
       </Card> */}
-    
+      <Button
+        style={{ display: "flex", marginTop: "10px" }}
+        variant="contained"
+        onClick={()=>{handleBackPage()}}
+      >
+        Back
+      </Button>
+      <br />
     </Box>
     
   );
