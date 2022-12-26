@@ -37,9 +37,10 @@ import { Link } from 'react-router-dom';
 const TABLE_HEAD = [
   { id: 'name', label: 'Product', alignRight: false },
   { id: 'company', label: 'Category', alignRight: false },
+  
   { id: 'role', label: 'Price', alignRight: false },
   { id: 'isVerified', label: 'Publish', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+
   { id: '' },
 ];
 
@@ -210,9 +211,9 @@ export default function UserPage() {
 
                         <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
 
-                        <TableCell align="left">
+                        {/* <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
+                        </TableCell> */}
 
                         <TableCell align="right">
                           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>

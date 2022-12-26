@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Button, Container, Stack, Typography } from '@mui/material';
 // components
 import { useDispatch } from 'react-redux';
-import { getCategory } from '../slice/categorySlice/categorySlice';
+import { getCategory } from '../slice/userSlice/categorySlice/categorySlice';
 import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } from '../sections/@dashboard/products';
 // mock
 import PRODUCTS from '../_mock/products';
@@ -15,6 +15,7 @@ import Iconify from '../components/iconify/Iconify';
 import ImageUpload from '../components/ImageUploader/ImageUpload';
 import Popup from '../components/Form/Popup';
 import { Link } from 'react-router-dom';
+import { admingetCategory } from 'src/slice/adminSlice/adminCategorySlice';
 // ----------------------------------------------------------------------
 
 export default function Categories() {
@@ -25,7 +26,7 @@ export default function Categories() {
 
   useEffect(() => {
     // console.log('helo');
-    dispatch(getCategory());
+    dispatch(admingetCategory());
   }, []);
   const handleOpenFilter = () => {
     setOpenFilter(true);

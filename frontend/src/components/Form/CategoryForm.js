@@ -1,4 +1,4 @@
-import React,{useState} from "react"
+import React,{useEffect, useState} from "react"
 import {
   Grid,
   makeStyles,
@@ -17,6 +17,8 @@ import { Formik, Form, Field } from "formik"
 import * as Yup from "yup"
 import { TextField } from "formik-material-ui"
 import ImageUpload from "../ImageUploader/ImageUpload"
+import { useDispatch } from "react-redux"
+import { createCategory } from "src/slice/adminSlice/adminCategorySlice"
 
 
 const useStyle = makeStyles((theme) => ({
@@ -54,14 +56,46 @@ const validationSchema = Yup.object().shape({
 
 const UserForm = () => {
 
+  const [inputImage, setInputImage] = useState([]);
+  const [file, setFile] = useState([]);
+
+
+ 
+
+const  dispatch = useDispatch();
+
   const classes = useStyle()
 
-  const onSubmit = (values) => {
-    console.log(values)
+  
+  const handleImage = (e, values) => {
+    e.preventDefault();
+    console.log("image", e.target.value, inputImage)
+    
+    const imgType = /image\/(png|jpg|jpeg|webp)/i;
+    const file = e.target.files[0];
+    if (!file?.type.match(imgType)) {
+      window.warning("Invalid image type, only .jpeg/.jpg/.png are allowed");
+      return setFile([]);
+    }
+    
+ 
+   
+    setInputImage([...e.target.files]);
+
+    
   }
 
-  return (
+  
+  // useEffect(() => {
+    //   dispatch(createCategory())
+    // })
+    const onSubmit = (values) => {
+ 
+    dispatch(createCategory({ values,inputImage}))
+  }
     
+    return (
+      
     <Grid container justify="center" spacing={1}>
       {/* <ImageUpload/> */}
       <Grid item md={6}>
@@ -72,7 +106,7 @@ const UserForm = () => {
             validationSchema={validationSchema}
             onSubmit={onSubmit}>
             {({ dirty, isValid, values, handleChange, handleBlur }) => {
-              return (
+              return (  
                 <Form>
                   <CardContent>
                    <Grid item container spacing={4} justify="center">
@@ -104,6 +138,17 @@ const UserForm = () => {
                           value={values.size}
                           component={TextField}
                         />
+                        <br/><br/>
+                        <input
+                          label="Image Upload"
+                          variant="outlined"
+                          fullWidth
+                          name="image"
+                          type="file" 
+                          value={inputImage}
+                          onChange={(e) => handleImage(e)}
+                         />
+                      
                       </Grid>
                      </Grid>
                    
@@ -123,7 +168,7 @@ const UserForm = () => {
                       className={classes.button}>
                   Submit
                     </Button>
-                    <ImageUpload/>
+                    
                   </CardActions>
                  
                 </Form>

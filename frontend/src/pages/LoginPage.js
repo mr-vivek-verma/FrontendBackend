@@ -9,8 +9,11 @@ import Logo from '../components/logo';
 import Iconify from '../components/iconify';
 // sections
 import { LoginForm } from '../sections/auth/login';
-
-// ----------------------------------------------------------------------
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {getUserLogin } from '../slice/adminSlice/loginSlice/userLoginSlice.jsx'
+import { Navigate, useNavigate } from 'react-router-dom';
+ // ----------------------------------------------------------------------
 
 const StyledRoot = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -43,7 +46,44 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 export default function LoginPage() {
   const mdUp = useResponsive('up', 'md');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const { user, role } = useSelector((state) => state.login)
+  const handleChange = (e) => {
+    //console.log(e.target.value)
+    setEmail(e.target.value)
+  }
+  const handleChangePass = (e) => {
+    //   console.log(e.target.value)
+    setPassword(e.target.value)
+  }
 
+  const data = { email, password }
+
+  const handleSubmit = () => {
+    //  console.log(email, password)
+    dispatch(getUserLogin(data))
+    // if (user!==null ) {
+    // /  navigate("/dashboard/app")
+    // }
+}
+
+  
+  const fn = () => {
+    if (user && role) {
+     navigate("/dashboard/app"); 
+    }
+    else {
+      navigate("/login")
+    }
+   
+  }
+  useEffect(() => {
+    fn();
+       }, [user]);
+  
   return (
     <>
       <Helmet>
@@ -74,32 +114,17 @@ export default function LoginPage() {
               Sign in here 
             </Typography>
 
-            <Typography variant="body2" sx={{ mb: 5 }}>
-              Don’t have an account? {''}
-              {/* <Link variant="subtitle2">Get started</Link> */}
-            </Typography>
+        
 
-            <Stack direction="row" spacing={2}>
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
-              </Button>
-
-              {/* <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:facebook-fill" color="#1877F2" width={22} height={22} />
-              </Button>
-
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:twitter-fill" color="#1C9CEA" width={22} height={22} />
-              </Button> */}
-            </Stack>
-
+            
             <Divider sx={{ my: 3 }}>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                OR
-              </Typography>
+              
             </Divider>
-
-            <LoginForm />
+            <input style={{margin:"4px", padding:"4px"}} type="email" placeholder="email" value={email} onChange={(e)=>{handleChange(e)}} />
+            <input style={{margin:"4px", padding:"4px"}} type="password" placeholder="password" value={password} onChange={(e) => { handleChangePass(e) }} />
+            <Button onClick={(e)=>handleSubmit(e)}>submit</Button>
+           {/* 
+<LoginForm /> */}
           </StyledContent>
         </Container>
       </StyledRoot>

@@ -25,7 +25,7 @@ export default function DashboardAppPage() {
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Welcome To Dashboard
+         Categories
         </Typography>
 
         <Grid container spacing={3}>

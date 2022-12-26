@@ -10,20 +10,25 @@ import UserCategoryPage from './pages/user/UserProductPage';
 import UserImageDownload from './pages/user/Carousel/UserImageDownload';
 import ProductForm from './components/Form/ProductForm';
 import CategoryForm from './components/Form/CategoryForm';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 // ----------------------------------------------------------------------
 
 export default function App() {
+  const navigate = useNavigate();
+
+  const { user } = useSelector((store) => store.login);
+ 
+  useEffect(() => {
+    !user ? navigate("login") : "";
+  },[user])
+  
   return (
     <ThemeProvider>
-    {/* <ProductForm/>   */}
-      {/* <CategoryForm/> */}
-      {/* <ScrollToTop /> */}
-      {/* <Categories /> */}
-      {/* <HomePage/> */}
-      {/* <UserImageDownload/>  */}
-      {/* <UserCategoryPage /> */}
-      <Router/>
+     
+      <Router />
       
     </ThemeProvider>
   );

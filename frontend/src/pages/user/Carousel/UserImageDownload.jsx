@@ -70,7 +70,7 @@ const dispatch=useDispatch();
   }, []);
 
 const images = detailProduct?.sharing_images?.map((item)=>{
-  return({imgPath: `http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/${item.filename}`} )
+  return({imgPath: `http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/${item.filename}`})
 })
 const maxSteps = images?.length;
 

@@ -24,7 +24,7 @@ export default function Router() {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
+        { element: <Navigate to="/dashboard/userpage" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
            { path: 'categoryform', element: <CategoryForm /> },
@@ -33,15 +33,17 @@ export default function Router() {
         { path: 'userpage', element: <HomePage /> },
         { path: 'userimgdown/:id', element: <UserImageDownload /> },
         { path: 'usercategorypage/:id', element: <UserCategoryPage /> },
+         
       ],
     },
+     { path: '*', element: <LoginPage /> },
     {
       path: 'login',
       element: <LoginPage />,
     },
     {
       element: <SimpleLayout />,
-      children: [{ element: <Navigate to="/dashboard/app" />, index: true }],
+      children: [{ element: <Navigate to="/dashboard/userpage" />, index: true }],
     },
   ]);
 
