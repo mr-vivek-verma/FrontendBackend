@@ -16,9 +16,10 @@ import {
 import { Formik, Form, Field } from "formik"
 import * as Yup from "yup"
 import { TextField } from "formik-material-ui"
-import ImageUpload from "../ImageUploader/ImageUpload"
+
 import { useDispatch } from "react-redux"
 import { createCategory } from "src/slice/adminSlice/adminCategorySlice"
+import { useNavigate } from "react-router-dom"
 
 
 const useStyle = makeStyles((theme) => ({
@@ -55,7 +56,7 @@ const validationSchema = Yup.object().shape({
 })
 
 const UserForm = () => {
-
+  const navigate = useNavigate()
   const [inputImage, setInputImage] = useState([]);
   const [file, setFile] = useState([]);
 
@@ -92,6 +93,10 @@ const  dispatch = useDispatch();
     const onSubmit = (values) => {
  
     dispatch(createCategory({ values,inputImage}))
+  }
+
+  const handleBackPage = () =>{
+    navigate("/dashboard/products")
   }
     
     return (
@@ -157,7 +162,7 @@ const  dispatch = useDispatch();
                     <Button
                       variant="contained"
                       color="primary"
-                      type="Submit"
+                      onClick={()=>{handleBackPage()}}
                       className={classes.button}>
                       Back
                     </Button>

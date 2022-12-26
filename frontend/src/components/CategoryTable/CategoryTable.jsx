@@ -10,7 +10,8 @@ import Paper from '@mui/material/Paper';
 
 import { Button, Typography, MenuItem } from '@mui/material';
 import Iconify from '../iconify/Iconify';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteCategory } from 'src/slice/adminSlice/adminCategorySlice';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -27,7 +28,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
+  
   '&:last-child td, &:last-child th': {
     border: 0,
   },
@@ -37,15 +38,30 @@ function createData(categoryName, sizes, action) {
   return { categoryName, sizes };
 }
 
-const rows = [
-    createData('tshirt', 20),
-    ];
+// const rows = [
+//     createData('tshirt', 20),
+//     ];
   
   export default function CustomizedTables() {
+    const [filteredData, setFilteredData] = React.useState([]);
+
+    const dispatch = useDispatch()
+    const handleSearch = (event) => {
+      setFilteredData(event.target.value)
+      
+    }
+   
+    const onSubmit = (values) => {
+ 
+      dispatch(createCategory({ values,inputImage}))
+    }
+
     const { category } = useSelector((state) => state.AdminCategory)
-    console.log("table darat", category)
   return (
     <TableContainer component={Paper}>
+    <Typography sx={{ display: 'flex', justifyContent: ' end', m: 2 }}>
+          <input style={{ height: '30px' }} placeholder="Search"  onChange={(event) => handleSearch(event)} />
+        </Typography>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
@@ -56,7 +72,12 @@ const rows = [
           </TableRow>
         </TableHead>
         <TableBody>
-          {category?.map((row) => (
+            { category?.filter(val => {
+          if (filteredData === "") { return val }
+          else if (val.category_name.toString().toLowerCase().includes(filteredData.toString().toLowerCase())) {
+            return val
+          }
+        }).map((row) => (
             <StyledTableRow key={row.name}>
               <StyledTableCell component="th" scope="row">
                 {row.category_name}
@@ -69,8 +90,8 @@ const rows = [
           Edit
         </Button>
 
-        <Button sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+        <Button sx={{ color: 'error.main' }} onClick={(e)=>{dispatch(deleteCategory(row._id))}}>
+          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }}  />
           Delete
         </Button>
               </Typography></StyledTableCell>
@@ -84,112 +105,4 @@ const rows = [
 }
 
 
-// import React from 'react'
-// import styled from 'styled-components'
-// import { useTable } from 'react-table'
 
-
-
-// const Styles = styled.div`
-//   padding: 1rem;
-
-//   table {
-//     border-spacing: 0;
-//     border: 1px solid black;
-
-//     tr {
-//       :last-child {
-//         td {
-//           border-bottom: 0;
-//         }
-//       }
-//     }
-
-//     th,
-//     td {
-//       margin: 0;
-//       padding: 0.5rem;
-//       border-bottom: 1px solid black;
-//       border-right: 1px solid black;
-
-//       :last-child {
-//         border-right: 0;
-//       }
-//     }
-//   }
-// `
-
-// function Table({ columns, data }) {
-//   // Use the state and functions returned from useTable to build your UI
-//   const {
-//     getTableProps,
-//     getTableBodyProps,
-//     headerGroups,
-//     rows,
-//     prepareRow,
-//   } = useTable({
-//     columns,
-//     data,
-//   })
-
-//   // Render the UI for your table
-//   return (
-//     <table {...getTableProps()}>
-//       <thead>
-//         {headerGroups.map(headerGroup => (
-//           <tr {...headerGroup.getHeaderGroupProps()}>
-//             {headerGroup.headers.map(column => (
-//               <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-//             ))}
-//           </tr>
-//         ))}
-//       </thead>
-//       <tbody {...getTableBodyProps()}>
-//         {rows.map((row, i) => {
-//           prepareRow(row)
-//           return (
-//             <tr {...row.getRowProps()}>
-//               {row.cells.map(cell => {
-//                 return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-//               })}
-//             </tr>
-//           )
-//         })}
-//       </tbody>
-//     </table>
-//   )
-// }
-
-// function App() {
-//     const data = [
-//         {CategoryName:"sfcjsdfs" ,sizes:"xl"}
-//     ]
-//   const columns = React.useMemo(
-//     () => [
-//       {
-//         Header: 'Category Name',
-//         accessor: "CategoryName"
-//       },
-//           {
-//             Header: 'Sizes',
-//             accessor: 'sizes',
-//           },
-//           {
-//             Header: 'Actions',
-//             accessor: 'actions',
-//           },
-//         ],
-     
-//   )
-
-// //   const data = React.useMemo(() => makeData(20), [])
-
-//   return (
-//     <Styles>
-//       <Table columns={columns} data={""} />
-      
-//     </Styles>
-//   )
-// }
-
-// export default App

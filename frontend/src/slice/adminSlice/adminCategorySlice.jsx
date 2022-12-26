@@ -31,17 +31,14 @@ export const admingetCategory = createAsyncThunk('category/categoryList', async 
 
 
 export const createCategory = createAsyncThunk('category/addcategory', async (data, thunkAPI) => {
-    console.log("ai data", data) 
+    
     let newFormData = new FormData();
 newFormData.append("category_name", data.values.category);
    newFormData.append("sizes[]", data.values.size);
 newFormData.append("category_image", data.inputImage);
-
-    console.log("sdfsdf", newFormData)
     
-    
-  try {
-        const response = await axios.post(`http://localhost:5001/api/v1/category/addCategory`,newFormData,authHeader(thunkAPI)
+try {
+        const response = await axios.post(`http://localhost:5001/api/v1/category/addCategory/`,newFormData,authHeader(thunkAPI)
         );
       return response.data;
        
@@ -50,7 +47,18 @@ newFormData.append("category_image", data.inputImage);
   }
 });
 
+export const deleteCategory = createAsyncThunk('category/deletecategory', async (data, thunkAPI) => {
+    console.log(data)
 
+try {
+      const response = await axios.delete(`http://localhost:5001/api/v1/category/deleteCategory/${data}`,authHeader(thunkAPI)
+      );
+    return response.data;
+     
+} catch (e) {
+  return thunkAPI.rejectWithValue(e.response.data.msg);
+}
+});
 
 
 
@@ -62,6 +70,15 @@ const adminCategorySlice = createSlice({
   },
   
     extraReducers: {
+      [deleteCategory.pending]: (state) => {
+        state.loading = true;
+    },
+    [deleteCategory.fulfilled]: (state) => {
+        state.loading = false;
+        state.category = payload.data
+
+    },
+
         [createCategory.pending]: (state) => {
             state.loading = true;
         },
