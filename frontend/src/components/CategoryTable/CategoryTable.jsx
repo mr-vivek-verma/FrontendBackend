@@ -11,7 +11,8 @@ import Paper from '@mui/material/Paper';
 import { Button, Typography, MenuItem } from '@mui/material';
 import Iconify from '../iconify/Iconify';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteCategory } from 'src/slice/adminSlice/adminCategorySlice';
+import { deleteCategory, editCategory } from 'src/slice/adminSlice/adminCategorySlice';
+import { Link } from 'react-router-dom';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -86,9 +87,11 @@ function createData(categoryName, sizes, action) {
               <StyledTableCell align="right">
               <Typography variant="button">
               <Button>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </Button>
+               < Link  to="/dashboard/categoryform" >
+               <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }}/>
+                Edit
+              </Link>
+             </Button>  
 
         <Button sx={{ color: 'error.main' }} onClick={(e)=>{dispatch(deleteCategory(row._id))}}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }}  />

@@ -35,16 +35,11 @@ const useStyle = makeStyles((theme) => ({
 const initialValues = {
   category: "",
   size: "",
+  category_image:""
  
 }
 
-const options = [
-  { label: "Computer Programmer", value: "Computer_programmer" },
-  { label: "Web Developer", value: "web_developer" },
-  { label: "User Experience Designer", value: "user_experience_designer" },
-  { label: "Systems Analyst", value: "systems_analyst" },
-  { label: "Quality Assurance Tester", value: "quality_assurance_tester" },
-]
+
 
 
 
@@ -57,34 +52,27 @@ const validationSchema = Yup.object().shape({
 
 const UserForm = () => {
   const navigate = useNavigate()
-  const [inputImage, setInputImage] = useState([]);
+  // const [inputImage, setInputImage] = useState();
   const [file, setFile] = useState([]);
-
+const [g, setG] = useState([]);
 
  
 
 const  dispatch = useDispatch();
 
   const classes = useStyle()
-
+// console.log(category_image)
   
-  const handleImage = (e, values) => {
-    e.preventDefault();
-    console.log("image", e.target.value, inputImage)
-    
-    const imgType = /image\/(png|jpg|jpeg|webp)/i;
-    const file = e.target.files[0];
-    if (!file?.type.match(imgType)) {
-      window.warning("Invalid image type, only .jpeg/.jpg/.png are allowed");
-      return setFile([]);
-    }
+  // const handleImage = (e, values) => {
+  //   e.preventDefault();
+  //   console.log("image", e.target.files[0])
     
  
    
-    setInputImage([...e.target.files]);
+  //   setInputImage(e.target.files[0]);
 
     
-  }
+  // }
 
   
   // useEffect(() => {
@@ -92,7 +80,7 @@ const  dispatch = useDispatch();
     // })
     const onSubmit = (values) => {
  
-    dispatch(createCategory({ values,inputImage}))
+    dispatch(createCategory({ values}))
   }
 
   const handleBackPage = () =>{
@@ -102,7 +90,7 @@ const  dispatch = useDispatch();
     return (
       
     <Grid container justify="center" spacing={1}>
-      {/* <ImageUpload/> */}
+      
       <Grid item md={6}>
         <Card className={classes.padding}>
           <CardHeader title="Create Categories"/>
@@ -110,7 +98,7 @@ const  dispatch = useDispatch();
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={onSubmit}>
-            {({ dirty, isValid, values, handleChange, handleBlur }) => {
+            {({ dirty, isValid, values, handleChange, handleBlur,setFieldValue }) => {
               return (  
                 <Form>
                   <CardContent>
@@ -144,16 +132,15 @@ const  dispatch = useDispatch();
                           component={TextField}
                         />
                         <br/><br/>
-                        <input
-                          label="Image Upload"
+                        <input 
+                          label="Image"
                           variant="outlined"
                           fullWidth
-                          name="image"
+                          name="category_image"
                           type="file" 
-                          value={inputImage}
-                          onChange={(e) => handleImage(e)}
+                          onChange={(e)=>{setFieldValue("category_image",e.currentTarget.files[0]); setG(URL.createObjectURL(e.currentTarget.files[0])) }}
                          />
-                      
+                      <img src={g}/>
                       </Grid>
                      </Grid>
                    
