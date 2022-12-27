@@ -17,8 +17,8 @@ import { Formik, Form, Field } from "formik"
 import * as Yup from "yup"
 import { TextField } from "formik-material-ui"
 
-import { useDispatch } from "react-redux"
-import { createCategory } from "src/slice/adminSlice/adminCategorySlice"
+import { useDispatch, useSelector } from "react-redux"
+import { createCategory, editCategory } from "src/slice/adminSlice/adminCategorySlice"
 import { useNavigate } from "react-router-dom"
 
 
@@ -79,14 +79,24 @@ const  dispatch = useDispatch();
     //   dispatch(createCategory())
     // })
     const onSubmit = (values) => {
- 
-    dispatch(createCategory({ values}))
+ if(!id){
+   dispatch(createCategory({ values}))
+ }
+dispatch(editCategory({values, id}))
   }
 
   const handleBackPage = () =>{
     navigate("/dashboard/products")
   }
-    
+  const { category } = useSelector((state) => state.AdminCategory)
+  const [id, setId] = useState("");
+
+
+  useEffect(()=>{
+    setId(category._id)
+  },[category])
+
+  console.log(id)
     return (
       
     <Grid container justify="center" spacing={1}>
@@ -149,11 +159,12 @@ const  dispatch = useDispatch();
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={()=>{handleBackPage()}}
+                      onClick={(e)=>{handleBackPage()}}
                       className={classes.button}>
                       Back
                     </Button>
                     <Button
+                   
                       variant="contained"
                       color="primary"
                       type="Submit"

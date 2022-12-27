@@ -11,7 +11,7 @@ import Paper from '@mui/material/Paper';
 import { Button, Typography, MenuItem } from '@mui/material';
 import Iconify from '../iconify/Iconify';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteCategory, editCategory } from 'src/slice/adminSlice/adminCategorySlice';
+import { deleteCategory, singleCategory } from 'src/slice/adminSlice/adminCategorySlice';
 import { Link } from 'react-router-dom';
 
 
@@ -39,14 +39,13 @@ function createData(categoryName, sizes, action) {
   return { categoryName, sizes };
 }
 
-// const rows = [
-//     createData('tshirt', 20),
-//     ];
+
   
   export default function CustomizedTables() {
     const [filteredData, setFilteredData] = React.useState([]);
 
     const dispatch = useDispatch()
+
     const handleSearch = (event) => {
       setFilteredData(event.target.value)
       
@@ -55,6 +54,7 @@ function createData(categoryName, sizes, action) {
     const onSubmit = (values) => {
  
       dispatch(createCategory({ values,inputImage}))
+
     }
 
     const { category } = useSelector((state) => state.AdminCategory)
@@ -86,7 +86,7 @@ function createData(categoryName, sizes, action) {
               <StyledTableCell align="right">{row.sizes}</StyledTableCell>
               <StyledTableCell align="right">
               <Typography variant="button">
-              <Button>
+              <Button onClick={(e) => {dispatch(singleCategory(row._id))}}>
                < Link  to="/dashboard/categoryform" >
                <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }}/>
                 Edit

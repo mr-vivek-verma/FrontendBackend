@@ -8,6 +8,7 @@ const createSlice = require("@reduxjs/toolkit").createSlice;
 const initialState = {
   loading: false,
   createCat: [],
+  category:[],
   error: false,
 };
 
@@ -66,14 +67,15 @@ export const deleteCategory = createAsyncThunk(
   }
 );
 
-export const editCategory = createAsyncThunk(
-  "category/updateCategory",
+export const singleCategory = createAsyncThunk(
+  "category/singlecategory",
   async (data, thunkAPI) => {
-    console.log(data);
-
+   console.log(data)
     try {
-      const response = await axios.delete(
-        `http://localhost:5001/api/v1/category/updateCategory/${data}`,
+    
+      const response = await axios.get(
+        `http://localhost:5001/api/v1/category/getCategory/${data}`,
+       
         authHeader(thunkAPI)
       );
       return response.data;
@@ -82,6 +84,29 @@ export const editCategory = createAsyncThunk(
     }
   }
 );
+
+export const editCategory = createAsyncThunk(
+  "category/updatecategory",
+  async (data, thunkAPI) => {
+    // console.log("data with edit", data);
+    let newFormData = new FormData();
+    newFormData.append("category_name", data.values.category);
+    newFormData.append("sizes[]", data.values.size);
+    newFormData.append("category_image",data.values.category_image)
+    try {
+    
+      const response = await axios.put(
+        `http://localhost:5001/api/v1/category/updateCategory/`,
+        newFormData,
+        authHeader(thunkAPI)
+      );
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.response.data.msg);
+    }
+  }
+);
+
 
 const adminCategorySlice = createSlice({
   name: "data",
@@ -92,9 +117,18 @@ const adminCategorySlice = createSlice({
     [editCategory.pending]: (state) => {
       state.loading = true;
     },
-    [editCategory.fulfilled]: (state) => {
+    [editCategory.fulfilled]: (state,{payload}) => {
       state.loading = false;
       state.category = payload.data;
+    },
+
+    [singleCategory.pending]: (state) => {
+      state.loading = true;
+    },
+    [singleCategory.fulfilled]: (state,{payload}) => {
+      state.loading = false;
+      state.category = payload.data;
+      console.log(payload)
     },
     
     [deleteCategory.pending]: (state) => {
