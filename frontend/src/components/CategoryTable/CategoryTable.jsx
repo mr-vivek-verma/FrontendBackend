@@ -73,9 +73,9 @@ function createData(categoryName, sizes, action) {
           </TableRow>
         </TableHead>
         <TableBody>
-            { category?.filter(val => {
+            { Object.values(category)?.filter(val => {
           if (filteredData === "") { return val }
-          else if (val.category_name.toString().toLowerCase().includes(filteredData.toString().toLowerCase())) {
+          else if (val.category_name?.toString().toLowerCase().includes(filteredData?.toString().toLowerCase())) {
             return val
           }
         }).map((row) => (
@@ -87,14 +87,15 @@ function createData(categoryName, sizes, action) {
               <StyledTableCell align="right">
               <Typography variant="button">
               <Button onClick={(e) => {dispatch(singleCategory(row._id))}}>
-               < Link  to="/dashboard/categoryform" >
+            
+               <Link  to="/dashboard/categoryform" >
                <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }}/>
                 Edit
               </Link>
              </Button>  
 
         <Button sx={{ color: 'error.main' }} onClick={(e)=>{dispatch(deleteCategory(row._id))}}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }}  />
+          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }}/>
           Delete
         </Button>
               </Typography></StyledTableCell>

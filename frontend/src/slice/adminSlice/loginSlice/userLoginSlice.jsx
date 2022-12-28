@@ -38,7 +38,7 @@ const userLoginSlice = createSlice({
   initialState,
   reducers: {
     logOutUser: (state) => {
-      console.log("aao logout")
+      
       state.user=null
       state.role = '';
       localStorage.removeItem("user")
@@ -57,7 +57,7 @@ const userLoginSlice = createSlice({
     [getUserLogin.fulfilled]: (state, { payload }) => {
       state.loading = false;
       const user = payload.data.user
-      const userRole = JSON.parse(localStorage.getItem("user"));
+      // const userRole = JSON.parse(localStorage.getItem("user"));
       state.user = user;
       state.role = payload.data.user.userType;
        localStorage.setItem("user", JSON.stringify(user) ) 

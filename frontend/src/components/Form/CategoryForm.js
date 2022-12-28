@@ -81,7 +81,7 @@ const  dispatch = useDispatch();
     const onSubmit = (values) => {
  if(!id){
    dispatch(createCategory({ values}))
- }
+ }else
 dispatch(editCategory({values, id}))
   }
 

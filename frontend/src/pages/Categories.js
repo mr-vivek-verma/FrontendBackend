@@ -50,7 +50,7 @@ export default function Categories() {
           Categories
         </Typography>
         <Typography sx={{ display: 'flex', justifyContent: ' end', m: 2 }}>
-          <Link to="/dashboard/categoryform" variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Link to="/dashboard/categoryform" variant="contained" starticon={<Iconify icon="eva:plus-fill" />}>
            <button> Create New </button>
           </Link>
         </Typography>

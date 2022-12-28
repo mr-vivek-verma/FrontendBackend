@@ -66,7 +66,7 @@ const ProductForm = () => {
           </div>
         </div>
         <div className="productForm-button">
-          <Link to="/product" className="Back-link"><button>Back</button></Link>
+          <Link to="/dashboard/user" className="Back-link"><button>Back</button></Link>
           <button>Submit</button>
         </div>
       </div>

@@ -88,9 +88,10 @@ export const singleCategory = createAsyncThunk(
 export const editCategory = createAsyncThunk(
   "category/updatecategory",
   async (data, thunkAPI) => {
-    // console.log("data with edit", data);
+    console.log("data with edit", data);
     let newFormData = new FormData();
     newFormData.append("category_name", data.values.category);
+    newFormData.append("category_id", data.id);
     newFormData.append("sizes[]", data.values.size);
     newFormData.append("category_image",data.values.category_image)
     try {

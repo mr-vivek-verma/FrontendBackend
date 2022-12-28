@@ -8,7 +8,7 @@ import { StyledLabel } from './styles';
 
 // ----------------------------------------------------------------------
 
-const Label = forwardRef(({ children, color = 'default', variant = 'soft', startIcon, endIcon, sx, ...other }, ref) => {
+const Label = forwardRef(({ children, color = 'default', variant = 'soft', starticon, endIcon, sx, ...other }, ref) => {
   const theme = useTheme();
 
   const iconStyle = {
@@ -23,14 +23,14 @@ const Label = forwardRef(({ children, color = 'default', variant = 'soft', start
       component="span"
       ownerState={{ color, variant }}
       sx={{
-        ...(startIcon && { pl: 0.75 }),
+        ...(starticon && { pl: 0.75 }),
         ...(endIcon && { pr: 0.75 }),
         ...sx,
       }}
       theme={theme}
       {...other}
     >
-      {startIcon && <Box sx={{ mr: 0.75, ...iconStyle }}> {startIcon} </Box>}
+      {starticon && <Box sx={{ mr: 0.75, ...iconStyle }}> {starticon} </Box>}
 
       {children}
 
@@ -43,7 +43,7 @@ Label.propTypes = {
   sx: PropTypes.object,
   endIcon: PropTypes.node,
   children: PropTypes.node,
-  startIcon: PropTypes.node,
+  starticon: PropTypes.node,
   variant: PropTypes.oneOf(['filled', 'outlined', 'ghost', 'soft']),
   color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error']),
 };
