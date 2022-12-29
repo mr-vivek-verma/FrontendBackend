@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -46,11 +46,16 @@ function createData(categoryName, sizes, action) {
 
     const dispatch = useDispatch()
 
+
+
     const handleSearch = (event) => {
       setFilteredData(event.target.value)
       
     }
    
+      
+    
+
     const onSubmit = (values) => {
  
       dispatch(createCategory({ values,inputImage}))

@@ -2,12 +2,14 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
+import 'react-toastify/dist/ReactToastify.css';
 
 import store from "./store/store"
 //
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
+import { ToastContainer } from 'react-toastify';
 // ----------------------------------------------------------------------
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -16,6 +18,7 @@ root.render(
   <HelmetProvider >
   <Provider store={store}>
     <BrowserRouter>
+    <ToastContainer newestOnTop={false} closeOnClick autoClose={1500}/>
       <App />
     </BrowserRouter>
     </Provider> </HelmetProvider>

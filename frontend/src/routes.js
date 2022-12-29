@@ -24,7 +24,7 @@ export default function Router() {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/userpage" />, index: true },
+        { element: <Navigate to="/dashboard/products" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
            { path: 'categoryform', element: <CategoryForm /> },
@@ -43,7 +43,7 @@ export default function Router() {
     },
     {
       element: <SimpleLayout />,
-      children: [{ element: <Navigate to="/dashboard/userpage" />, index: true }],
+      children: [{ element: <Navigate to="/dashboard/products" />, index: true }],
     },
   ]);
 

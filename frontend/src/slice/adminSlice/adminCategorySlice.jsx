@@ -2,7 +2,7 @@ import axios from "axios";
 import authHeader from "../../utils/authHeader/authHeader";
 
 const { createAsyncThunk } = require("@reduxjs/toolkit");
-
+import { toast } from 'react-toastify';
 const createSlice = require("@reduxjs/toolkit").createSlice;
 
 const initialState = {
@@ -121,6 +121,7 @@ const adminCategorySlice = createSlice({
     [editCategory.fulfilled]: (state,{payload}) => {
       state.loading = false;
       state.category = payload.data;
+      toast.success('category updated successfully');
     },
 
     [singleCategory.pending]: (state) => {
@@ -135,9 +136,11 @@ const adminCategorySlice = createSlice({
     [deleteCategory.pending]: (state) => {
       state.loading = true;
     },
-    [deleteCategory.fulfilled]: (state) => {
+    [deleteCategory.fulfilled]: (state,{payload}) => {
       state.loading = false;
       state.category = payload.data;
+      toast.success('category deleted successfully');
+      
     },
 
     [createCategory.pending]: (state) => {
@@ -146,6 +149,7 @@ const adminCategorySlice = createSlice({
     [createCategory.fulfilled]: (state, { payload }) => { 
       state.loading = false;
       state.category = payload.data;
+      toast.success('category created successfully');
     },
     [admingetCategory.pending]: (state) => {
       state.loading = true;

@@ -16,6 +16,7 @@ import Iconify from '../components/iconify/Iconify';
 import { Link } from 'react-router-dom';
 import { admingetCategory } from 'src/slice/adminSlice/adminCategorySlice';
 import { UserProduct } from 'src/slice/userSlice/userProductSlice';
+import products from '../_mock/products';
 // ----------------------------------------------------------------------
 
 export default function Categories() {

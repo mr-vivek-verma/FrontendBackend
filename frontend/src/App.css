@@ -1,8 +1,8 @@
 .category-table{
     background-color: #ffffff;
-    width: 900px;
+    width: 100%;
     border-radius: 5px;
-    box-shadow: 0px 0px 2px 2px grey;
+    box-shadow: 0px 0px 2px  rgb(3, 3, 3);
   }
   
   .category-table-head th{
@@ -19,7 +19,7 @@
     text-align: center;
     border-radius: 5px;
     border: none;
-    background-color: #3076d2;
+    background-color: #0a58bd;
     padding: 5px;
     color: white;
     width: 50px;
@@ -31,7 +31,7 @@
     text-align: center;
     border-radius: 5px;
     border: none;
-    background-color: #df4c64;
+    background-color: #81061a;
     padding: 5px;
     color: white;
     width: 80px;

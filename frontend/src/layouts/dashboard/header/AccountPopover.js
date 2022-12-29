@@ -4,6 +4,7 @@ import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
 import account from '../../../_mock/account';
+import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import {logOutUser} from "../../../slice/adminSlice/loginSlice/userLoginSlice.jsx"
 import { useNavigate } from 'react-router-dom';
@@ -48,7 +49,7 @@ export default function AccountPopover() {
    
     dispatch(logOutUser())
     navigate("/login")
-
+    toast.success('logged out successfully');
   }
 
   return (

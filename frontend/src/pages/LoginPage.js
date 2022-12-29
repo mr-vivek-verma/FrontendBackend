@@ -7,7 +7,7 @@ import useResponsive from '../hooks/useResponsive';
 // components
 import Logo from '../components/logo';
 import Iconify from '../components/iconify';
-// sections
+import { toast } from 'react-toastify';
 import { LoginForm } from '../sections/auth/login';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -62,18 +62,24 @@ export default function LoginPage() {
 
   const data = { email, password }
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+ 
     //  console.log(email, password)
     dispatch(getUserLogin(data))
     // if (user!==null ) {
     // /  navigate("/dashboard/app")
     // }
+    toast.success('successfully logged in');
 }
-
+// const showToastMessage = () => {
+//   toast.success('Success Notification !', {
+//       position: toast.POSITION.TOP_RIGHT
+//   });
+// };
   
   const fn = () => {
     if (user && role) {
-     navigate("/dashboard/app"); 
+     navigate("/dashboard/products"); 
     }
     else {
       navigate("/login")
@@ -84,6 +90,7 @@ export default function LoginPage() {
     fn();
        }, [user]);
   
+    
   return (
     <>
       <Helmet>

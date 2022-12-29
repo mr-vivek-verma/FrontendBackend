@@ -16,7 +16,6 @@ import {
 import { Formik, Form, Field } from "formik"
 import * as Yup from "yup"
 import { TextField } from "formik-material-ui"
-
 import { useDispatch, useSelector } from "react-redux"
 import { createCategory, editCategory } from "src/slice/adminSlice/adminCategorySlice"
 import { useNavigate } from "react-router-dom"
@@ -79,12 +78,19 @@ const  dispatch = useDispatch();
     //   dispatch(createCategory())
     // })
     const onSubmit = (values) => {
+     
  if(!id){
    dispatch(createCategory({ values}))
- }else
-dispatch(editCategory({values, id}))
+   
+  }else
+  dispatch(editCategory({values, id}))
+  
+  setTimeout(() => {
+    navigate("/dashboard/products")
+   
+  }, 1500);
   }
-
+  
   const handleBackPage = () =>{
     navigate("/dashboard/products")
   }
@@ -99,7 +105,7 @@ dispatch(editCategory({values, id}))
   console.log(id)
     return (
       
-    <Grid container justify="center" spacing={1}>
+    <Grid container justifyContent="center" spacing={1}>
       
       <Grid item md={6}>
         <Card className={classes.padding}>
@@ -112,7 +118,7 @@ dispatch(editCategory({values, id}))
               return (  
                 <Form>
                   <CardContent>
-                   <Grid item container spacing={4} justify="center">
+                   <Grid item container spacing={4} justifyContent="center">
                       <Grid item xs={12} sm={6} md={6}>
                       <InputLabel required shrink htmlFor="bootstrap-input">
                         Category
@@ -163,8 +169,8 @@ dispatch(editCategory({values, id}))
                       className={classes.button}>
                       Back
                     </Button>
-                    <Button
-                   
+                    <Button 
+                      
                       variant="contained"
                       color="primary"
                       type="Submit"

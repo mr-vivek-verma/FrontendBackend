@@ -14,9 +14,7 @@
     "clear-all": "rm -rf build node_modules",
     "re-start": "rm -rf build node_modules && yarn install && yarn start",
     "re-build": "rm -rf build node_modules && yarn install && yarn build"
-
   },
-  
   "browserslist": {
     "production": [
       ">0.2%",
@@ -66,6 +64,7 @@
     "react-scripts": "^5.0.1",
     "react-swipeable-views": "^0.14.0",
     "react-table": "^7.8.0",
+    "react-toastify": "^9.1.1",
     "redux-devtools-extension": "^2.13.9",
     "simplebar-react": "^2.4.3",
     "styled-components": "^5.3.6",
