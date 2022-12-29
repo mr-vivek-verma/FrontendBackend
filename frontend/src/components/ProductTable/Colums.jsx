@@ -2,11 +2,11 @@
 export const PRODUCT_COLUMNS = [
     {
       Header: "Product",
-      accessor: "name",
+      accessor: "product_name",
     },
     {
       Header: "Category",
-      accessor: "category",
+      accessor: "category.category_name",
     },
     {
       Header: "SKU",
@@ -14,15 +14,18 @@ export const PRODUCT_COLUMNS = [
     },
     {
       Header: "Buying Price",
-      accessor: "buyingPrice",
+      accessor: "buying_price",
     },
     {
-      Header: "Reselling Price",
-      accessor: "resellingPrice",
+      Header: "Selling Price",
+      accessor: "reselling_price",
     },
     {
-      Header: "Publish",
-      accessor: "publish",
+      Header: "Publication",
+      accessor: "is_draft",
+      Cell:(value)=>{
+      return value?"false":"true";  
+      }
     },
   
     {

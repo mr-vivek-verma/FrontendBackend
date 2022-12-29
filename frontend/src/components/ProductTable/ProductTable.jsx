@@ -4,20 +4,19 @@ import { useSortBy, useTable, usePagination } from "react-table";
 
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { PRODUCT_COLUMNS } from "../ProductTable/Colums";
+import { useDispatch, useSelector } from "react-redux";
+import { admingetProduct } from "src/slice/adminSlice/adminProductSlice";
 const ProductTable = () => {
   const columns = useMemo(() => PRODUCT_COLUMNS, []);
-  const [post, setPost] = useState([]);
-
-  const getUser = async () => {
-    const res = await fetch("https://jsonplaceholder.typicode.com/users");
-    const userData = await res.json();
-    setPost(userData);
-  };
+  const { product } = useSelector((state) => state.AdminProduct)
+  console.log(product);
+const dispatch= useDispatch()
+ 
 
   useEffect(() => {
-    getUser();
+    dispatch(admingetProduct())
   }, []);
-  const data = useMemo(() => post, [post]);
+  const data = useMemo(() => product, [product]);
 
   const tableInstance = useTable(
     {
@@ -45,6 +44,9 @@ const ProductTable = () => {
     setPageSize,
     state: { pageIndex, pageSize },
   } = tableInstance;
+
+
+
   return (
     <>
       <table {...getTableProps()} className="category-table">
@@ -100,7 +102,7 @@ const ProductTable = () => {
             disabled={!canNextPage}
           >
             {">>"}
-          </button>{" "}
+          </button>{" "}                      
           <span>
             Page{" "}
             <strong>

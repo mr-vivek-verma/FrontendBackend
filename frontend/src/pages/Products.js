@@ -308,21 +308,28 @@ import { useEffect, useState } from 'react';
 import { Button, Container, Stack, Typography } from '@mui/material';
 // components
 
-import CategoryTable from '../components/CategoryTable/CategoryTable';
+
 
 
 import Iconify from '../components/iconify/Iconify';
 
 import { Link } from 'react-router-dom';
 import ProductTable from 'src/components/ProductTable/ProductTable';
+import { useDispatch, useSelector } from 'react-redux';
+import { admingetProduct } from 'src/slice/adminSlice/adminProductSlice';
 
 // ----------------------------------------------------------------------
 
 export default function UserPage() {
   
   const [openFilter, setOpenFilter] = useState(false);
-
-
+  
+  const dispatch = useDispatch();
+  
+  // const { product } = useSelector((state) => state.AdminProduct)
+  useEffect(()=>{
+    dispatch(admingetProduct())
+  },[])
 
   const handleOpenFilter = () => {
     setOpenFilter(true);

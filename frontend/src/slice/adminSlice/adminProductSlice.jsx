@@ -7,7 +7,40 @@ const createSlice = require("@reduxjs/toolkit").createSlice;
 
 const initialState = {
   loading: false,
-  createCat: [],
-  category:[],
+  product:[],
   error: false,
 };
+
+export const admingetProduct = createAsyncThunk(
+    "product/productList",
+    async (_, thunkAPI) => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5001/api/v1/product/productList",
+          authHeader(thunkAPI)
+        );
+        return response.data;
+      } catch (e) {
+        return thunkAPI.rejectWithValue(e.response.data.msg);
+      }
+    }
+  );
+
+  
+const adminProductSlice = createSlice({
+    name: "data",
+    initialState,
+    reducers: {},
+  
+    extraReducers: {
+     [admingetProduct.pending]: (state) => {
+        state.loading = true;
+      },
+      [admingetProduct.fulfilled]: (state, { payload }) => {
+        state.loading = false;
+        state.product = payload.data;
+      },
+    },
+  });
+  export default adminProductSlice.reducer;
+  

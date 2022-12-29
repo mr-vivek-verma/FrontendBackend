@@ -6,6 +6,7 @@ import userProductSlice from 'src/slice/userSlice/userProductSlice';
 import userCategorySlice from "../slice/userSlice/userSlice"
 import userLoginSlice from "../slice/adminSlice/loginSlice/userLoginSlice"
 import adminCategorySlice from 'src/slice/adminSlice/adminCategorySlice';
+import adminProductSlice from 'src/slice/adminSlice/adminProductSlice';
 
 
 const store = configureStore({
@@ -14,7 +15,8 @@ const store = configureStore({
     usercategory: userCategorySlice,  // landing page user category
     product: userProductSlice , // user product all products slices
     login: userLoginSlice,
-    AdminCategory: adminCategorySlice
+    AdminCategory: adminCategorySlice,
+    AdminProduct: adminProductSlice
    
   },
 });
