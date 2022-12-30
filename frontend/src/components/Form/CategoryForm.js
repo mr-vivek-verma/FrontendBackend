@@ -29,7 +29,6 @@ const useStyle = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
 }))
-
 // Data
 const initialValues = {
   category: "",
@@ -37,76 +36,67 @@ const initialValues = {
   category_image:""
  
 }
-
-
-
-
-
 // validation schema
 const validationSchema = Yup.object().shape({
-  category: Yup.string().required("Required"),
- size: Yup.string().required("Required"),
+  category: Yup.string().required(""),
+ size: Yup.string().required(""),
 
 })
 
 const UserForm = () => {
-  const navigate = useNavigate()
-  // const [inputImage, setInputImage] = useState();
-  const [file, setFile] = useState([]);
 const [g, setG] = useState([]);
-
+const [id, setId] = useState("");
+const [addSize,setAddSize]= useState([])
+const [itemSize,setItemSize] = useState([])
  
 
+const navigate = useNavigate()
+const { category } = useSelector((state) => state.AdminCategory)
 const  dispatch = useDispatch();
+const classes = useStyle()
 
-  const classes = useStyle()
-// console.log(category_image)
-  
-  // const handleImage = (e, values) => {
-  //   e.preventDefault();
-  //   console.log("image", e.target.files[0])
-    
- 
-   
-  //   setInputImage(e.target.files[0]);
 
-    
-  // }
+useEffect(()=>{
+  setId(category._id)
+},[category])
 
-  
-  // useEffect(() => {
-    //   dispatch(createCategory())
-    // })
-    const onSubmit = (values) => {
-     
- if(!id){
-   dispatch(createCategory({ values}))
-   
-  }else
+const onSubmit = (values) => {
+  console.log(values)
+   if(!id){
+   dispatch(createCategory({ values, itemSize }))
+   }else
   dispatch(editCategory({values, id}))
-  
   setTimeout(() => {
     navigate("/dashboard/products")
-   
-  }, 1500);
+   }, 1500);
   }
   
   const handleBackPage = () =>{
-    navigate("/dashboard/products")
+  navigate("/dashboard/products")
   }
-  const { category } = useSelector((state) => state.AdminCategory)
-  const [id, setId] = useState("");
+  
+  const saveSizes = () => {
+    const allSizes = { id: new Date().getTime().toString(), name: addSize }
+    setItemSize([...itemSize,allSizes])
+    console.log(itemSize)
+    
+  }
+ 
+  const deleteSize = (id) => {
+    const updatedItems = itemSize.filter((val) => {
+      return id !== val.id;
+    })
+    setItemSize(updatedItems)
+  } 
 
 
-  useEffect(()=>{
-    setId(category._id)
-  },[category])
+  // const handlechange=(e)=>{
+  //   console.log("first", e.target)
+  // }
 
-  console.log(id)
-    return (
-      
-    <Grid container justifyContent="center" spacing={1}>
-      
+  console.log(itemSize)
+  return (
+  <Grid container justifyContent="center" spacing={1}>
       <Grid item md={6}>
         <Card className={classes.padding}>
           <CardHeader title="Create Categories"/>
@@ -114,7 +104,7 @@ const  dispatch = useDispatch();
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={onSubmit}>
-            {({ dirty, isValid, values, handleChange, handleBlur,setFieldValue }) => {
+            {({ values,setFieldValue }) => {
               return (  
                 <Form>
                   <CardContent>
@@ -132,7 +122,7 @@ const  dispatch = useDispatch();
                           value={values.category}
                           component={TextField}
                         />
-                      </Grid>
+                        </Grid>
                       
                       <Grid item xs={12} sm={6} md={6}>
                       <InputLabel required shrink htmlFor="bootstrap-input">
@@ -144,10 +134,24 @@ const  dispatch = useDispatch();
                           variant="outlined"
                           fullWidth
                           name="size"
-                          value={values.size}
+                          // value={values.size}
+                          // value={values.size}
+                         // onChange={(e)=>handlechange(e)}
+                        //  value={addSize}
+                        //  onChange={(e)=>setAddSize(e.target.value)}
                           component={TextField}
                         />
+                        <button type="button" onClick={saveSizes}>add sizes</button>
                         <br/><br/>
+                        {/* {itemSize.map((item)=>{
+
+                          return(
+                            <div>
+                              {item.name}
+                              <button type="button" onClick={()=>deleteSize(item.id)}>del</button>
+                            </div>
+                          )
+                        })} */}
                         <input 
                           label="Image"
                           variant="outlined"
@@ -194,3 +198,4 @@ const  dispatch = useDispatch();
 }
 
 export default UserForm
+

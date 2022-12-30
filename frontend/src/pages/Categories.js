@@ -29,7 +29,7 @@ export default function Categories() {
   useEffect(() => {
   
     dispatch(admingetCategory());
-  }, []);
+  }, [dispatch]);
   const handleOpenFilter = () => {
     setOpenFilter(true);
   };

@@ -1,9 +1,20 @@
 import React from "react";
 import "../../App.css"
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { createProduct } from "src/slice/adminSlice/adminProductSlice";
+
+
+
 
 const ProductForm = () => {
   console.log("form")
+  
+    const dispatch = useDispatch();
+  
+    const handleSubmit = (e) => {
+    dispatch(createProduct())
+    }
   return (
     <div className="productForm">
       <div className="productForm-main">
@@ -67,7 +78,7 @@ const ProductForm = () => {
         </div>
         <div className="productForm-button">
           <Link to="/dashboard/user" className="Back-link"><button>Back</button></Link>
-          <button>Submit</button>
+          <button onClick={handleSubmit(e)} >Submit</button>
         </div>
       </div>
     </div>

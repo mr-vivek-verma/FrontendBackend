@@ -30,8 +30,8 @@ export const admingetCategory = createAsyncThunk(
 
 export const createCategory = createAsyncThunk(
   "category/addcategory",
-  async (data, thunkAPI) => {
-    console.log("data with img", data);
+  async (data, thunkAPI) => { 
+    console.log("data ", data);
     let newFormData = new FormData();
     newFormData.append("category_name", data.values.category);
     newFormData.append("sizes[]", data.values.size);
@@ -40,9 +40,12 @@ export const createCategory = createAsyncThunk(
     
       const response = await axios.post(
         `http://localhost:5001/api/v1/category/addCategory/`,
+        
         newFormData,
         authHeader(thunkAPI)
+        
       );
+ 
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.response.data.msg);
@@ -60,6 +63,7 @@ export const deleteCategory = createAsyncThunk(
         `http://localhost:5001/api/v1/category/deleteCategory/${data}`,
         authHeader(thunkAPI)
       );
+      thunkAPI.dispatch(admingetCategory())
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.response.data.msg);
@@ -77,7 +81,8 @@ export const singleCategory = createAsyncThunk(
         `http://localhost:5001/api/v1/category/getCategory/${data}`,
        
         authHeader(thunkAPI)
-      );
+        );
+        thunkAPI.dispatch(admingetCategory(data))
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.response.data.msg);
@@ -133,15 +138,15 @@ const adminCategorySlice = createSlice({
       console.log(payload)
     },
     
-    [deleteCategory.pending]: (state) => {
-      state.loading = true;
-    },
-    [deleteCategory.fulfilled]: (state,{payload}) => {
-      state.loading = false;
-      state.category = payload.data;
-      toast.success('category deleted successfully');
+    // [deleteCategory.pending]: (state) => {
+    //   state.loading = true;
+    // },
+    // [deleteCategory.fulfilled]: (state,{payload}) => {
+    //   state.loading = false;
+    //   state.category = payload.data;
+    //   toast.success('category deleted successfully');
       
-    },
+    // },
 
     [createCategory.pending]: (state) => {
       state.loading = true;

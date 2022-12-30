@@ -1,18 +1,22 @@
 .category-table{
     background-color: #ffffff;
-    width: 100%;
+    /* width: 110%; */
     border-radius: 5px;
     box-shadow: 0px 0px 2px  rgb(3, 3, 3);
   }
   
   .category-table-head th{
+    background-color: rgb(31, 29, 29);
+    color: #ffffff;
     border-bottom: 1px solid grey;
     height: 7vh;
+    
   }
   
   .category-table-body th{
     border-bottom: 1px solid grey;
-    height: 7vh;
+    height: 9vh;
+    width: 40% ;
   }
   
   .category-edit-btn{
@@ -24,6 +28,7 @@
     color: white;
     width: 50px;
     font-size: 15px;
+    cursor: pointer;
   
   }
   
@@ -33,9 +38,11 @@
     border: none;
     background-color: #81061a;
     padding: 5px;
+    margin-top: 3px;
     color: white;
-    width: 80px;
+    width: 50px;
     font-size: 15px;
+    cursor: pointer;
   }
 
 /* form  */
