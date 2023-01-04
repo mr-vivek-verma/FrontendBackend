@@ -5,12 +5,7 @@ const { createAsyncThunk } = require("@reduxjs/toolkit");
 import { toast } from 'react-toastify';
 const createSlice = require("@reduxjs/toolkit").createSlice;
 
-const initialState = {
-  loading: false,
-  createCat: [],
-  category:[],
-  error: false,
-};
+
 
 export const admingetCategory = createAsyncThunk(
   "category/categoryList",
@@ -31,11 +26,11 @@ export const admingetCategory = createAsyncThunk(
 export const createCategory = createAsyncThunk(
   "category/addcategory",
   async (data, thunkAPI) => { 
-    console.log("data ", data);
+    const {category_name,items,fieldImage} = data
     let newFormData = new FormData();
-    newFormData.append("category_name", data.values.category);
-    newFormData.append("sizes[]", data.values.size);
-    newFormData.append("category_image",data.values.category_image)
+    newFormData.append("category_name", category_name);
+    items.forEach((item) => newFormData.append("sizes[]", item.name));
+    newFormData.append("category_image",fieldImage,fieldImage.name);
     try {
     
       const response = await axios.post(
@@ -74,7 +69,6 @@ export const deleteCategory = createAsyncThunk(
 export const singleCategory = createAsyncThunk(
   "category/singlecategory",
   async (data, thunkAPI) => {
-   console.log(data)
     try {
     
       const response = await axios.get(
@@ -93,12 +87,13 @@ export const singleCategory = createAsyncThunk(
 export const editCategory = createAsyncThunk(
   "category/updatecategory",
   async (data, thunkAPI) => {
-    console.log("data with edit", data);
+    console.log("edit",data)
+    const {category_name,items,fieldImage,category_id} = data
     let newFormData = new FormData();
-    newFormData.append("category_name", data.values.category);
-    newFormData.append("category_id", data.id);
-    newFormData.append("sizes[]", data.values.size);
-    newFormData.append("category_image",data.values.category_image)
+    newFormData.append("category_name", category_name);
+    newFormData.append("category_id",category_id);
+    items.forEach((item) => newFormData.append("sizes[]", item.name));
+    newFormData.append("category_image",fieldImage,fieldImage.name);
     try {
     
       const response = await axios.put(
@@ -113,11 +108,32 @@ export const editCategory = createAsyncThunk(
   }
 );
 
+const initialState = {
+  loading: false,
+  createCat: [],
+  category:[],
+  error: false,
+  toggleState:true,
+  category_id:null
+};
 
 const adminCategorySlice = createSlice({
   name: "data",
   initialState,
-  reducers: {},
+  reducers: {
+    setToggleFalse:(state,action)=>{
+    state.toggleState=false
+  },
+  setToggleTrue:(state,action)=>{
+    state.toggleState=true
+  },
+  setCategoryId:(state,action)=>{
+    console.log(action.payload)
+    state.category_id= action.payload
+  }
+
+ 
+  },
 
   extraReducers: {
     [editCategory.pending]: (state) => {
@@ -135,7 +151,6 @@ const adminCategorySlice = createSlice({
     [singleCategory.fulfilled]: (state,{payload}) => {
       state.loading = false;
       state.category = payload.data;
-      console.log(payload)
     },
     
     // [deleteCategory.pending]: (state) => {
@@ -165,4 +180,6 @@ const adminCategorySlice = createSlice({
     },
   },
 });
+
+export const {setToggleFalse,setToggleTrue,setCategoryId} = adminCategorySlice.actions
 export default adminCategorySlice.reducer;

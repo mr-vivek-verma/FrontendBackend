@@ -135,3 +135,465 @@
   .categoryForm_span {
     color: red;
   }
+
+
+  /* /////////////////////////////////////////////////////////////////// */
+
+  * {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+  }
+  
+  .admin_main {
+    background-color: #e8edf3;
+    height: 120vh;
+  }
+  
+  /* category */
+  
+  .category_header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 22px;
+    color: rgb(54, 49, 49);
+  }
+  
+  
+  .create_button {
+    border-radius: 5px;
+    border: none;
+    background-color: #3076d2;
+    padding: 5px;
+    color: white;
+    width: 100px;
+    font-size: 16px;
+  }
+  
+  
+  .category_search {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 35px;
+  }
+  
+  
+  .category_search input {
+    width: 230px;
+    height: 6vh;
+    border-radius: 5px;
+    border: 1px solid grey;
+    outline: none;
+    padding-left: 5px;
+    /* font-size: 20px; */
+    text-align: center;
+    font-weight: 500;
+  }
+  
+  .categoryForm {
+    width: 95%;
+    height: 70vh;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 30px;
+    position: relative;
+  }
+  
+  .categoryForm_heading {
+    font-size: 20px;
+  }
+  
+  .categoryForm-main {
+    padding: 50px;
+  }
+  
+  .categoryForm-wrap {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .categoryForm_span {
+    color: red;
+  }
+  
+  .categoryForm-title {
+    color: #5d6063;
+  }
+  
+  .category-input {
+    width: 300px;
+    height: 7vh;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid grey;
+    padding-left: 5px;
+    font-size: 17px;
+  }
+  
+  .size-input {
+    width: 200px;
+    height: 7vh;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid grey;
+    padding-left: 5px;
+    font-size: 17px;
+  }
+  
+  .size-btn {
+    height: 7vh;
+    width: 75px;
+    background-color: rgb(153, 164, 179);
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid grey;
+  }
+  
+  .categoryForm-file {
+    margin-top: 20px;
+  }
+  
+  
+  .categoryForm-button {
+    margin-top: 35px;
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    bottom: 0;
+  }
+  
+  .Back-link {
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+    background-color: #3076d2;
+    padding: 10px;
+    color: white;
+    width: auto;
+    font-size: 16px;
+  }
+  
+  .categoryForm-button button {
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+    background-color: #3076d2;
+    padding: 10px;
+    color: white;
+    width: 90px;
+    font-size: 16px;
+  }
+  
+  .category-main{
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  }
+  
+  .category-table{
+    background-color: #ffffff;
+    width: 850px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 2px 2px grey;
+  }
+  .category-table-head{
+    background-color: #ccdcec;
+  
+  }
+  .category-table-head th{
+    border-bottom: 1px solid grey;
+    height: 7vh;
+  }
+  
+  .category-table-body th{
+    border-bottom: 1px solid grey;
+    height: 7vh;
+  }
+  
+  .category-edit-btn{
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+    background-color: #3076d2;
+    padding: 5px;
+    color: white;
+    width: 50px;
+    font-size: 15px;
+  
+  }
+  
+  .category-edit-delete{
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+    background-color: #df4c64;
+    padding: 5px;
+    color: white;
+    width: 80px;
+    font-size: 15px;
+  }
+  
+  .product_header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 22px;
+    color: rgb(54, 49, 49);
+  }
+  
+  .product_search {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 35px;
+  }
+  
+  .product_search input {
+    width: 230px;
+    height: 6vh;
+    border-radius: 5px;
+    border: 1px solid grey;
+    outline: none;
+    padding-left: 5px;
+    /* font-size: 20px; */
+    text-align: center;
+    font-weight: 500;
+  }
+  
+  .product-Select-Category{
+    width: 350px;
+    height: 6vh;
+    background-color: #ffffff;
+    color: #5d6063;
+    border-radius: 5px;
+    border: 1px solid grey;
+    outline: none;
+    font-size: 16px;
+    padding-left: 5px;
+  }
+  
+  .productForm{
+    background-color: #ffffff;
+    height: 80vh;
+    padding-left: 150px;
+    padding-top: 50px;
+  }
+  
+  .productForm-select{
+    width: 450px;
+    height: 6vh;
+    background-color: #ffffff;
+    color: #5d6063;
+    border-radius: 5px;
+    border: 1px solid grey;
+    outline: none;
+    font-size: 16px;
+    padding-left: 5px;
+  }
+  .productName,.SKU {
+    margin-top: 15px;
+  }
+  .productName input,.SKU input{
+    width: 450px;
+    height: 6vh;
+    background-color: #ffffff;
+    color: #5d6063;
+    border-radius: 5px;
+    border: 1px solid grey;
+    outline: none;
+    font-size: 16px;
+    padding-left: 5px;
+  }
+  
+  .product-price{
+    width: 450px;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .product-price input{
+    width: 200px;
+    height: 6vh;
+    background-color: #ffffff;
+    color: #5d6063;
+    border-radius: 5px;
+    border: 1px solid grey;
+    outline: none;
+    font-size: 16px;
+    padding-left: 5px;
+  }
+  
+  .product-size{
+    margin-top: 10px;
+  }
+  .product-image-main{
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+  
+  .product-image-sharing{
+    display: flex;
+    gap: 15px;
+  }
+  
+  .productForm-button{
+    margin-top: 35px;
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .productForm-button button{
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+    background-color: #3076d2;
+    padding: 10px;
+    color: white;
+    width: 90px;
+    font-size: 16px;
+  }
+  
+  .isActive{
+    color: #3076d2;
+  }
+  
+  .inActive{
+    color: grey;
+  }
+  
+  .adminPage-select{
+    padding: 5px;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: #fff;
+    border: none;
+  }
+  
+  .loginForm{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #d3dee9;
+  }
+  
+  .form{
+    width: 250px;
+    height: 270px;
+    background-color: rgb(245, 91, 91);
+    padding: 25px;
+    border-radius: 10px;
+  }
+  
+  .form input{
+    width: 230px;
+    height: 6vh;
+    border-radius: 5px;
+    border: 1px solid grey;
+    outline: none;
+    padding-left: 5px;
+    /* font-size: 20px; */
+    font-weight: 500;
+    margin-top: 5px;
+    margin-bottom: 30px;
+  }
+  
+  .form button{
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+    background-color: #3076d2;
+    padding: 10px;
+    color: white;
+    width: 240px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .form label{
+    color: #ffffff;
+  }
+  input.form-control, input.form-control:focus {
+    background: #F0F0FF;
+  }
+  .error{
+    position: absolute;
+    color: red;
+    font-size: .6rem;
+  }
+  
+  .category-name-image{
+    display: flex;
+    justify-content: center;
+    /* gap: 30px; */
+  }
+  
+  .category-name-image img{
+    width: 60px;
+  }
+  
+  .category-name-image p{
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .dropzone{
+    width: 250px;
+    height: 8vh;
+    background-color: #dae9f7;
+    border-radius: 5px;
+    text-align: center;
+    border: 2px dotted gray;
+    color: rgb(11, 19, 19);
+  }
+  
+  .category-image-filled{
+    width: 300px;
+    height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  
+  .category-image-filled img{
+    width: 150px;
+    height: 100px;
+    border: 1px solid gray;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  .category-size{
+    width: 250px;
+    height: auto;
+    display: flex;
+  }
+  
+  .save-sizes{
+    text-align: center;
+    margin-top: 10px;
+  
+  }
+  .save-sizes p{
+    margin-right: 5px;
+    width: 50px;
+    background-color: #5d6063;
+    color: #ffffff;
+  }
+  
+  .categoryForm-wrap .save-sizes p{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .custom-flexwrap {
+    flex-wrap: wrap;
+  }

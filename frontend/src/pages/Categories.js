@@ -14,7 +14,7 @@ import CategoryForm from '../components/Form/CategoryForm';
 import Iconify from '../components/iconify/Iconify';
 
 import { Link } from 'react-router-dom';
-import { admingetCategory } from 'src/slice/adminSlice/adminCategorySlice';
+import { admingetCategory, setToggleTrue } from 'src/slice/adminSlice/adminCategorySlice';
 import { UserProduct } from 'src/slice/userSlice/userProductSlice';
 import products from '../_mock/products';
 // ----------------------------------------------------------------------
@@ -26,10 +26,10 @@ export default function Categories() {
 
   const dispatch = useDispatch();
   const { category } = useSelector((state) => state.AdminCategory)
+
   useEffect(() => {
-  
     dispatch(admingetCategory());
-  }, [dispatch]);
+  }, []);
   const handleOpenFilter = () => {
     setOpenFilter(true);
   };
@@ -52,7 +52,7 @@ export default function Categories() {
         </Typography>
         <Typography sx={{ display: 'flex', justifyContent: ' end', m: 2 }}>
           <Link to="/dashboard/categoryform" variant="contained" starticon={<Iconify icon="eva:plus-fill" />}>
-           <button> Create New </button>
+           <button onClick={()=>dispatch(setToggleTrue())}> Create New </button>
           </Link>
         </Typography>
         

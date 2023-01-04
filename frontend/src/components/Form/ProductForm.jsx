@@ -78,7 +78,7 @@ const ProductForm = () => {
         </div>
         <div className="productForm-button">
           <Link to="/dashboard/user" className="Back-link"><button>Back</button></Link>
-          <button onClick={handleSubmit(e)} >Submit</button>
+          <button onClick={handleSubmit} >Submit</button>
         </div>
       </div>
     </div>
