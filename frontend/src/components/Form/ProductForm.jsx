@@ -24,11 +24,10 @@ const ProductForm = () => {
           </label>
           <br />
           <select name="" id="category" className="productForm-select">
-            <option value="fgd">dfd</option>
-            <option value="fgd">dfd</option>
-            <option value="fgd">dfd</option>
-            <option value="fgd">dfd</option>
-            <option value="fgd">dfd</option>
+            <option value="fgd">jkl</option>
+            <option value="fgd">abc</option>
+            <option value="fgd">xyz</option>
+        
           </select>
         </div>
         <div className="productName">

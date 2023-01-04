@@ -32,7 +32,7 @@ export const createCategory = createAsyncThunk(
     items.forEach((item) => newFormData.append("sizes[]", item.name));
     newFormData.append("category_image",fieldImage,fieldImage.name);
     try {
-    
+      
       const response = await axios.post(
         `http://localhost:5001/api/v1/category/addCategory/`,
         

@@ -101,6 +101,7 @@ const handleBack = (id) =>{
                     "http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" +
                     `${item?.main_image?.[0].filename}`
                   }
+                  //src="https://www.shutterstock.com/image-vector/shopping-cart-vector-icon-flat-600w-1690453492.jpg"
                   alt={item?.product_name}
                 />
               ) : (

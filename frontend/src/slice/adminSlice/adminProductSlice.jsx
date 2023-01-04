@@ -19,6 +19,7 @@ export const admingetProduct = createAsyncThunk(
           "http://localhost:5001/api/v1/product/productList",
           authHeader(thunkAPI)
         );
+        // console.log("pro data",response)
         return response.data;
       } catch (e) {
         return thunkAPI.rejectWithValue(e.response.data.msg);
@@ -29,11 +30,14 @@ export const admingetProduct = createAsyncThunk(
   export const createProduct = createAsyncThunk(
     "product/addproduct",
     async (data, thunkAPI) => {
-    //   console.log("data with img", data);
-    console.log("data with img", data);
+      const {product_name,items,buying_price,reselling_price,sku,is_draft} = data
       let newFormData = new FormData();
-      newFormData.append("category_name", data.values.category);
-      newFormData.append("sizes[]", data.values.size);
+      newFormData.append("product_name", product_name);
+      newFormData.append("sku", sku);
+      newFormData.append("buying_price", buying_price);
+      newFormData.append("reselling_price", reselling_price); 
+      newFormData.append("is_draft", is_draft); 
+      items.forEach((item) => newFormData.append("sizes[]", item.name));
       newFormData.append("category_image",data.values.category_image)
       try {
       

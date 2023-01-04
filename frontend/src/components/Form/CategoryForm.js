@@ -203,16 +203,14 @@
 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RxCross2 } from "react-icons/rx";
 import { createCategory, editCategory, setToggleTrue } from "src/slice/adminSlice/adminCategorySlice"
 const CategoryForm = () => {
-  // const { toggleState,category_id } = useSelector((state) => state.categories);
-  const { category,toggleState, category_id } = useSelector((state) => state.AdminCategory)
-
-  const dispatch = useDispatch();
-  // const categoryId = category_id._id
-  // console.log(categoryId)
+const { category,toggleState, category_id } = useSelector((state) => state.AdminCategory)
+const dispatch = useDispatch();
+const navigate = useNavigate();
+ 
 
   const [post, setPost] = useState("");
   const [items, setItems] = useState([]);
@@ -229,11 +227,17 @@ const CategoryForm = () => {
     e.preventDefault()
     console.log({category_name, items, fieldImage})
     dispatch(createCategory({ category_name, items, fieldImage }))
+    setTimeout(() => {
+          navigate("/dashboard/products")
+         }, 1500);
   }
 
   const updateCategory = (e)=>{
     e.preventDefault()
     dispatch(editCategory({category_name, items, fieldImage, category_id}))
+    setTimeout(() => {
+      navigate("/dashboard/products")
+     }, 1500);
   }
   const addSizes = () => {
     const allpost = { id: new Date().getTime().toString(), name: post };
