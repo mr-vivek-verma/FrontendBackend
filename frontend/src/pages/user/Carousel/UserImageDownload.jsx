@@ -18,6 +18,7 @@ import CardContent from "@mui/material/CardContent";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { UserProductDetail } from "src/slice/userSlice/userProductSlice";
+import { saveAs } from 'file-saver';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -73,6 +74,7 @@ const images = detailProduct?.sharing_images?.map((item)=>{
   return({imgPath: `http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/${item.filename}`})
 })
 const maxSteps = images?.length;
+
 
   return (
     
@@ -156,6 +158,7 @@ const maxSteps = images?.length;
       />
       <Button 
       style={{marginLeft:"415px",backgroundColor: "grey", padding:"5px", width: "20%", border: "1px solid grey", borderRadius:"10px"}} 
+      
       >
       Download Img
       </Button>

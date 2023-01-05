@@ -91,7 +91,7 @@ const adminProductSlice = createSlice({
       [createProduct.fulfilled]: (state, { payload }) => { 
         state.loading = false;
         state.product = payload.data;
-        toast.success('product created successfully');
+       
       },
 
      [admingetProduct.pending]: (state) => {

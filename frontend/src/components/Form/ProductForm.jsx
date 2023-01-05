@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { admingetCategory } from "src/slice/adminSlice/adminCategorySlice";
 import { createProduct } from "src/slice/adminSlice/adminProductSlice";
+import { toast } from 'react-toastify';
 
 
 const ProductForm = () => {
@@ -16,6 +17,8 @@ const ProductForm = () => {
   const [mainImage, setMainImage] = useState();
   const [sharingImage, setSharingImage] = useState();
   const [selectedOption, setSelectedOption] = useState(null);
+
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const categoryFiltered =category.filter(
     (item) => item._id === selectedOption?.id
@@ -72,6 +75,10 @@ const ProductForm = () => {
         sizes:sizes,
       }
     );
+    setTimeout(() => {
+      navigate("/dashboard/user")
+     }, 1500);
+     toast.success('product created successfully');
   }
 
   return (
