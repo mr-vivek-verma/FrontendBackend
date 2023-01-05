@@ -6,19 +6,19 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { PRODUCT_COLUMNS } from "../ProductTable/Colums";
 import { useDispatch, useSelector } from "react-redux";
 import { admingetProduct } from "src/slice/adminSlice/adminProductSlice";
-const ProductTable = () => {
+const ProductTable = ({data}) => {
   const columns = useMemo(() => PRODUCT_COLUMNS, []);
-  const { product } = useSelector((state) => state.AdminProduct)
-  console.log(product);
+  // const { product } = useSelector((state) => state.AdminProduct)
+
 const dispatch= useDispatch()
  
 
   useEffect(() => {
     dispatch(admingetProduct())
   }, []);
-  const data = useMemo(() => product, [product]);
+  // const data = useMemo(() => product, [product]);
 
-  
+
 
   const tableInstance = useTable(
     {
@@ -46,8 +46,7 @@ const dispatch= useDispatch()
     setPageSize,
     state: { pageIndex, pageSize },
   } = tableInstance;
-
-
+  
 
   return (
     <>

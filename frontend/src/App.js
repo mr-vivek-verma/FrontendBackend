@@ -21,9 +21,9 @@ export default function App() {
 
   const { user } = useSelector((store) => store.login);
  
-  useEffect(() => {
-    !user ? navigate("login") : "";
-  },[user])
+  // useEffect(() => {
+  //   !user ? navigate("login") : "";
+  // },[user])
   
   return (
     <ThemeProvider>

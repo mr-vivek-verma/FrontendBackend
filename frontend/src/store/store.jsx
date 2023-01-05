@@ -4,7 +4,7 @@ import userProductSlice from 'src/slice/userSlice/userProductSlice';
 
 
 import userCategorySlice from "../slice/userSlice/userSlice"
-import userLoginSlice from "../slice/adminSlice/loginSlice/userLoginSlice"
+import userLoginSlice from "../slice/loginSlice/userLoginSlice"
 import adminCategorySlice from 'src/slice/adminSlice/adminCategorySlice';
 import adminProductSlice from 'src/slice/adminSlice/adminProductSlice';
 

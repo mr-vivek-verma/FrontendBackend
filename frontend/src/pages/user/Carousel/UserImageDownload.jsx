@@ -90,6 +90,7 @@ const maxSteps = images?.length;
       >
         <Typography>{ images?.length>0 && images[activeStep]?.label}</Typography>
       </Paper>
+      
       <AutoPlaySwipeableViews
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={activeStep}
@@ -102,11 +103,12 @@ const maxSteps = images?.length;
               <Box
                 component="img"
                 sx={{
+                  justifyContent:"center",
                   height: 255,
-                  display: "block",
-                  maxWidth: 400,
+                  display: "flex",
+                  maxWidth: 300,
                   overflow: "hidden",
-                  width: "100%",
+                  width: "50%",
                 }}
                 src={step.imgPath}
                 alt={step.label}
@@ -114,7 +116,9 @@ const maxSteps = images?.length;
             ) : null}
           </div>
         ))}
+        <br/>
       </AutoPlaySwipeableViews>
+      <br/>
       <MobileStepper
         steps={maxSteps}
         position="static"
@@ -126,7 +130,9 @@ const maxSteps = images?.length;
             disabled={activeStep === maxSteps - 1}
           >
             {theme.direction === "rtl" ? (
-              <KeyboardArrowLeft />
+              <KeyboardArrowLeft 
+            
+               />
             ) : (
               <KeyboardArrowRight />
             )}
@@ -146,27 +152,18 @@ const maxSteps = images?.length;
             )}
           </IconButton>
         }
+        
       />
+      <Button 
+      style={{marginLeft:"415px",backgroundColor: "grey", padding:"5px", width: "20%", border: "1px solid grey", borderRadius:"10px"}} 
+      >
+      Download Img
+      </Button>
      <Typography sx={{width:"300px"}}>{detailProduct.product_name}</Typography>
      <Typography>Reselling Price:{detailProduct.reselling_price}</Typography>
      <Typography>Sizes:{detailProduct.sizes}</Typography>
      <Typography>Product Id:{detailProduct._id}</Typography>
-      {/* <Card style={{ display: "flex" }}>
-        <CardContent>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Word of the Day
-          </Typography>
-          <Typography variant="h5" component="div"></Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            adjective
-          </Typography>
-          <Typography variant="body2">
-            well meaning and kindly.
-            <br />
-            {'"a benevolent smile"'}
-          </Typography>
-        </CardContent>
-      </Card> */}
+    
       <Button
         style={{ display: "flex", marginTop: "10px" }}
         variant="contained"

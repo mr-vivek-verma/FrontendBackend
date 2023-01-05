@@ -303,7 +303,7 @@
 // ......................................................................................................
 
 import { Helmet } from 'react-helmet-async';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 // @mui
 import { Button, Container, Stack, Typography } from '@mui/material';
 // components
@@ -323,7 +323,9 @@ import { admingetProduct } from 'src/slice/adminSlice/adminProductSlice';
 export default function UserPage() {
   
   const [openFilter, setOpenFilter] = useState(false);
-  
+  const { product } = useSelector((state) => state.AdminProduct)
+  const data = useMemo(() => product, [product]);
+
   const dispatch = useDispatch();
   
   // const { product } = useSelector((state) => state.AdminProduct)
@@ -339,7 +341,7 @@ export default function UserPage() {
     setOpenFilter(false);
   };
 
-
+ console.log(data)
   
   return (
     <>
@@ -358,7 +360,7 @@ export default function UserPage() {
         </Typography>
         
         <Typography>
-          <ProductTable />
+          {data.data?.length>0 && <ProductTable data={data.data}/>}
         </Typography>
       </Container>
       <Typography>

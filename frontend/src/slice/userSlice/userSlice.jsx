@@ -1,6 +1,5 @@
 import axios from 'axios';
-import authHeader from '../../utils/authHeader/authHeader';
-import { customAxios } from '../../utils/customAxios';
+
 
 const { createAsyncThunk } = require('@reduxjs/toolkit');
 
@@ -11,20 +10,6 @@ const initialState = {
   userCat: [],
   error: false,
 };
-
-// export const listCategory = createAsyncThunk(
-//   '/category/categoryList',
-
-//   async (_, thunkAPI) => {
-//     try {
-//       const catList = await myAxios.get('/category/categoryList', authHeader(thunkAPI));
-//       console.log('list api', thunkAPI);
-//       return catList.data;
-//     } catch (error) {
-//       return thunkAPI.error(error);
-//     }
-//   }
-// );
 
 export const getUserCategory = createAsyncThunk('user/getUserCategory', async (_, thunkAPI) => {
   try {

@@ -1,6 +1,5 @@
 import axios from 'axios';
-import authHeader from '../../../utils/authHeader/authHeader';
-import { customAxios } from '../../../utils/customAxios';
+
 
 const { createAsyncThunk } = require('@reduxjs/toolkit');
 

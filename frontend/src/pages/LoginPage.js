@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import { LoginForm } from '../sections/auth/login';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {getUserLogin } from '../slice/adminSlice/loginSlice/userLoginSlice.jsx'
+import {getUserLogin } from '../slice/loginSlice/userLoginSlice.jsx'
 import { Navigate, useNavigate } from 'react-router-dom';
  // ----------------------------------------------------------------------
 

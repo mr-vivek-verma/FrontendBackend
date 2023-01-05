@@ -6,7 +6,7 @@ import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover 
 import account from '../../../_mock/account';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import {logOutUser} from "../../../slice/adminSlice/loginSlice/userLoginSlice.jsx"
+import {logOutUser} from "../../../slice/loginSlice/userLoginSlice.jsx"
 import { useNavigate } from 'react-router-dom';
 // ----------------------------------------------------------------------
 

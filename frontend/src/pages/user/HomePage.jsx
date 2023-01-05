@@ -12,6 +12,7 @@ import { redirect, useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
   const { userCat } = useSelector(store => store.usercategory);
+  const { user } = useSelector((store) => store.login);
     const dispatch = useDispatch();
 
 const navigate= useNavigate();
@@ -22,6 +23,7 @@ const navigate= useNavigate();
      
   const handleClick=(prop)=>{
     console.log("here", prop)
+    if(user)
     navigate(`/dashboard/usercategorypage/${prop}`)
   }  
 

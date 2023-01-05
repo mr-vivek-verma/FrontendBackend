@@ -36,16 +36,19 @@ export default function Router() {
          
       ],
     },
+   
      { path: '*', element: <LoginPage /> },
     {
       path: 'login',
       element: <LoginPage />,
     },
+    
     {
       element: <SimpleLayout />,
-      children: [{ element: <Navigate to="/dashboard/products" />, index: true }],
+      children: [{ element: <Navigate to="/dashboard/products"/>, index: true }],
     },
+    { path: 'userpage', element: <HomePage /> },
   ]);
-
+ 
   return routes;
 }
