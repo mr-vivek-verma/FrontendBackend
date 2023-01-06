@@ -5,11 +5,6 @@ const { createAsyncThunk } = require("@reduxjs/toolkit");
 import { toast } from "react-toastify";
 const createSlice = require("@reduxjs/toolkit").createSlice;
 
-const initialState = {
-  loading: false,
-  product: [],
-  error: false,
-};
 
 export const admingetProduct = createAsyncThunk(
   "product/productList",
@@ -80,12 +75,77 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
+export const editProduct = createAsyncThunk(
+  "product/updateproduct",
+  async (data, thunkAPI) => {
+ 
+    const {
+      buying_price,
+      mainImage,
+      product_name,
+      reselling_price,
+      sharingImages,
+      id,
+      sizes,
+      sku,
+    } = data;
+    let newFormData = new FormData();
+    newFormData.append("mainImage", mainImage, mainImage.name);
+      newFormData.append("sharingImages", sharingImages, sharingImages.name);
+      newFormData.append("product_name", product_name);
+      newFormData.append("buying_price", buying_price);
+      newFormData.append("reselling_price", reselling_price);
+      newFormData.append("sku", sku);
+      newFormData.append("id", id);
+    try {
+    
+      const response = await axios.put(
+        `http://localhost:5001/api/v1/product/updateProduct`,
+        newFormData,
+        authHeader(thunkAPI)
+      );
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.response.data.msg);
+    }
+  }
+);
+
+
+const initialState = {
+  loading: false,
+  product: [],
+  error: false,
+  toggleState:true,
+  productId:null,
+};
+
 const adminProductSlice = createSlice({
   name: "data",
   initialState,
-  reducers: {},
+  reducers: {
+    setToggleFalse:(state,action)=>{
+      state.toggleState=false
+    },
+    setToggleTrue:(state,action)=>{
+      state.toggleState=true
+    },
+    setProductId:(state,action)=>{
+      console.log(action.payload)
+      state.productId= action.payload
+  },
+},
 
   extraReducers: {
+    [editProduct.pending]: (state) => {
+      state.loading = true;
+    },
+    [editProduct.fulfilled]: (state,{payload}) => {
+      state.loading = false;
+      state.product = payload.data;
+      toast.success('product updated successfully');
+    },
+
     [deleteProduct.pending]: (state) => {
       state.loading = true;
     },
@@ -112,4 +172,6 @@ const adminProductSlice = createSlice({
     },
   },
 });
+
+export const {setToggleFalse,setToggleTrue,setProductId} = adminProductSlice.actions
 export default adminProductSlice.reducer;

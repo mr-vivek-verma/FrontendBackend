@@ -1,5 +1,5 @@
 import * as React from "react";
-import "../../../App.css"
+import "../../../App.css";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MobileStepper from "@mui/material/MobileStepper";
@@ -18,35 +18,16 @@ import CardContent from "@mui/material/CardContent";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { UserProductDetail } from "src/slice/userSlice/userProductSlice";
-import { saveAs } from 'file-saver';
+import FileSaver, { saveAs } from "file-saver";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-// const images = [
-//   {
-//     imgPath:
-//       "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
-//   },
-//   {
-//     imgPath:
-//       "https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60",
-//   },
-//   {
-//     imgPath:
-//       "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250",
-//   },
-//   {
-//     imgPath:
-//       "https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60",
-//   },
-// ];
-
 function SwipeableTextMobileStepper() {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-   const { detailProduct } = useSelector((store) => store.product);
-const dispatch=useDispatch();
+  const { detailProduct } = useSelector((store) => store.product);
+  const dispatch = useDispatch();
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -60,9 +41,9 @@ const dispatch=useDispatch();
     setActiveStep(step);
   };
 
-  const handleBackPage = (id) =>{
-    navigate(`/dashboard/usercategorypage/${id}`)
-  }
+  const handleBackPage = (id) => {
+    navigate(`/dashboard/usercategorypage/${id}`);
+  };
   const id = useParams();
 
   React.useEffect(() => {
@@ -70,14 +51,19 @@ const dispatch=useDispatch();
     dispatch(UserProductDetail(id.id));
   }, []);
 
-const images = detailProduct?.sharing_images?.map((item)=>{
-  return({imgPath: `http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/${item.filename}`})
-})
-const maxSteps = images?.length;
-
+  const images = detailProduct?.sharing_images?.map((item) => {
+    return {
+      imgPath: `http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/${item.filename}`,
+    };
+  });
+  const maxSteps = images?.length;
+  console.log(images)
+   
+  const downloadImg = () => {
+    FileSaver.saveAs("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT2zWCsIY0WSRNuucyJg9FOlGUCEm5Nom7p_6Y41TV&s", "image.jpg");
+  };
 
   return (
-    
     <Box sx={{ maxWidth: "100%", flexGrow: 1 }}>
       <Paper
         square
@@ -90,9 +76,11 @@ const maxSteps = images?.length;
           bgcolor: "background.default",
         }}
       >
-        <Typography>{ images?.length>0 && images[activeStep]?.label}</Typography>
+        <Typography>
+          {images?.length > 0 && images[activeStep]?.label}
+        </Typography>
       </Paper>
-      
+
       <AutoPlaySwipeableViews
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={activeStep}
@@ -105,7 +93,7 @@ const maxSteps = images?.length;
               <Box
                 component="img"
                 sx={{
-                  justifyContent:"center",
+                  justifyContent: "center",
                   height: 255,
                   display: "flex",
                   maxWidth: 300,
@@ -118,9 +106,9 @@ const maxSteps = images?.length;
             ) : null}
           </div>
         ))}
-        <br/>
+        <br />
       </AutoPlaySwipeableViews>
-      <br/>
+      <br />
       <MobileStepper
         steps={maxSteps}
         position="static"
@@ -132,9 +120,7 @@ const maxSteps = images?.length;
             disabled={activeStep === maxSteps - 1}
           >
             {theme.direction === "rtl" ? (
-              <KeyboardArrowLeft 
-            
-               />
+              <KeyboardArrowLeft />
             ) : (
               <KeyboardArrowRight />
             )}
@@ -154,29 +140,38 @@ const maxSteps = images?.length;
             )}
           </IconButton>
         }
-        
       />
-      <Button 
-      style={{marginLeft:"415px",backgroundColor: "grey", padding:"5px", width: "20%", border: "1px solid grey", borderRadius:"10px"}} 
-      
+      <Button
+        style={{
+          marginLeft: "415px",
+          backgroundColor: "grey",
+          padding: "5px",
+          width: "20%",
+          border: "1px solid grey",
+          borderRadius: "10px",
+        }}
+        onClick={downloadImg}
       >
-      Download Img
+        Download Img
       </Button>
-     <Typography sx={{width:"300px"}}>{detailProduct.product_name}</Typography>
-     <Typography>Reselling Price:{detailProduct.reselling_price}</Typography>
-     <Typography>Sizes:{detailProduct.sizes}</Typography>
-     <Typography>Product Id:{detailProduct._id}</Typography>
-    
+      <Typography sx={{ width: "300px" }}>
+        {detailProduct.product_name}
+      </Typography>
+      <Typography>Reselling Price:{detailProduct.reselling_price}</Typography>
+      <Typography>Sizes:{detailProduct.sizes}</Typography>
+      <Typography>Product Id:{detailProduct._id}</Typography>
+
       <Button
         style={{ display: "flex", marginTop: "10px" }}
         variant="contained"
-        onClick={()=>{handleBackPage()}}
+        onClick={() => {
+          handleBackPage();
+        }}
       >
         Back
       </Button>
       <br />
     </Box>
-    
   );
 }
 

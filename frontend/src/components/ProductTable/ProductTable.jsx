@@ -4,6 +4,7 @@ import { useSortBy, useTable, usePagination } from "react-table";
 
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
+
 const ProductTable = ({data,columns}) => {
 
 

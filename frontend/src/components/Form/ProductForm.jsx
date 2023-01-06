@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
-import { admingetCategory } from "src/slice/adminSlice/adminCategorySlice";
-import { createProduct } from "src/slice/adminSlice/adminProductSlice";
+import { admingetCategory, setToggleTrue } from "src/slice/adminSlice/adminCategorySlice";
+import { createProduct, editProduct } from "src/slice/adminSlice/adminProductSlice";
 import { toast } from "react-toastify";
 
 const ProductForm = () => {
-  const { category } = useSelector((state) => state.AdminCategory);
+  const { category, toggleState } = useSelector((state) => state.AdminCategory);
+ const {productId} = useSelector((state) => state.AdminProduct)
+ console.log(productId)
   const [productName, setProductName] = useState();
   const [sku, setSku] = useState();
   const [buyingPrice, setBuyingPrice] = useState();
@@ -62,22 +64,31 @@ const ProductForm = () => {
         sizes: sizes,
       })
     );
-    console.log({
-      product_name: productName,
-      sku: sku,
-      buying_price: buyingPrice,
-      reselling_price: resellingPrice,
-      category_id: selectedOption.id,
-      mainImage: mainImage,
-      sharingImages: sharingImage,
-      sizes: sizes,
-    });
+  
     setTimeout(() => {
       navigate("/dashboard/user");
     }, 1500);
     toast.success("product created successfully");
   };
-
+ 
+  const updateProduct = (e)=>{
+    e.preventDefault()
+    dispatch(editProduct({
+      buying_price:buyingPrice,
+      mainImage,
+      product_name:productName,
+      reselling_price:resellingPrice,
+      sharingImages:sharingImage,
+      // id,
+      productId,
+      sizes,
+      sku,
+    }))
+    setTimeout(() => {
+      // navigate("/dashboard/user")
+     }, 1500);
+  }
+  // console.log(id)
   return (
     <div className="productForm">
       <div className="productForm-main">
@@ -99,7 +110,7 @@ const ProductForm = () => {
             Product Name<span className="categoryForm_span">*</span>
           </label>
           <br />
-          <input
+          <input  
             type="text"
             placeholder="Enter New Product"
             onChange={(e) => setProductName(e.target.value)}
@@ -183,10 +194,17 @@ const ProductForm = () => {
           </div>
         </div>
         <div className="productForm-button">
-          <Link to="/product" className="Back-link">
+          <Link to="/dashboard/user" className="Back-link"  onClick={()=>dispatch(setToggleTrue())} >
             back
           </Link>
-          <button onClick={handleSubmit}>Submit</button>
+          {toggleState ? (
+            <button onClick={handleSubmit}>Submit</button>
+            ) : (
+              <button className="Back-link" type="submit" onClick={updateProduct}>
+                update
+              </button>
+            )}
+          
         </div>
       </div>
     </div>

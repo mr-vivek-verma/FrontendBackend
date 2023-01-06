@@ -5,13 +5,18 @@ import { Button, Container, Stack, Typography } from "@mui/material";
 // components
 
 import Iconify from "../components/iconify/Iconify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ProductTable from "src/components/ProductTable/ProductTable";
 import { useDispatch, useSelector } from "react-redux";
 import {
   admingetProduct,
   deleteProduct,
+  editProduct,
+  setProductId,
+  setToggleFalse,
+  setToggleTrue,
 } from "src/slice/adminSlice/adminProductSlice";
+
 
 // ----------------------------------------------------------------------
 
@@ -21,6 +26,8 @@ export default function UserPage() {
   const data = useMemo(() => product, [product]);
 
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -57,10 +64,26 @@ export default function UserPage() {
       disableSortBy: true,
       Cell: (tableProps) => {
         const deleteId = tableProps.row.original.id;
-        console.log(deleteId);
+        const editId = tableProps.row.original.id;
+        console.log(editId);
+        console.log(tableProps);
+
+
+        const editProduct = () => {
+          dispatch(setToggleFalse());
+          dispatch(setProductId(tableProps.row.original.id))
+
+        }
+
+
         return (
           <>
-            <button className="category-edit-btn">Edit</button>{" "}
+            <button
+              className="category-edit-btn"
+              onClick={() => editProduct(editId)}
+            >
+            <Link to="/dashboard/productform">Edit</Link>
+            </button>{" "}
             <button
               className="category-edit-delete"
               onClick={() => dispatch(deleteProduct(deleteId))}
@@ -102,7 +125,7 @@ export default function UserPage() {
             variant="contained"
             starticon={<Iconify icon="eva:plus-fill" />}
           >
-            <button> Create New </button>
+            <button onClick={()=>dispatch(setToggleTrue())}> Create New </button>
           </Link>
         </Typography>
 
