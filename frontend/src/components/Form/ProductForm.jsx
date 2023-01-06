@@ -4,8 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { admingetCategory } from "src/slice/adminSlice/adminCategorySlice";
 import { createProduct } from "src/slice/adminSlice/adminProductSlice";
-import { toast } from 'react-toastify';
-
+import { toast } from "react-toastify";
 
 const ProductForm = () => {
   const { category } = useSelector((state) => state.AdminCategory);
@@ -20,15 +19,13 @@ const ProductForm = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const categoryFiltered =category.filter(
+  const categoryFiltered = category.filter(
     (item) => item._id === selectedOption?.id
   );
   console.log(categoryFiltered);
 
   const arraySorted = [];
- category.map((item) =>
-    arraySorted.push([item.category_name, item._id])
-  );
+  category.map((item) => arraySorted.push([item.category_name, item._id]));
   const sortedCategory = arraySorted?.sort();
   const SelectionArray = [];
   sortedCategory.forEach((item) =>
@@ -51,35 +48,35 @@ const ProductForm = () => {
     }
   };
 
-  const handleSubmit = (e) =>{
-    e.preventDefault()
-    dispatch(createProduct( {
-      product_name: productName,
-      sku: sku,
-      buying_price: buyingPrice,
-      reselling_price:resellingPrice,
-      category_id: selectedOption.id,
-      mainImage: mainImage,
-      sharingImages: sharingImage,
-      sizes:sizes,
-    }))
-    console.log(
-      {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(
+      createProduct({
         product_name: productName,
         sku: sku,
         buying_price: buyingPrice,
-        reselling_price:resellingPrice,
+        reselling_price: resellingPrice,
         category_id: selectedOption.id,
         mainImage: mainImage,
         sharingImages: sharingImage,
-        sizes:sizes,
-      }
+        sizes: sizes,
+      })
     );
+    console.log({
+      product_name: productName,
+      sku: sku,
+      buying_price: buyingPrice,
+      reselling_price: resellingPrice,
+      category_id: selectedOption.id,
+      mainImage: mainImage,
+      sharingImages: sharingImage,
+      sizes: sizes,
+    });
     setTimeout(() => {
-      navigate("/dashboard/user")
-     }, 1500);
-     toast.success('product created successfully');
-  }
+      navigate("/dashboard/user");
+    }, 1500);
+    toast.success("product created successfully");
+  };
 
   return (
     <div className="productForm">
@@ -170,13 +167,19 @@ const ProductForm = () => {
             <p className="categoryForm-title">
               Main Image<span className="categoryForm_span">*</span>
             </p>
-            <input type="file" onChange={(e)=>setMainImage(e.target.files[0])} />
+            <input
+              type="file"
+              onChange={(e) => setMainImage(e.target.files[0])}
+            />
           </div>
           <div className="product-image-sharing">
             <p className="categoryForm-title">
               Sharing Image<span className="categoryForm_span">*</span>
             </p>
-            <input type="file" onChange={(e)=>setSharingImage(e.target.files[0])} />
+            <input
+              type="file"
+              onChange={(e) => setSharingImage(e.target.files[0])}
+            />
           </div>
         </div>
         <div className="productForm-button">
@@ -191,9 +194,3 @@ const ProductForm = () => {
 };
 
 export default ProductForm;
-
-
-
-
-
-

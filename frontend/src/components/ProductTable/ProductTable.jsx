@@ -3,24 +3,11 @@ import { useMemo } from "react";
 import { useSortBy, useTable, usePagination } from "react-table";
 
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
-import { PRODUCT_COLUMNS } from "../ProductTable/Colums";
-import { useDispatch, useSelector } from "react-redux";
-import { admingetProduct } from "src/slice/adminSlice/adminProductSlice";
-const ProductTable = ({data}) => {
-  const columns = useMemo(() => PRODUCT_COLUMNS, []);
-  // const { product } = useSelector((state) => state.AdminProduct)
 
-const dispatch= useDispatch()
- 
-
-  useEffect(() => {
-    dispatch(admingetProduct())
-  }, []);
-  // const data = useMemo(() => product, [product]);
+const ProductTable = ({data,columns}) => {
 
 
-
-  const tableInstance = useTable(
+const tableInstance = useTable(
     {
       columns,
       data,
