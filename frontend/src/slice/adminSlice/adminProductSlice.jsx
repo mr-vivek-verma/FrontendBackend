@@ -78,25 +78,29 @@ export const deleteProduct = createAsyncThunk(
 export const editProduct = createAsyncThunk(
   "product/updateproduct",
   async (data, thunkAPI) => {
- 
+ console.log("product data get",data)
     const {
       buying_price,
       mainImage,
       product_name,
       reselling_price,
+      category_id,
       sharingImages,
-      id,
+      productId,
+
       sizes,
       sku,
     } = data;
     let newFormData = new FormData();
-    newFormData.append("mainImage", mainImage, mainImage.name);
-      newFormData.append("sharingImages", sharingImages, sharingImages.name);
+    newFormData.append("main_image", mainImage, mainImage.name);
+      newFormData.append("sharing_images", sharingImages, sharingImages.name);
       newFormData.append("product_name", product_name);
       newFormData.append("buying_price", buying_price);
       newFormData.append("reselling_price", reselling_price);
       newFormData.append("sku", sku);
-      newFormData.append("id", id);
+      newFormData.append("sizes[]", sizes);
+      newFormData.append("product_id", productId);
+      newFormData.append("category_id", category_id);
     try {
     
       const response = await axios.put(

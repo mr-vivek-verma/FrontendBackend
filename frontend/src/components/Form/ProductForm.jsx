@@ -81,6 +81,7 @@ const ProductForm = () => {
       sharingImages:sharingImage,
       // id,
       productId,
+      category_id: selectedOption.id,
       sizes,
       sku,
     }))
