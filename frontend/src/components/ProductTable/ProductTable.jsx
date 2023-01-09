@@ -38,8 +38,8 @@ const tableInstance = useTable(
 
   return (
     <>
-      <table {...getTableProps()} className="category-table">
-        <thead className="category-table-head">
+      <table {...getTableProps()} className="product-table">
+        <thead className="product-table-head">
           {headerGroups.map((headerGroups) => (
             <tr {...headerGroups.getHeaderGroupProps()}>
               {headerGroups.headers.map((columns) => (
@@ -61,7 +61,7 @@ const tableInstance = useTable(
             </tr>
           ))}
         </thead>
-        <tbody {...getTableBodyProps()} className="category-table-body">
+        <tbody {...getTableBodyProps()} className="product-table-body">
           {page.map((row) => {
             prepareRow(row);
             return (

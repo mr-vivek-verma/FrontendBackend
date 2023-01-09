@@ -1,5 +1,5 @@
 {
-  "name": "@minimal/material-kit-react",
+  "name": "admin-panel",
   "author": "minimals.cc",
   "licence": "MIT",
   "version": "1.6.0",
@@ -15,6 +15,14 @@
     "re-start": "rm -rf build node_modules && yarn install && yarn start",
     "re-build": "rm -rf build node_modules && yarn install && yarn build"
   },
+  "extends": [
+    "react-hooks"
+  ],
+  "plugins": [
+    "react-hooks",
+    "react"
+  ],
+  
   "browserslist": {
     "production": [
       ">0.2%",

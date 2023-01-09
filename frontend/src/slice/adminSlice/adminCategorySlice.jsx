@@ -153,15 +153,15 @@ const adminCategorySlice = createSlice({
       state.category = payload.data;
     },
     
-    // [deleteCategory.pending]: (state) => {
-    //   state.loading = true;
-    // },
-    // [deleteCategory.fulfilled]: (state,{payload}) => {
-    //   state.loading = false;
-    //   state.category = payload.data;
-    //   toast.success('category deleted successfully');
+    [deleteCategory.pending]: (state) => {
+      state.loading = true;
+    },
+    [deleteCategory.fulfilled]: (state,{payload}) => {
+      state.loading = false;
+      state.category = payload.data;
+      toast.success('category deleted successfully');
       
-    // },
+    },
 
     [createCategory.pending]: (state) => {
       state.loading = true;

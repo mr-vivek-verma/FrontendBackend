@@ -15,11 +15,11 @@ import { useNavigate, useParams } from "react-router-dom";
 const sorting = [
   {
     value: "asc",
-    label: "Filter Min to Max Price",
+    label: "Filter Max to Min Price",
   },
   {
     value: "des",
-    label: "Filter Max to Min Price",
+    label: "Filter Min to Max Price",
   },
 ];
 

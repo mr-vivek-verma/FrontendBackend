@@ -1,3 +1,4 @@
+import "../App.css";
 import { Helmet } from "react-helmet-async";
 import { useEffect, useMemo, useState } from "react";
 // @mui
@@ -125,7 +126,7 @@ export default function UserPage() {
             variant="contained"
             starticon={<Iconify icon="eva:plus-fill" />}
           >
-            <button onClick={()=>dispatch(setToggleTrue())}> Create New </button>
+            <button className="Back-link" onClick={()=>dispatch(setToggleTrue())}> Create New </button>
           </Link>
         </Typography>
 

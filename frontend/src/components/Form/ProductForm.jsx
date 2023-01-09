@@ -86,7 +86,7 @@ const ProductForm = () => {
       sku,
     }))
     setTimeout(() => {
-      // navigate("/dashboard/user")
+      navigate("/dashboard/user")
      }, 1500);
   }
   // console.log(id)

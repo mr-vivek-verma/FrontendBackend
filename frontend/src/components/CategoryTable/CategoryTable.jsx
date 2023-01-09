@@ -103,7 +103,6 @@ export default function CustomizedTables() {
                 <StyledTableCell align="right">{row.sizes}</StyledTableCell>
                 <StyledTableCell align="right">
                   <Typography variant="button">
-                    {/* <Button onClick={(e) => {dispatch(singleCategory(row._id))}}> */}
                     <Button onClick={()=>editButton(row._id)}>
                       <Link to="/dashboard/categoryform">
                         <Iconify icon={"eva:edit-fill"} sx={{ mr: 2 }} />

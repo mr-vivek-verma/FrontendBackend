@@ -12,7 +12,6 @@ import DashboardAppPage from './pages/DashboardAppPage';
 import CategoryForm from './components/Form/CategoryForm';
 import ProductForm from './components/Form/ProductForm';
 import HomePage from './pages/user/HomePage';
-import { UserListHead } from './sections/@dashboard/user';
 import UserCategoryPage from './pages/user/UserProductPage';
 import UserImageDownload from './pages/user/Carousel/UserImageDownload';
 
