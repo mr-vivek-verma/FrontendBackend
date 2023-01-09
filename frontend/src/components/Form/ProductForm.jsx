@@ -1,3 +1,4 @@
+import "../../App.css";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,6 +18,8 @@ const ProductForm = () => {
   const [sizes, setSizes] = useState([]);
   const [mainImage, setMainImage] = useState();
   const [sharingImage, setSharingImage] = useState();
+  const [images, setImage] = useState([]);
+  const [images2, setImage2] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
 
   const navigate = useNavigate();
@@ -93,7 +96,7 @@ const ProductForm = () => {
   return (
     <div className="productForm">
       <div className="productForm-main">
-        <div>
+        <div className="cat-input">
           <label htmlFor="category" className="categoryForm-title">
             Category<span className="categoryForm_span">*</span>
           </label>
@@ -181,18 +184,27 @@ const ProductForm = () => {
             </p>
             <input
               type="file"
-              onChange={(e) => setMainImage(e.target.files[0])}
+              onChange={(e) => {setMainImage(e.target.files[0]);setImage(URL.createObjectURL(e.currentTarget.files[0]))}}
             />
           </div>
+          {images.length >0 && <div className="category-image-filled">
+                { <img  src={images} alt="images" />}
+              </div> } 
           <div className="product-image-sharing">
             <p className="categoryForm-title">
               Sharing Image<span className="categoryForm_span">*</span>
             </p>
             <input
               type="file"
-              onChange={(e) => setSharingImage(e.target.files[0])}
+              onChange={(e) => {setSharingImage(e.target.files[0]); setImage2(URL.createObjectURL(e.currentTarget.files[0]))}}
             />
+            
           </div>
+         
+              {images.length >0 && <div className="category-image-filled">
+                { <img  src={images2} alt="images" />}
+              </div> }
+               
         </div>
         <div className="productForm-button">
           <Link to="/dashboard/user" className="Back-link"  onClick={()=>dispatch(setToggleTrue())} >

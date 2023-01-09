@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useMemo } from "react";
-import { useSortBy, useTable, usePagination } from "react-table";
+import { useSortBy, useTable, usePagination, useGlobalFilter } from "react-table";
 
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import Search from "./search/Search";
 
 
 const ProductTable = ({data,columns}) => {
@@ -14,6 +15,7 @@ const tableInstance = useTable(
       data,
       initialState: { pageIndex: 0 },
     },
+    useGlobalFilter,
     useSortBy,
     usePagination
   );
@@ -24,6 +26,8 @@ const tableInstance = useTable(
     headerGroups,
     page,
     prepareRow,
+    state,
+    setGlobalFilter,
     canPreviousPage,
     canNextPage,
     pageOptions,
@@ -35,9 +39,10 @@ const tableInstance = useTable(
     state: { pageIndex, pageSize },
   } = tableInstance;
   
-
+const {GlobalFilter} = state
   return (
     <>
+    <Search setGlobalFilter={setGlobalFilter} filter={GlobalFilter}/>
       <table {...getTableProps()} className="product-table">
         <thead className="product-table-head">
           {headerGroups.map((headerGroups) => (

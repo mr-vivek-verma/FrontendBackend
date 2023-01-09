@@ -18,7 +18,6 @@ import {
   setToggleTrue,
 } from "src/slice/adminSlice/adminProductSlice";
 
-
 // ----------------------------------------------------------------------
 
 export default function UserPage() {
@@ -69,13 +68,10 @@ export default function UserPage() {
         console.log(editId);
         console.log(tableProps);
 
-
         const editProduct = () => {
           dispatch(setToggleFalse());
-          dispatch(setProductId(tableProps.row.original.id))
-
-        }
-
+          dispatch(setProductId(tableProps.row.original.id));
+        };
 
         return (
           <>
@@ -83,7 +79,7 @@ export default function UserPage() {
               className="category-edit-btn"
               onClick={() => editProduct(editId)}
             >
-            <Link to="/dashboard/productform">Edit</Link>
+              <Link to="/dashboard/productform">Edit</Link>
             </button>{" "}
             <button
               className="category-edit-delete"
@@ -120,13 +116,21 @@ export default function UserPage() {
         <Typography variant="h4" sx={{ mb: 5 }}>
           Products
         </Typography>
+
         <Typography sx={{ display: "flex", justifyContent: " end", m: 2 }}>
+          
           <Link
             to="/dashboard/productform"
             variant="contained"
             starticon={<Iconify icon="eva:plus-fill" />}
           >
-            <button className="Back-link" onClick={()=>dispatch(setToggleTrue())}> Create New </button>
+            <button
+              className="Back-link"
+              onClick={() => dispatch(setToggleTrue())}
+            >
+              {" "}
+              Create New{" "}
+            </button>
           </Link>
         </Typography>
 

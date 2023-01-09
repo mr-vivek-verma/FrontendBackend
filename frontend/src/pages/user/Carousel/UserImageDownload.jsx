@@ -54,13 +54,15 @@ function SwipeableTextMobileStepper() {
   const images = detailProduct?.sharing_images?.map((item) => {
     return {
       imgPath: `http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/${item.filename}`,
+      
     };
   });
+
   const maxSteps = images?.length;
-  console.log(images)
+  
    
   const downloadImg = () => {
-    FileSaver.saveAs("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT2zWCsIY0WSRNuucyJg9FOlGUCEm5Nom7p_6Y41TV&s", "image.jpg");
+    FileSaver.saveAs(images[0].imgPath, "image.jpg");
   };
 
   return (
