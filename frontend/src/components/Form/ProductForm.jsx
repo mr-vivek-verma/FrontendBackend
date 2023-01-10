@@ -196,6 +196,7 @@ const ProductForm = () => {
             </p>
             <input
               type="file"
+              multiple
               onChange={(e) => {setSharingImage(e.target.files[0]); setImage2(URL.createObjectURL(e.currentTarget.files[0]))}}
             />
             

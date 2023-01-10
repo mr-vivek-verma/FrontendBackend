@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { RxCross2 } from "react-icons/rx";
 import { createCategory, editCategory, setToggleTrue } from "src/slice/adminSlice/adminCategorySlice"
 const CategoryForm = () => {
-const { category,toggleState, category_id } = useSelector((state) => state.AdminCategory)
+const { toggleState, category_id } = useSelector((state) => state.AdminCategory)
 const dispatch = useDispatch();
 const navigate = useNavigate();
  
@@ -14,8 +14,8 @@ const navigate = useNavigate();
   const [category_name,setCategory_name] = useState()
   const [images, setImage] = useState([]);
   const [fieldImage, setFieldImage] = useState();
-  const [id, setId] = useState("");
-  // const [toggleState,setToggleState] = useState(true);
+
+
 
   
 

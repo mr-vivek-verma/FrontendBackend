@@ -1,3 +1,4 @@
+import "../.././App.css";
 import {useEffect} from 'react'
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -21,19 +22,28 @@ const navigate= useNavigate();
     dispatch(getUserCategory ());
   }, []);
      
+ 
+  // useEffect (() => {
+  //   window.addEventListener("scroll", handleScroll)
+  // })
+
   const handleClick=(prop)=>{
     console.log("here", prop)
     if(user)
     navigate(`/dashboard/usercategorypage/${prop}`)
   }  
+ 
+  //  const handleScroll = () => {
 
+  //  }
+   
   return (
       <div style={{display: "flex", justifyContent:"center", flexWrap:"wrap"}}>
           {userCat && userCat?.map((item) => {
               return (
-                    <Card style={{margin:"5px", cursor: "pointer"}} key={item._id} onClick={(e)=>{handleClick(item._id)}}>
+                    <Card className="custom-card" style={{margin:"5px", cursor: "pointer"}} key={item._id} onClick={(e)=>{handleClick(item._id)}}>
                       {item && item?.category_image && item.category_image ? (
-                          <img style={{width:"300px"}}
+                          <img 
                               className="custom-card-img rounded-1"
                               src={
                                   "http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" +

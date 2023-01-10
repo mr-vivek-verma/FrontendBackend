@@ -38,7 +38,10 @@ export const createProduct = createAsyncThunk(
     try {
       let newFormData = new FormData();
       newFormData.append("mainImage", mainImage, mainImage.name);
-      newFormData.append("sharingImages", sharingImages, sharingImages.name);
+      for (let i = 0; i < sharingImages.length; i++) {
+        newFormData.append("sharingImages[]", sharingImages, sharingImages[i].name);
+       }
+      // newFormData.append("sharingImages", sharingImages, sharingImages.name);
       newFormData.append("product_name", product_name);
       newFormData.append("buying_price", buying_price);
       newFormData.append("reselling_price", reselling_price);

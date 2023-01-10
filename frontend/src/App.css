@@ -594,3 +594,23 @@
   .custom-flexwrap {
     flex-wrap: wrap;
   }
+
+  .product-table-main{
+    display: flex;
+    gap: 25px;
+    align-items: center;
+  }
+
+  .product-table-main img{
+    width: 150px;
+    height: 8vh;
+  }
+   
+  .custom-card{
+    text-align: center;
+  }
+
+  .custom-card img{
+    width: 250px;
+    height: 30vh;
+  }

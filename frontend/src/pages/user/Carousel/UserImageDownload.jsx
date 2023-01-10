@@ -45,7 +45,7 @@ function SwipeableTextMobileStepper() {
     navigate(`/dashboard/usercategorypage/${id}`);
   };
   const id = useParams();
-
+console.log(id)
   React.useEffect(() => {
     // console.log('user');
     dispatch(UserProductDetail(id.id));

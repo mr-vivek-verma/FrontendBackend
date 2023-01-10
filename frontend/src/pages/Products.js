@@ -33,6 +33,15 @@ export default function UserPage() {
     {
       Header: "Product",
       accessor: "product_name",
+      Cell:(tableProps)=>{
+        console.log(tableProps)
+        return(
+          <div className="product-table-main">
+            <img style={{display:"flex", width:"80px"}} src={"http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" + tableProps.row.original.main_image[0]?.filename} />
+            <p style={{display:"flex", justifyContent:"center"}}>{tableProps.row.original.product_name}</p>
+          </div>
+        )
+      }
     },
     {
       Header: "Category",

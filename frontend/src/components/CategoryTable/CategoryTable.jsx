@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,15 +8,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-import { Button, Typography, MenuItem } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import Iconify from "../iconify/Iconify";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteCategory,
   setCategoryId,
   setToggleFalse,
-  setToggleState,
-  singleCategory,
+
 } from "src/slice/adminSlice/adminCategorySlice";
 import { Link } from "react-router-dom";
 
@@ -58,9 +57,8 @@ export default function CustomizedTables() {
   };
 
   const { category } = useSelector((state) => state.AdminCategory);
-
+console.log(category)
   const editButton = (id) => {
-    // dispatch(singleCategory(id))
     dispatch(setToggleFalse());
     dispatch(setCategoryId(id))
   };
@@ -97,10 +95,11 @@ export default function CustomizedTables() {
             })
             .map((row) => (
               <StyledTableRow key={row.name}>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell component="th" scope="row" className="product-table-main">
+                <img style={{display:"flex", width:"70px", justifyContent:"center"}} src={"http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/"+ row.category_image.filename} />
                   {row.category_name}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.sizes}</StyledTableCell>
+                <StyledTableCell align="right">{row.sizes}</StyledTableCell>  
                 <StyledTableCell align="right">
                   <Typography variant="button">
                     <Button onClick={()=>editButton(row._id)}>
