@@ -57,7 +57,7 @@ export default function CustomizedTables() {
   };
 
   const { category } = useSelector((state) => state.AdminCategory);
-console.log(category)
+  
   const editButton = (id) => {
     dispatch(setToggleFalse());
     dispatch(setCategoryId(id))

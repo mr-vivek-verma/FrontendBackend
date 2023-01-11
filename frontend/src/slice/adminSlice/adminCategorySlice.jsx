@@ -58,7 +58,11 @@ export const deleteCategory = createAsyncThunk(
         `http://localhost:5001/api/v1/category/deleteCategory/${data}`,
         authHeader(thunkAPI)
       );
-      thunkAPI.dispatch(admingetCategory())
+      if (window.confirm("wants to delete?")) {
+      thunkAPI.
+      
+      dispatch(admingetCategory())
+      }
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.response.data.msg);

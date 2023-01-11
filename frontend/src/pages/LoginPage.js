@@ -64,18 +64,22 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
  
-    //  console.log(email, password)
+    
     dispatch(getUserLogin(data))
     // if (user!==null ) {
     // /  navigate("/dashboard/app")
     // }
-    toast.success('successfully logged in');
+    if (user!==null) {
+
+      toast.success('successfully logged in');
+    } else {
+
+      toast.error('please login !');  
+    
+    }
+    
 }
-// const showToastMessage = () => {
-//   toast.success('Success Notification !', {
-//       position: toast.POSITION.TOP_RIGHT
-//   });
-// };
+
   
   const fn = () => {
     if (user && role) {

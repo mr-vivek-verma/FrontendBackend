@@ -3,6 +3,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { RxCross2 } from "react-icons/rx";
 import { createCategory, editCategory, setToggleTrue } from "src/slice/adminSlice/adminCategorySlice"
+
+import { Formik, Form, Field } from "formik"
+import * as Yup from "yup"
+import { TextField } from "formik-material-ui"
+
+
+const initialValues = {
+  category_name: "",
+  size: "",
+ 
+}
+
+
+// validation schema
+const validationSchema = Yup.object().shape({
+  category_name: Yup.string().required("Required"),
+   size: Yup.string().required("Required"),
+
+})
+
 const CategoryForm = () => {
 const { toggleState, category_id } = useSelector((state) => state.AdminCategory)
 const dispatch = useDispatch();
@@ -16,13 +36,9 @@ const navigate = useNavigate();
   const [fieldImage, setFieldImage] = useState();
 
 
-
-  
-
-  
-  const saveCategory = (e)=>{
+    const saveCategory = (e)=>{
     e.preventDefault()
-    console.log({category_name, items, fieldImage})
+
     dispatch(createCategory({ category_name, items, fieldImage }))
     setTimeout(() => {
           navigate("/dashboard/products")
@@ -48,21 +64,30 @@ const navigate = useNavigate();
     });
     setItems(updatedItems);
   };
+
+  return(
+ 
+  <Formik
+  initialValues={initialValues}
+  validationSchema={validationSchema}
+  onSubmit={saveCategory}>
+  {({ category_name, items, size }) => {
   return (
+  
     <div className="categoryForm">
       <div>
         <p className="categoryForm_heading">Create Categories</p>
         <hr />
       </div>
       <div className="categoryForm-main">
-        <form action="">
+        <Form action >
           <div className="categoryForm-wrap">
             <div>
               <label htmlFor="category" className="categoryForm-title">
                 Category<span className="categoryForm_span">*</span>
               </label>
               <br />
-              <input
+              <Field
                 type="text"
                 name="category_name"
                 id="category"
@@ -70,6 +95,7 @@ const navigate = useNavigate();
                 className="category-input"
                 value={category_name}
                 onChange={(e)=>setCategory_name(e.target.value)}
+             
               />
             </div>
             <div className="category-image">
@@ -77,13 +103,14 @@ const navigate = useNavigate();
                 Size<span className="categoryForm_span">*</span>
               </label>
               <br />
-              <input
+              <Field
                 type="text"
                 id="size"
                 placeholder="Enter size"
                 className="size-input"
                 value={post}
                 onChange={(e) => setPost(e.target.value)}
+               
               />
               <button className="size-btn" type="button" onClick={addSizes}>
                 Add Size
@@ -103,13 +130,14 @@ const navigate = useNavigate();
           <div className="categoryForm-file">
             <p className="categoryForm-title">
               Category Image<span className="categoryForm_span">*</span>{" "}
-              <input
+              <Field
                 type="file"
                 className="category-file"
                 name="category_image"
                 // value={fieldImage}
                 onChange={(e) => {setFieldImage(e.target.files[0]); setImage(URL.createObjectURL(e.currentTarget.files[0])) } }
                 // onChange={(e)=>{setFieldValue("category_image",e.currentTarget.files[0]); setImage(URL.createObjectURL(e.currentTarget.files[0])) }}
+               
               />
               {images.length >0 && <div className="category-image-filled">
                 { <img  src={images} alt="images" />}
@@ -131,10 +159,13 @@ const navigate = useNavigate();
               </button>
             )}
           </div>
-        </form>
+        </Form>
+       
       </div>
     </div>
-  );
+  )}}
+    </Formik>
+  )  
 };
 
 export default CategoryForm;
