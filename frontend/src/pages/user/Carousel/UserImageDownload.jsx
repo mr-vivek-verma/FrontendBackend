@@ -23,6 +23,7 @@ import FileSaver, { saveAs } from "file-saver";
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 function SwipeableTextMobileStepper() {
+  const { user } = useSelector((store) => store.login);
   const navigate = useNavigate();
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -42,10 +43,16 @@ function SwipeableTextMobileStepper() {
   };
 
   const handleBackPage = (id) => {
-    navigate(`/dashboard/usercategorypage/${id}`);
+    
+    if (user) navigate(`/dashboard/usercategorypage/${id}`);
+    else{
+      navigate(`/usercategorypage/${id}`);
+    }
+    
   };
+
   const id = useParams();
-console.log(id)
+
   React.useEffect(() => {
     // console.log('user');
     dispatch(UserProductDetail(id.id));
@@ -57,12 +64,13 @@ console.log(id)
       
     };
   });
-
+  
   const maxSteps = images?.length;
   
    
   const downloadImg = () => {
-    FileSaver.saveAs(images[0].imgPath, "image.jpg");
+    // FileSaver.saveAs(images[0].imgPath, "image.jpg");
+    FileSaver.saveAs("https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZHVjdHxlbnwwfHwwfHw%3D&w=1000&q=80", "image.jpg");
   };
 
   return (

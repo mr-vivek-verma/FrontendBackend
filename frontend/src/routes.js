@@ -47,6 +47,8 @@ export default function Router() {
       children: [{ element: <Navigate to="/dashboard/products"/>, index: true }],
     },
     { path: 'userpage', element: <HomePage /> },
+    { path: 'userimgdown/:id', element: <UserImageDownload /> },
+    { path: 'usercategorypage/:id', element: <UserCategoryPage /> },
   ]);
  
   return routes;

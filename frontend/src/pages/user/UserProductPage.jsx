@@ -24,6 +24,7 @@ const sorting = [
 ];
 
 const UserCategoryPage = () => {
+  const { user } = useSelector((store) => store.login);
 const [inputData, setInputData] =useState("");
 const [sortData, setSortData] =useState("");
 const navigate=useNavigate()
@@ -51,11 +52,19 @@ setSortData(e.target.value)
 console.log("product", product)
 
 const handleDetailpage = (id) =>{
-  navigate(`/dashboard/userimgdown/${id}`)
+  
+  if (user) navigate(`/dashboard/userimgdown/${id}`);
+    else{
+      navigate(`/userimgdown/${id}`)
+    }
 }
 
 const handleBack = (id) =>{
-  navigate(`/dashboard/userpage`)
+ 
+  if (user)  navigate(`/dashboard/userpage`);
+    else{
+      navigate(`/userpage`)
+    }
 }
 
   return (
