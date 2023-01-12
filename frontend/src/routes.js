@@ -14,6 +14,7 @@ import ProductForm from './components/Form/ProductForm';
 import HomePage from './pages/user/HomePage';
 import UserCategoryPage from './pages/user/UserProductPage';
 import UserImageDownload from './pages/user/Carousel/UserImageDownload';
+import protectedRoutes from './protectedRoutes';
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +30,7 @@ export default function Router() {
            { path: 'categoryform', element: <CategoryForm /> },
          { path: 'productform', element: <ProductForm/>  },
         { path: 'products', element: <ProductsPage /> },
-        { path: 'userpage', element: <HomePage /> },
+        { path: 'userpage', element: <HomePage />},
         { path: 'userimgdown/:id', element: <UserImageDownload /> },
         { path: 'usercategorypage/:id', element: <UserCategoryPage /> },
          
@@ -40,6 +41,7 @@ export default function Router() {
     {
       path: 'login',
       element: <LoginPage />,
+     
     },
     
     {
