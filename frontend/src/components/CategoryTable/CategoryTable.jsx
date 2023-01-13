@@ -15,6 +15,7 @@ import {
   deleteCategory,
   setCategoryId,
   setToggleFalse,
+  singleCategory,
 
 } from "src/slice/adminSlice/adminCategorySlice";
 import { Link } from "react-router-dom";
@@ -102,7 +103,8 @@ export default function CustomizedTables() {
                 <StyledTableCell align="right">{row.sizes}</StyledTableCell>  
                 <StyledTableCell align="right">
                   <Typography variant="button">
-                    <Button onClick={()=>editButton(row._id)}>
+                    <Button onClick={()=>{editButton(row._id); dispatch(singleCategory(row._id))}}>
+                    {/* console.log("rowid", row._id) */}
                       <Link to="/dashboard/categoryform">
                         <Iconify icon={"eva:edit-fill"} sx={{ mr: 2 }} />
                         Edit
@@ -114,6 +116,7 @@ export default function CustomizedTables() {
                       onClick={(e) => {
                         dispatch(deleteCategory(row._id));
                       }}
+
                     >
                       <Iconify icon={"eva:trash-2-outline"} sx={{ mr: 2 }} />
                       Delete

@@ -1,5 +1,5 @@
 import "../.././App.css"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { RxCross2 } from "react-icons/rx";
@@ -8,57 +8,56 @@ import {
   editCategory,
   setToggleTrue,
 } from "src/slice/adminSlice/adminCategorySlice";
-import { useFormik } from "formik";
-import { categoryFormSchema } from "./Schemas";
 
-const initialValues = {
-  category_name: "",
-  post: "",
-  category_image: "",
-};
+
 
 const CategoryForm = () => {
-  const { values, errors, handleBlur, touched, handleChange, handleSubmit } =
-    useFormik({
-      initialValues: initialValues,
-      validationSchema: categoryFormSchema,
-      onSubmit: (values) => {
-        console.log(values);
-      },
-    });
 
-  const { toggleState, category_id } = useSelector(
+
+  const { toggleState, category_id, } = useSelector(
     (state) => state.AdminCategory
   );
+
+  const {AdminSingleCategory} = useSelector((state)=>state.AdminCategory)
+
+  console.log("admin category", AdminSingleCategory)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [post, setPost] = useState("");
+  
+  useEffect(()=>{
+  setImage("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/"+ AdminSingleCategory?.category_image?.filename)
+  },[AdminSingleCategory])
+  
+
+
+  const [sizes, setSizes] = useState("");
   const [items, setItems] = useState([]);
   const [category_name, setCategory_name] = useState();
   const [images, setImage] = useState([]);
   const [fieldImage, setFieldImage] = useState();
+ 
 
   const saveCategory = (e) => {
     e.preventDefault();
 
     dispatch(createCategory({ category_name, items, fieldImage }));
-    setTimeout(() => {
+   
       navigate("/dashboard/products");
-    }, 1500);
+    
   };
 
   const updateCategory = (e) => {
     e.preventDefault();
     dispatch(editCategory({ category_name, items, fieldImage, category_id }));
-    setTimeout(() => {
+   
       navigate("/dashboard/products");
-    }, 1500);
+    
   };
   const addSizes = () => {
-    const allpost = { id: new Date().getTime().toString(), name: post };
+    const allpost = { id: new Date().getTime().toString(), name: sizes };
     setItems([...items, allpost]);
-    setPost("");
+    setSizes("");
   };
   const deleteItem = (current_index) => {
     console.log(current_index);
@@ -75,7 +74,7 @@ const CategoryForm = () => {
         <hr />
       </div>
       <div className="categoryForm-main">
-        <form action onSubmit={handleSubmit}>
+        <form action >
           <div className="categoryForm-wrap">
             <div>
               <label htmlFor="category_name" className="categoryForm-title">
@@ -88,38 +87,33 @@ const CategoryForm = () => {
                 id="category"
                 placeholder="Enter New Category"
                 className="category-input"
-                value={values.category_name}
+                value={AdminSingleCategory.category_name}
                 onChange={(e) => {
                   setCategory_name(e.target.value);
-                  handleChange;
+              
                 }}
-                onBlur={handleBlur}
-              />
-              {errors.category_name && touched.category_name ? (
-                <p className="error-msg">{errors.category_name}</p>
-              ) : null}
+            />
+ 
             </div>
             <div className="category-image">
-              <label htmlFor="post" className="categoryForm-title">
+              <label htmlFor="size" className="categoryForm-title">
                 Size<span className="categoryForm_span">*</span>
               </label>
               <br />
               <input
                 type="text"
-                name="post"
+                name="size"
                 id="size"
                 placeholder="Enter size"
                 className="size-input"
-                value={values.post}
+                value={AdminSingleCategory.sizes}
                 onChange={(e) => {
-                  setPost(e.target.value);
-                  handleChange;
+                  setSizes(e.target.value);
+                 
                 }}
-                onBlur={handleBlur}
+              
               />
-              {errors.post && touched.post ? (
-                <p className="error-msg">{errors.post}</p>
-              ) : null}
+             
               <button className="size-btn" type="button" onClick={addSizes}>
                 Add Size
               </button>
@@ -142,22 +136,25 @@ const CategoryForm = () => {
                 type="file"
                 className="category-file"
                 name="category_image"
-                value={values.category_image}
+                // value={values.category_image}
                 onChange={(e) => {
                   setFieldImage(e.target.files[0]);
-                  setImage(URL.createObjectURL(e.currentTarget.files[0])),
-                    handleChange;
+                  setImage(URL.createObjectURL(e.currentTarget.files[0]))
+                   
                 }}
-                onBlur={handleBlur}
+             
               />
-               {errors.category_image && touched.category_image ? (
-                <p className="error-msg">{errors.category_image}</p>
-              ) : null}
-              {images.length > 0 && (
-                <div className="category-image-filled">
-                  {<img src={images} alt="images" />}
-                </div>
+          
+          {AdminSingleCategory.category_image?.filename ? 
+            <div className="category-image-filled">
+
+          <img src={images}/>
+            </div>: ""}
+              <div className="category-image-filled">
+              {fieldImage && (
+                <img src={images} alt="images" />       
               )}
+              </div>
             </p>
           </div>
           <div className="categoryForm-button">

@@ -58,11 +58,11 @@ export const deleteCategory = createAsyncThunk(
         `http://localhost:5001/api/v1/category/deleteCategory/${data}`,
         authHeader(thunkAPI)
       );
-      if (window.confirm("wants to delete?")) {
+
       thunkAPI.
       
       dispatch(admingetCategory())
-      }
+   
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.response.data.msg);
@@ -73,6 +73,7 @@ export const deleteCategory = createAsyncThunk(
 export const singleCategory = createAsyncThunk(
   "category/singlecategory",
   async (data, thunkAPI) => {
+    console.log("data form id", data)
     try {
     
       const response = await axios.get(
@@ -118,7 +119,8 @@ const initialState = {
   category:[],
   error: false,
   toggleState:true,
-  category_id:null
+  category_id:null,
+  AdminSingleCategory:[]
 };
 
 const adminCategorySlice = createSlice({
@@ -134,11 +136,12 @@ const adminCategorySlice = createSlice({
   setCategoryId:(state,action)=>{
     console.log(action.payload)
     state.category_id= action.payload
-  }
-
- 
   },
-
+singleCategoryClear:(state,action)=>{
+  console.log("cleared")
+  state.AdminSingleCategory=[];
+   }
+  },
   extraReducers: {
     [editCategory.pending]: (state) => {
       state.loading = true;
@@ -150,11 +153,11 @@ const adminCategorySlice = createSlice({
     },
 
     [singleCategory.pending]: (state) => {
-      state.loading = true;
+      state.AdminSingleCategory = true;
     },
     [singleCategory.fulfilled]: (state,{payload}) => {
       state.loading = false;
-      state.category = payload.data;
+      state.AdminSingleCategory = payload.data;
     },
     
     [deleteCategory.pending]: (state) => {
@@ -185,5 +188,5 @@ const adminCategorySlice = createSlice({
   },
 });
 
-export const {setToggleFalse,setToggleTrue,setCategoryId} = adminCategorySlice.actions
+export const {setToggleFalse,setToggleTrue,setCategoryId,singleCategoryClear} = adminCategorySlice.actions
 export default adminCategorySlice.reducer;

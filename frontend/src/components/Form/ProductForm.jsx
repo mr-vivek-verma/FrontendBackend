@@ -18,8 +18,10 @@ const ProductForm = () => {
   const [sizes, setSizes] = useState([]);
   const [mainImage, setMainImage] = useState();
   const [sharingImage, setSharingImage] = useState();
+
   const [images, setImage] = useState([]);
   const [images2, setImage2] = useState([]);
+
   const [selectedOption, setSelectedOption] = useState(null);
 
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ const ProductForm = () => {
   const categoryFiltered = category.filter(
     (item) => item._id === selectedOption?.id
   );
-  console.log(categoryFiltered);
+
 
   const arraySorted = [];
   category.map((item) => arraySorted.push([item.category_name, item._id]));
@@ -197,11 +199,13 @@ const ProductForm = () => {
             <input
               type="file"
               multiple
-              onChange={(e) => {setSharingImage(e.target.files[0]); setImage2(URL.createObjectURL(e.currentTarget.files[0]))}}
+              onChange={(e) => {setSharingImage(e.target.files); setImage2(URL.createObjectURL(e.currentTarget.files))}}
             />
             
           </div>
-         
+         {sharingImage?.length > 0 && <div className="category">
+          <img src={sharingImage} alt="sharingImage"/>
+         </div>}
               {images.length >0 && <div className="category-image-filled">
                 { <img  src={images2} alt="images" />}
               </div> }
