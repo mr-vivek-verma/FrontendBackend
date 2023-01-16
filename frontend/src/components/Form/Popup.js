@@ -13,9 +13,10 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
+  border: '1px solid #000',
+  borderRadius:  "5px",
+  boxShadow: 2,
+  p: 3,
 };
 
 
@@ -25,7 +26,6 @@ export default function BasicModal(props) {
   const handleClose = () => setOpen(false);
 const {deleteId}=props;
 const {categoryId}=props
-console.log("props from modelsd", categoryId)
 const dispatch = useDispatch();
 
 
@@ -46,17 +46,17 @@ const deleteHandler = () =>{
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-           Are you sure
+          <Typography id="modal-modal-title" variant="h6" component="h2" style={{color:"#A60808 "}}>
+           Confirm Delete
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-           You want to delete the product.
+          <Typography id="modal-modal-description" sx={{ mt: 2}}>
+           Are you sure you want to delete this item?
           </Typography>
           <Typography>
           
           <Typography>
-          <Button onClick={()=>{deleteHandler()}} >Confirm</Button>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button style={{backgroundColor:"#1155C4 ", margin:"5px", color:"#ffff"}} onClick={()=>{deleteHandler()}} >Confirm</Button>
+          <Button style={{backgroundColor:"#1155C4 ", margin:"5px", color:"#ffff"}} onClick={handleClose}>Cancel</Button>
           </Typography>
 
           </Typography>

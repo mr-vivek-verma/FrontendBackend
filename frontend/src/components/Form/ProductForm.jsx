@@ -131,15 +131,15 @@ const ProductForm = () => {
       sku,
     }))
    
-    // dispatch(setSingleProductClear()) 
-    // setTimeout(() => {
-    //   navigate("/dashboard/user")
-    //  }, 1500);
-    console.log("updated file",buyingPrice)
+    dispatch(setSingleProductClear()) 
+    setTimeout(() => {
+      navigate("/dashboard/user")
+     }, 1500);
+  
 
      
   }
-  // console.log(id)
+
   return (
     <div className="productForm">
       <div className="productForm-main">

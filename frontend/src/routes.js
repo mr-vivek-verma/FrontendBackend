@@ -17,12 +17,13 @@ import UserImageDownload from './pages/user/Carousel/UserImageDownload';
 import protectedRoutes from './protectedRoutes';
 import userLoginSlice from './slice/loginSlice/userLoginSlice';
 import { useSelector } from 'react-redux';
+import PageError from './pages/user/PageError';
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
   const {user}=useSelector((state)=>state.login)
-  console.log("user")
+
   const routes = useRoutes([
    {
       path: '/dashboard',
@@ -37,11 +38,12 @@ export default function Router() {
         { path: 'userpage', element: <HomePage />},
         { path: 'userimgdown/:id', element: <UserImageDownload /> },
         { path: 'usercategorypage/:id', element: <UserCategoryPage /> },
+        { path: '/dashboard/*', element: <PageError /> },
          
-      ],
+      ],  
     },
    
-     { path: '/admin', element: <LoginPage /> },
+    //  { path: '/login', element: <LoginPage /> },
     {
       path: 'login',
       element: <LoginPage />,
@@ -55,6 +57,7 @@ export default function Router() {
     { path: 'userpage', element: <HomePage /> },
     { path: 'userimgdown/:id', element: <UserImageDownload /> },
     { path: 'usercategorypage/:id', element: <UserCategoryPage /> },
+    { path: '*', element: <PageError /> },
   ]);
  
   return routes;

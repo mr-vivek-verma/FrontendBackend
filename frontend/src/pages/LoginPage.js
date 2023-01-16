@@ -74,10 +74,10 @@ export default function LoginPage() {
     // /  navigate("/dashboard/app")
     // }
     if (!email) {
-     return toast.warn("plz enter email");
+     return toast.warn("Please enter email!");
     }
       if(!password ){
-       return toast.warn("plz enter password");
+       return toast.warn("Please enter password!");
       }
     else {
       dispatch(getUserLogin(data));

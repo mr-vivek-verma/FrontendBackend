@@ -16,7 +16,6 @@ import {
   setCategoryId,
   setToggleFalse,
   singleCategory,
-
 } from "src/slice/adminSlice/adminCategorySlice";
 import BasicModal from "../Form/Popup";
 import { Link } from "react-router-dom";
@@ -34,6 +33,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
+   
   },
 
   "&:last-child td, &:last-child th": {
@@ -59,10 +59,10 @@ export default function CustomizedTables() {
   };
 
   const { category } = useSelector((state) => state.AdminCategory);
-  
+
   const editButton = (id) => {
     dispatch(setToggleFalse());
-    dispatch(setCategoryId(id))
+    dispatch(setCategoryId(id));
   };
   return (
     <TableContainer component={Paper}>
@@ -97,29 +97,54 @@ export default function CustomizedTables() {
             })
             .map((row) => (
               <StyledTableRow key={row.name}>
-                <StyledTableCell component="th" scope="row" className="product-table-main">
-                <img style={{display:"flex", width:"70px", justifyContent:"center"}} src={"http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/"+ row.category_image.filename} />
+                <StyledTableCell
+                  component="th"
+                  scope="row"
+                  className="product-table-main"
+                >
+                  <img
+                    style={{
+                      display: "flex",
+                      width: "70px",
+                      justifyContent: "center",
+                    }}
+                    src={
+                      "http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" +
+                      row.category_image.filename
+                    }
+                  />
                   {row.category_name}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.sizes}</StyledTableCell>  
+                <StyledTableCell align="right">{row.sizes}</StyledTableCell>
                 <StyledTableCell align="right">
                   <Typography variant="button">
-                    <Button onClick={()=>{editButton(row._id); dispatch(singleCategory(row._id))}}>
-                    {/* console.log("rowid", row._id) */}
-                      <Link to="/dashboard/categoryform">
-                        {/* <Iconify icon={"eva:edit-fill"} sx={{ mr: 2 }} /> */}
+                    <Button
+                      style={{
+                        backgroundColor: "#1155C4 ",
+                        marginRight: "4px",
+                      
+                      }}
+                      onClick={() => {
+                        editButton(row._id);
+                        dispatch(singleCategory(row._id));
+                      }}
+                    >
+                      <Link
+                        style={{ color: "#ffff" }}
+                        to="/dashboard/categoryform"
+                      >
                         Edit
                       </Link>
                     </Button>
-
                     <Button
+                      style={{
+                        backgroundColor: "#A60808",
+                    
+                        width: "10px",
+                        height: "36px",
+                      }}
                       sx={{ color: "error.main" }}
-                      // onClick={(e) => {
-                      //   dispatch(deleteCategory(row._id));
-                      // }}
-
                     >
-                      {/* <Iconify icon={"eva:trash-2-outline"} sx={{ mr: 2 }} /> */}
                       <BasicModal categoryId={row._id} />
                     </Button>
                   </Typography>

@@ -92,13 +92,17 @@ export const singleCategory = createAsyncThunk(
 export const editCategory = createAsyncThunk(
   "category/updatecategory",
   async (data, thunkAPI) => {
-  console.log("edit category me data",data)   
+  console.log("edit category me data",data) 
+
     const {category_name,items,fieldImage,category_id} = data
+    console.log("all data",category_name,items,fieldImage,category_id)
     let newFormData = new FormData();
     newFormData.append("category_name", category_name);
     newFormData.append("category_id",category_id);
     items.forEach((item) => newFormData.append("sizes[]", item.name));
     newFormData.append("category_image",fieldImage,fieldImage.name);
+
+
     try {
     
       const response = await axios.put(
