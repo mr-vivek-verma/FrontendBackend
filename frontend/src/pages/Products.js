@@ -2,7 +2,7 @@ import "../App.css";
 import { Helmet } from "react-helmet-async";
 import { useEffect, useMemo, useState } from "react";
 // @mui
-import { Button, Container, Stack, Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 // components
 
 import Iconify from "../components/iconify/Iconify";
@@ -11,12 +11,12 @@ import ProductTable from "src/components/ProductTable/ProductTable";
 import { useDispatch, useSelector } from "react-redux";
 import {
   admingetProduct,
-  deleteProduct,
-  editProduct,
   setProductId,
   setToggleFalse,
   setToggleTrue,
+  singleProduct,
 } from "src/slice/adminSlice/adminProductSlice";
+import BasicModal from "src/components/Form/Popup";
 
 // ----------------------------------------------------------------------
 
@@ -33,15 +33,23 @@ export default function UserPage() {
     {
       Header: "Product",
       accessor: "product_name",
-      Cell:(tableProps)=>{
-        console.log(tableProps)
-        return(
+      Cell: (tableProps) => {
+        console.log(tableProps);
+        return (
           <div className="product-table-main">
-            <img style={{display:"flex", width:"80px"}} src={"http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" + tableProps.row.original.main_image[0]?.filename} />
-            <p style={{display:"flex", justifyContent:"center"}}>{tableProps.row.original.product_name}</p>
+            <img
+              style={{ display: "flex", width: "80px" }}
+              src={
+                "http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" +
+                tableProps.row.original.main_image[0]?.filename
+              }
+            />
+            <p style={{ display: "flex", justifyContent: "center" }}>
+              {tableProps.row.original.product_name}
+            </p>
           </div>
-        )
-      }
+        );
+      },
     },
     {
       Header: "Category",
@@ -74,12 +82,23 @@ export default function UserPage() {
       Cell: (tableProps) => {
         const deleteId = tableProps.row.original.id;
         const editId = tableProps.row.original.id;
-        console.log(editId);
-        console.log(tableProps);
+        // console.log(editId);
+        // console.log(tableProps);
+
+        const [openPopup, setOpenPopup] = useState(false);
+
+        const confirmation = () => {
+          setOpenPopup(true);
+        };
 
         const editProduct = () => {
           dispatch(setToggleFalse());
           dispatch(setProductId(tableProps.row.original.id));
+          dispatch(singleProduct(tableProps.row.original.id));
+        };
+
+        const callbck = (props) => {
+          setopenPopup(props.false);
         };
 
         return (
@@ -90,11 +109,8 @@ export default function UserPage() {
             >
               <Link to="/dashboard/productform">Edit</Link>
             </button>{" "}
-            <button
-              className="category-edit-delete"
-              onClick={() => dispatch(deleteProduct(deleteId))}
-            >
-              Delete
+            <button className="category-edit-delete">
+              <BasicModal deleteId={deleteId} />
             </button>
           </>
         );
@@ -127,7 +143,6 @@ export default function UserPage() {
         </Typography>
 
         <Typography sx={{ display: "flex", justifyContent: " end", m: 2 }}>
-          
           <Link
             to="/dashboard/productform"
             variant="contained"

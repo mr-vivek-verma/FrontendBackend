@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { admingetCategory, setToggleTrue } from "src/slice/adminSlice/adminCategorySlice";
-import { createProduct, editProduct } from "src/slice/adminSlice/adminProductSlice";
+import { createProduct, editProduct, setSingleProductClear} from "../.././slice/adminSlice/adminProductSlice";
 import { toast } from "react-toastify";
 
 const ProductForm = () => {
   const { category, toggleState } = useSelector((state) => state.AdminCategory);
- const {productId} = useSelector((state) => state.AdminProduct)
- console.log(productId)
+ const {productId, AdminSingleProduct} = useSelector((state) => state.AdminProduct)
+
   const [productName, setProductName] = useState();
   const [sku, setSku] = useState();
   const [buyingPrice, setBuyingPrice] = useState();
@@ -30,6 +30,7 @@ const ProductForm = () => {
     (item) => item._id === selectedOption?.id
   );
 
+  // console.log("adming prod", AdminSingleProduct)
 
   const arraySorted = [];
   category.map((item) => arraySorted.push([item.category_name, item._id]));
@@ -42,6 +43,16 @@ const ProductForm = () => {
       id: item[1],
     })
   );
+
+  useEffect(() =>{
+    setProductName(AdminSingleProduct?.product_name)
+    setSku(AdminSingleProduct?.sku)
+    setBuyingPrice(AdminSingleProduct?.buying_price)
+    setResellingPrice(AdminSingleProduct?.reselling_price)
+    setImage("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/"+ AdminSingleProduct?.main_image?.[0].filename)
+    setImage2("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/"+ AdminSingleProduct?.sharing_images?.[0].filename)
+  },[AdminSingleProduct])
+
 
   useEffect(() => {
     dispatch(admingetCategory());
@@ -57,42 +68,76 @@ const ProductForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      createProduct({
-        product_name: productName,
-        sku: sku,
-        buying_price: buyingPrice,
-        reselling_price: resellingPrice,
-        category_id: selectedOption.id,
-        mainImage: mainImage,
-        sharingImages: sharingImage,
-        sizes: sizes,
-      })
-    );
-  
-    setTimeout(() => {
-      navigate("/dashboard/user");
-    }, 1500);
-    toast.success("product created successfully");
+    
+    if(!selectedOption){
+      return toast.warn("please select category")
+    }
+    if(!productName){
+      return toast.warn("please select product name")
+    }
+    if(!sku){
+      return toast.warn("please select sku")
+    }
+    if(!buyingPrice){
+      return toast.warn("please select buyingPrice")
+    }
+    if(!resellingPrice){
+      return toast.warn("please select resellingPrice")
+    }
+    if(!sizes){
+      return toast.warn("please select sizes")
+    }
+    if(!mainImage){
+      return toast.warn("please select mainImage")
+    }
+    if(!sharingImage){
+      return toast.warn("please select sharingImage")
+    }
+    else{
+      dispatch(
+        createProduct({
+          product_name: productName,
+          sku: sku,
+          buying_price: buyingPrice,
+          reselling_price: resellingPrice,
+          category_id: selectedOption.id,
+          mainImage: mainImage,
+          sharingImages: mainImage,
+          sizes: sizes,
+        })
+      );
+    
+      setTimeout(() => {
+        navigate("/dashboard/user");
+      }, 1500);
+      toast.success("product created successfully");
+    }
+
+   
   };
  
   const updateProduct = (e)=>{
     e.preventDefault()
     dispatch(editProduct({
       buying_price:buyingPrice,
-      mainImage,
+      mainImage: images,
       product_name:productName,
       reselling_price:resellingPrice,
-      sharingImages:sharingImage,
+      sharingImages:images,
       // id,
       productId,
-      category_id: selectedOption.id,
+      category_id: selectedOption?.id,
       sizes,
       sku,
     }))
-    setTimeout(() => {
-      navigate("/dashboard/user")
-     }, 1500);
+   
+    // dispatch(setSingleProductClear()) 
+    // setTimeout(() => {
+    //   navigate("/dashboard/user")
+    //  }, 1500);
+    console.log("updated file",buyingPrice)
+
+     
   }
   // console.log(id)
   return (
@@ -119,6 +164,7 @@ const ProductForm = () => {
           <input  
             type="text"
             placeholder="Enter New Product"
+            defaultValue={productName}
             onChange={(e) => setProductName(e.target.value)}
           />
         </div>
@@ -130,6 +176,7 @@ const ProductForm = () => {
           <input
             type="text"
             placeholder="Enter New SKU"
+            defaultValue={sku}
             onChange={(e) => setSku(e.target.value)}
           />
         </div>
@@ -142,6 +189,7 @@ const ProductForm = () => {
             <input
               type="text"
               placeholder="Enter buying price"
+              defaultValue={buyingPrice}
               onChange={(e) => setBuyingPrice(e.target.value)}
             />
           </div>
@@ -153,6 +201,7 @@ const ProductForm = () => {
             <input
               type="text"
               placeholder="Enter reselling price"
+              defaultValue={resellingPrice}
               onChange={(e) => setResellingPrice(e.target.value)}
             />
           </div>
@@ -186,26 +235,40 @@ const ProductForm = () => {
             </p>
             <input
               type="file"
+              name="main_image"
+              accept=".png, .jpg, .jpeg"
               onChange={(e) => {setMainImage(e.target.files[0]);setImage(URL.createObjectURL(e.currentTarget.files[0]))}}
             />
           </div>
-          {images.length >0 && <div className="category-image-filled">
+          {/* {images.length > 0 && <div className="category-image-filled">
                 { <img  src={images} alt="images" />}
-              </div> } 
+              </div> }  */}
+
+            {AdminSingleProduct.main_image?.filename  ? 
+            <div className="category-image-filled">
+            <img src={images}/>
+            </div>: ""}
+            {images.length>0 && <div className="category-image-filled">
+             
+                <img src={images} alt="images" />       
+            
+              </div>}
+
           <div className="product-image-sharing">
             <p className="categoryForm-title">
               Sharing Image<span className="categoryForm_span">*</span>
             </p>
             <input
               type="file"
+              accept=".png, .jpg, .jpeg"
               multiple
-              onChange={(e) => {setSharingImage(e.target.files); setImage2(URL.createObjectURL(e.currentTarget.files))}}
+              onChange={(e) => {setSharingImage(e.target.files); setImage2(URL.createObjectURL(e.currentTarget.files[0]))}}
             />
             
           </div>
-         {sharingImage?.length > 0 && <div className="category">
-          <img src={sharingImage} alt="sharingImage"/>
-         </div>}
+         {/* {images2?.length > 0 && <div className="category">
+          <img src={images2} alt="sharingImage"/>
+         </div>} */}
               {images.length >0 && <div className="category-image-filled">
                 { <img  src={images2} alt="images" />}
               </div> }

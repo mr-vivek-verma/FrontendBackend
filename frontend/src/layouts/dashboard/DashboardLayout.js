@@ -5,6 +5,8 @@ import { styled } from '@mui/material/styles';
 //
 import Header from './header';
 import Nav from './sidebar';
+import { useSelector } from 'react-redux';
+import HomePage from 'src/pages/user/HomePage';
 
 // ----------------------------------------------------------------------
 
@@ -34,9 +36,11 @@ const Main = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
-
+const {user}=useSelector((state)=>state.login)
   return (
+      <>
     <StyledRoot>
+    {user? <>
       <Header onOpenNav={() => setOpen(true)} />
 
       <Nav openNav={open} onCloseNav={() => setOpen(false)} />
@@ -44,6 +48,8 @@ export default function DashboardLayout() {
       <Main>
         <Outlet />
       </Main>
+      </>:<HomePage/>}
     </StyledRoot>
+    </>
   );
 }

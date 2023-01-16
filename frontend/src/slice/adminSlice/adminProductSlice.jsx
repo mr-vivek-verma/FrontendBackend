@@ -24,7 +24,7 @@ export const admingetProduct = createAsyncThunk(
 export const createProduct = createAsyncThunk(
   "product/productList",
   async (data, thunkAPI) => {
-    console.log(data);
+    console.log(data, "fromo");
     const {
       buying_price,
       category_id,
@@ -90,27 +90,37 @@ export const editProduct = createAsyncThunk(
       category_id,
       sharingImages,
       productId,
-
       sizes,
       sku,
     } = data;
+    console.log("typeof", typeof(mainImage));
     let newFormData = new FormData();
-    newFormData.append("main_image", mainImage, mainImage.name);
-      newFormData.append("sharing_images", sharingImages, sharingImages.name);
+    // newFormData.append("main_image", mainImage);
+    // newFormData.append("sharing_images", sharingImages);
       newFormData.append("product_name", product_name);
       newFormData.append("buying_price", buying_price);
       newFormData.append("reselling_price", reselling_price);
       newFormData.append("sku", sku);
-      newFormData.append("sizes[]", sizes);
+      // newFormData.append("sizes[]", sizes);
+      sizes.forEach(item => newFormData.append("sizes[]", item));
+      // typeof(mainImage)!==string && newFormData.append("main_image", mainImage);
+      // typeof(sharingmages)!==string &&
+      //   sharingImages.forEach(element => {
+      //     return newFormData.append("sharing_images", element);
+      //   });
       newFormData.append("product_id", productId);
+      // newFormData.append("is_draft", true);
+
+     // newFormData.append("product_id", productId);
       newFormData.append("category_id", category_id);
     try {
-    
-      const response = await axios.put(
-        `http://localhost:5001/api/v1/product/updateProduct`,
-        newFormData,
+      console.log("mai aaa gaua ander")
+         const response = await axios.put(
+        `http://localhost:5001/api/v1/product/updateProduct`,newFormData,
         authHeader(thunkAPI)
+        
       );
+      console.log("maine chala diya")
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.response.data.msg);
@@ -119,12 +129,29 @@ export const editProduct = createAsyncThunk(
 );
 
 
+export const singleProduct = createAsyncThunk(
+  "product/getProduct",
+  async (data, thunkAPI) => {
+    console.log("data product id", data)
+    try {
+        const response = await axios.get(
+        `http://localhost:5001/api/v1/product/getProduct/${data}`,       
+        authHeader(thunkAPI)
+        );
+           return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.response.data.msg);
+    }
+  }
+);
+
 const initialState = {
   loading: false,
   product: [],
   error: false,
   toggleState:true,
   productId:null,
+  AdminSingleProduct:[]
 };
 
 const adminProductSlice = createSlice({
@@ -141,6 +168,8 @@ const adminProductSlice = createSlice({
       console.log(action.payload)
       state.productId= action.payload
   },
+  setSingleProductClear:(state,action)=>{
+   state.AdminSingleProduct=[]},
 },
 
   extraReducers: {
@@ -177,8 +206,15 @@ const adminProductSlice = createSlice({
       state.loading = false;
       state.product = payload;
     },
+    [singleProduct.pending]: (state) => {
+      state.loading = true;
+    },
+    [singleProduct.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.AdminSingleProduct = payload?.data;
+    },
   },
 });
 
-export const {setToggleFalse,setToggleTrue,setProductId} = adminProductSlice.actions
+export const {setToggleFalse,setToggleTrue,setProductId,setSingleProductClear} = adminProductSlice.actions
 export default adminProductSlice.reducer;

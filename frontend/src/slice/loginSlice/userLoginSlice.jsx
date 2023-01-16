@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 const { createAsyncThunk } = require('@reduxjs/toolkit');
@@ -10,14 +11,14 @@ const roleUser=  JSON.parse(localStorage.getItem("user"))
 const initialState = {
   loading: false,
   user: JSON.parse(localStorage.getItem("user")),
-  error: false,
+  error: "",
   role: roleUser?.userType,
  };
 
 
 
 export const getUserLogin = createAsyncThunk('user/userLogin', async (data, thunkAPI) => {
-
+console.log(data);
    const payload = {
       "email": data.email,
       "password": data.password,
@@ -56,12 +57,18 @@ const userLoginSlice = createSlice({
     [getUserLogin.fulfilled]: (state, { payload }) => {
       state.loading = false;
       const user = payload.data.user
+      toast.success("Welcome! You have successfully logged in!");
       // const userRole = JSON.parse(localStorage.getItem("user"));
       state.user = user;
       state.role = payload.data.user.userType;
        localStorage.setItem("user", JSON.stringify(user) ) 
     },
-   
+    [getUserLogin.rejected]: (state,{payload}) => {
+      state.loading = false;
+      state.error = payload;
+      console.log("loginnnn",payload)
+      toast.warn("Invalid credentials");
+    },
 
 
 

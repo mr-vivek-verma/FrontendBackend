@@ -15,20 +15,24 @@ import HomePage from './pages/user/HomePage';
 import UserCategoryPage from './pages/user/UserProductPage';
 import UserImageDownload from './pages/user/Carousel/UserImageDownload';
 import protectedRoutes from './protectedRoutes';
+import userLoginSlice from './slice/loginSlice/userLoginSlice';
+import { useSelector } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
+  const {user}=useSelector((state)=>state.login)
+  console.log("user")
   const routes = useRoutes([
-    {
+   {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/products" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
-           { path: 'categoryform', element: <CategoryForm /> },
-         { path: 'productform', element: <ProductForm/>  },
+        { path: 'categoryform', element: <CategoryForm /> },
+        { path: 'productform', element: <ProductForm/>  },
         { path: 'products', element: <ProductsPage /> },
         { path: 'userpage', element: <HomePage />},
         { path: 'userimgdown/:id', element: <UserImageDownload /> },
@@ -37,7 +41,7 @@ export default function Router() {
       ],
     },
    
-     { path: '*', element: <LoginPage /> },
+     { path: '/admin', element: <LoginPage /> },
     {
       path: 'login',
       element: <LoginPage />,

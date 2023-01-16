@@ -7,7 +7,9 @@ import {
   createCategory,
   editCategory,
   setToggleTrue,
+  singleCategoryClear,
 } from "src/slice/adminSlice/adminCategorySlice";
+import { toast } from "react-toastify";
 
 
 
@@ -20,39 +22,74 @@ const CategoryForm = () => {
 
   const {AdminSingleCategory} = useSelector((state)=>state.AdminCategory)
 
-  console.log("admin category", AdminSingleCategory)
+  // console.log("admin category", AdminSingleCategory)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   
-  useEffect(()=>{
-  setImage("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/"+ AdminSingleCategory?.category_image?.filename)
-  },[AdminSingleCategory])
-  
+  // useEffect(()=>{
+  //   setCategory_name(AdminSingleCategory?.category_name)
+  //    setFieldImage("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/"+ AdminSingleCategory?.category_image?.filename)
+  //   setImage("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/"+ AdminSingleCategory?.category_image?.filename)
+  // },[AdminSingleCategory])
+useEffect(()=>{
+  setCategory_name(AdminSingleCategory?.category_name)
+  setSizes(AdminSingleCategory?.sizes)
+  setImage(AdminSingleCategory?.images)
+},[AdminSingleCategory])
 
 
   const [sizes, setSizes] = useState("");
   const [items, setItems] = useState([]);
-  const [category_name, setCategory_name] = useState();
+  const [category_name, setCategory_name] = useState("");
   const [images, setImage] = useState([]);
   const [fieldImage, setFieldImage] = useState();
  
 
   const saveCategory = (e) => {
-    e.preventDefault();
+   e.preventDefault();
+   if(!category_name){
+    return toast.warn("category name is missing")
+  }
+  
+if(!sizes && items.length<1){
+  return toast.warn("sizes can't be empty")
+}
 
-    dispatch(createCategory({ category_name, items, fieldImage }));
-   
-      navigate("/dashboard/products");
+if(items.length<1){
+  return toast.warn("sizes array can't be empty")
+}
+
+
+if(images?.length<1){
+  return toast.warn("plz select image")
+}
+// if(images?.length<1 && images < 5120){
+//   return toast.warn("plz select upto 5mb image size")
+// }
+else{
+  dispatch(createCategory({ category_name, items, fieldImage }))
+  
+  .unwrap() 
+  .then(() => navigate("/dashboard/products"))
+
+}
+}
     
-  };
-
+  
+  // console.log("name",category_name)
+  // console.log("size",sizes, items)
+  // console.log("img",images)
+  
   const updateCategory = (e) => {
     e.preventDefault();
-    dispatch(editCategory({ category_name, items, fieldImage, category_id }));
+    dispatch(editCategory({ category_name, items, fieldImage, category_id}))
    
-      navigate("/dashboard/products");
     
+    .unwrap() 
+    .then(() => navigate("/dashboard/products"));
+      
+    dispatch(singleCategoryClear())
   };
   const addSizes = () => {
     const allpost = { id: new Date().getTime().toString(), name: sizes };
@@ -87,7 +124,7 @@ const CategoryForm = () => {
                 id="category"
                 placeholder="Enter New Category"
                 className="category-input"
-                value={AdminSingleCategory.category_name}
+                defaultValue={category_name}
                 onChange={(e) => {
                   setCategory_name(e.target.value);
               
@@ -100,13 +137,13 @@ const CategoryForm = () => {
                 Size<span className="categoryForm_span">*</span>
               </label>
               <br />
-              <input
+              <input  
                 type="text"
                 name="size"
                 id="size"
                 placeholder="Enter size"
                 className="size-input"
-                value={AdminSingleCategory.sizes}
+                defaultValue={sizes}
                 onChange={(e) => {
                   setSizes(e.target.value);
                  
@@ -121,8 +158,8 @@ const CategoryForm = () => {
                 {items?.map((item, id) => {
                   return (
                     <div className="save-sizes" key={id}>
-                      {item.name}{" "}
-                      <RxCross2 onClick={() => deleteItem(item.id)} />
+                      {item?.name}{" "}
+                      <RxCross2 onClick={() => deleteItem(item?.id)} />
                     </div>
                   );
                 })}
@@ -134,8 +171,10 @@ const CategoryForm = () => {
               Category Image<span className="categoryForm_span">*</span>{" "}
               <input
                 type="file"
+                accept=".png, .jpg, .jpeg"
                 className="category-file"
                 name="category_image"
+              
                 // value={values.category_image}
                 onChange={(e) => {
                   setFieldImage(e.target.files[0]);
@@ -144,22 +183,23 @@ const CategoryForm = () => {
                 }}
              
               />
-          
-          {AdminSingleCategory.category_image?.filename ? 
+         
+          {AdminSingleCategory?.category_image?.filename ? 
             <div className="category-image-filled">
 
           <img src={images}/>
             </div>: ""}
-              <div className="category-image-filled">
-              {fieldImage && (
+           
+            {images?.length>0 && <div className="category-image-filled">
+             
                 <img src={images} alt="images" />       
-              )}
-              </div>
+            
+              </div>}
             </p>
           </div>
           <div className="categoryForm-button">
             <Link
-              to="/category"
+              to="/dashboard/products"
               className="Back-link"
               onClick={() => dispatch(setToggleTrue())}
             >

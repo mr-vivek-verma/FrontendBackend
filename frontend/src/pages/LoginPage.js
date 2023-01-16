@@ -69,14 +69,18 @@ export default function LoginPage() {
   const data = { email, password };
 
   const handleSubmit = (e) => {
-    dispatch(getUserLogin(data));
+    // dispatch(getUserLogin(data));
     // if (user!==null ) {
     // /  navigate("/dashboard/app")
     // }
-    if (user !== null) {
-      toast.success("successfully logged in");
-    } else {
-      toast.error("please login !");
+    if (!email) {
+     return toast.warn("plz enter email");
+    }
+      if(!password ){
+       return toast.warn("plz enter password");
+      }
+    else {
+      dispatch(getUserLogin(data));
     }
   };
 
@@ -120,6 +124,7 @@ export default function LoginPage() {
             <input
               style={{ margin: "4px", padding: "4px" }}
               type="email"
+              required
               placeholder="email"
               value={email}
               onChange={(e) => {

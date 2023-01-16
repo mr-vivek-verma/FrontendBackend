@@ -18,6 +18,7 @@ import {
   singleCategory,
 
 } from "src/slice/adminSlice/adminCategorySlice";
+import BasicModal from "../Form/Popup";
 import { Link } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -106,20 +107,20 @@ export default function CustomizedTables() {
                     <Button onClick={()=>{editButton(row._id); dispatch(singleCategory(row._id))}}>
                     {/* console.log("rowid", row._id) */}
                       <Link to="/dashboard/categoryform">
-                        <Iconify icon={"eva:edit-fill"} sx={{ mr: 2 }} />
+                        {/* <Iconify icon={"eva:edit-fill"} sx={{ mr: 2 }} /> */}
                         Edit
                       </Link>
                     </Button>
 
                     <Button
                       sx={{ color: "error.main" }}
-                      onClick={(e) => {
-                        dispatch(deleteCategory(row._id));
-                      }}
+                      // onClick={(e) => {
+                      //   dispatch(deleteCategory(row._id));
+                      // }}
 
                     >
-                      <Iconify icon={"eva:trash-2-outline"} sx={{ mr: 2 }} />
-                      Delete
+                      {/* <Iconify icon={"eva:trash-2-outline"} sx={{ mr: 2 }} /> */}
+                      <BasicModal categoryId={row._id} />
                     </Button>
                   </Typography>
                 </StyledTableCell>
