@@ -107,7 +107,7 @@ export default function UserPage() {
               className="category-edit-btn"
               onClick={() => editProduct(editId)}
             >
-              <Link to="/dashboard/productform">Edit</Link>
+              <Link to="/dashboard/editproductform">Edit</Link>
             </button>{" "}
             <button className="category-edit-delete">
               <BasicModal deleteId={deleteId} />

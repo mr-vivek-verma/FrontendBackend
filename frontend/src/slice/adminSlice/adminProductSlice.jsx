@@ -114,13 +114,13 @@ export const editProduct = createAsyncThunk(
      // newFormData.append("product_id", productId);
       newFormData.append("category_id", category_id);
     try {
-      console.log("mai aaa gaua ander")
+   
          const response = await axios.put(
         `http://localhost:5001/api/v1/product/updateProduct`,newFormData,
         authHeader(thunkAPI)
         
       );
-      console.log("maine chala diya")
+    
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.response.data.msg);

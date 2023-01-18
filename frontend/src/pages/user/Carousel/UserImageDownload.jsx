@@ -1,170 +1,133 @@
 import * as React from "react";
 import "../../../App.css";
 import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import MobileStepper from "@mui/material/MobileStepper";
-import Paper from "@mui/material/Paper";
+
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import SwipeableViews from "react-swipeable-views";
-import { autoPlay } from "react-swipeable-views-utils";
-import { IconButton } from "@material-ui/core";
-import ForwardIcon from "@material-ui/icons/NavigateNext";
-import BackIcon from "@material-ui/icons/NavigateBefore";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { UserProductDetail } from "src/slice/userSlice/userProductSlice";
 import FileSaver, { saveAs } from "file-saver";
 
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
 function SwipeableTextMobileStepper() {
   const { user } = useSelector((store) => store.login);
   const navigate = useNavigate();
   const theme = useTheme();
-  const [activeStep, setActiveStep] = React.useState(0);
   const { detailProduct } = useSelector((store) => store.product);
   const dispatch = useDispatch();
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleStepChange = (step) => {
-    setActiveStep(step);
-  };
-
   const handleBackPage = (id) => {
-    
     if (user) navigate(`/dashboard/usercategorypage/${id}`);
-    else{
+    else {
       navigate(`/usercategorypage/${id}`);
     }
-    
   };
 
   const id = useParams();
 
   React.useEffect(() => {
-    // console.log('user');
     dispatch(UserProductDetail(id.id));
   }, []);
 
-  const images = detailProduct?.sharing_images?.map((item) => {
-    return {
-      imgPath: `http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/${item.filename}`,
-      
-    };
-  });
-  
-  const maxSteps = images?.length;
-  
-   
-  const downloadImg = () => {
-      // FileSaver.saveAs(images[0].imgPath, "image.jpg");
-    // FileSaver.saveAs("https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZHVjdHxlbnwwfHwwfHw%3D&w=1000&q=80", "image.jpg");
+  const serverShareImages = [];
+  for (let i = 0; i < detailProduct?.sharing_images?.length; i++) {
+    serverShareImages.push(
+      "http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" +
+        `${detailProduct && detailProduct?.sharing_images[i]?.filename}`
+    );
+  }
+// console.log(serverShareImages)
+  const download = (e) => {
+    const mainImage =
+      "http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" +
+      `${detailProduct?.main_image?.[0].filename}`;
+    serverShareImages.forEach((item) => {
+      FileSaver.saveAs(item, "sharing");
+    });
+    // FileSaver.saveAs(mainImage, "main");
   };
+  // const download = (e) => {
+  //   serverShareImages.forEach((item,index) => {
+  //     saveAs(item, detailProduct?.sharing_images[index].filename);  
+      
+  //   });
+  // };
 
   return (
-    <Box sx={{ maxWidth: "100%", flexGrow: 1 }}>
-      <Paper
-        square
-        elevation={0}
-        sx={{
-        
-          display: "flex",
-          alignItems: "center",
-          height: 50,
-          pl: 2,
-          bgcolor: "background.default",
-        }}
-      >
-        <Typography>
-          {images?.length > 0 && images[activeStep]?.label}
-        </Typography>
-      </Paper>
-
-      <AutoPlaySwipeableViews
-        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-        index={activeStep}
-        onChangeIndex={handleStepChange}
-        enableMouseEvents
-      >
-        {images?.map((step, index) => (
-          <div key={step.label}>
-            {Math.abs(activeStep - index) <= 2 ? (
-              <Box
-                component="img"
-                sx={{
-                  justifyContent: "center",
-                  height: 255,
-                  display: "flex",
-                  maxWidth: 300,
-                  overflow: "hidden",
-                  width: "50%",
-                }}
-                src={step.imgPath}
-                alt={step.label}
-              />
-            ) : null}
+    <div>
+      <div className="col-md-5  d-flex justify-content-center align-items-center">
+        <div className="product-img">
+          <div
+            id="carouselExampleControls"
+            className="carousel slide"
+            data-bs-ride="carousel"
+          >
+            <div className="carousel-inner">
+              <div className="carousel-item active ">
+                <img
+                  src={
+                    "http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" +
+                    `${
+                      detailProduct?.main_image?.length > 0
+                        ? detailProduct.main_image[0].filename
+                        : ""
+                    }`
+                  }
+                  alt={detailProduct?.product_name}
+                />
+              </div>
+              {serverShareImages &&
+                serverShareImages?.map((item) => {
+                  return (
+                    <div key={item} className="carousel-item">
+                      <img src={item} alt={item} />
+                    </div>
+                  );
+                })}
+            </div>
+            <button
+              className="carousel-control-prev "
+              type="button"
+              data-bs-target="#carouselExampleControls"
+              data-bs-slide="prev"
+            >
+              <span
+                className="carousel-control-prev-icon bg-primary  rounded-circle"
+                aria-hidden="true"
+              ></span>
+              <span className="visually-hidden">Previous</span>
+            </button>
+            <button
+              className="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExampleControls"
+              data-bs-slide="next"
+            >
+              <span
+                className="carousel-control-next-icon bg-primary rounded-circle "
+                aria-hidden="true"
+              ></span>
+              <span className="visually-hidden">Next</span>
+            </button>
           </div>
-        ))}
-        <br />
-      </AutoPlaySwipeableViews>
-      <br />
-      <MobileStepper
-        steps={maxSteps}
-        position="static"
-        activeStep={activeStep}
-        nextButton={
-          <IconButton
-            size="small"
-            onClick={handleNext}
-            disabled={activeStep === maxSteps - 1}
-          >
-            {theme.direction === "rtl" ? (
-              <KeyboardArrowLeft />
-            ) : (
-              <KeyboardArrowRight />
-            )}
-          </IconButton>
-        }
-        backButton={
-          <IconButton
-            fontSize="large"
-            size="small"
-            onClick={handleBack}
-            disabled={activeStep === 0}
-          >
-            {theme.direction === "rtl" ? (
-              <KeyboardArrowRight />
-            ) : (
-              <KeyboardArrowLeft />
-            )}
-          </IconButton>
-        }
-      />
+        </div>
+      </div>
       <Button
         style={{
-          marginLeft: "415px",
-          backgroundColor: "grey",
+          marginTop: "5px",
+          backgroundColor: "#133337",
           padding: "5px",
-          width: "20%",
+          width: "15%",
           border: "1px solid grey",
           borderRadius: "10px",
+          color: "#ffff",
         }}
-        onClick={downloadImg}
+        onClick={(e) => {download(e)}}
       >
         Download Img
       </Button>
+
       <Typography sx={{ width: "300px" }}>
         {detailProduct.product_name}
       </Typography>
@@ -181,8 +144,7 @@ function SwipeableTextMobileStepper() {
       >
         Back
       </Button>
-      <br />
-    </Box>
+    </div>
   );
 }
 

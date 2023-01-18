@@ -26,6 +26,8 @@
   
   
   .category-edit-btn{
+    margin-top: 3px;
+    margin-left: 5px;
     text-align: center;
     border-radius: 5px;
     border: none;
@@ -555,6 +557,7 @@
   }
   
   .category-image-filled{
+   
     width: 100px;
     height: 110px;
     display: flex;
@@ -564,6 +567,7 @@
   
   
   .category-image-filled img{
+    margin: 5px;
     width: 100px;
     height: 70px;
     border: 1px solid gray;

@@ -131,7 +131,7 @@ export default function CustomizedTables() {
                     >
                       <Link
                         style={{ color: "#ffff" }}
-                        to="/dashboard/categoryform"
+                        to="/dashboard/editcategoryform"
                       >
                         Edit
                       </Link>

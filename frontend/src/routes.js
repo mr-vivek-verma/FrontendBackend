@@ -18,6 +18,8 @@ import protectedRoutes from './protectedRoutes';
 import userLoginSlice from './slice/loginSlice/userLoginSlice';
 import { useSelector } from 'react-redux';
 import PageError from './pages/user/PageError';
+import EditProductForm from './components/Form/EditProductForm';
+import EditCategoryForm from './components/Form/EditCategoryForm';
 
 // ----------------------------------------------------------------------
 
@@ -33,7 +35,9 @@ export default function Router() {
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
         { path: 'categoryform', element: <CategoryForm /> },
+        { path: 'editcategoryform', element: <EditCategoryForm /> },
         { path: 'productform', element: <ProductForm/>  },
+        { path: 'editproductform', element: <EditProductForm/>  },
         { path: 'products', element: <ProductsPage /> },
         { path: 'userpage', element: <HomePage />},
         { path: 'userimgdown/:id', element: <UserImageDownload /> },

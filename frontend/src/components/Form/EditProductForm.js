@@ -3,22 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
-import {
-  admingetCategory,
-  setToggleTrue,
-} from "src/slice/adminSlice/adminCategorySlice";
-import {
-  createProduct,
-  editProduct,
-  setSingleProductClear,
-} from "../.././slice/adminSlice/adminProductSlice";
+import { admingetCategory, setToggleTrue } from "src/slice/adminSlice/adminCategorySlice";
+import { createProduct, editProduct, setSingleProductClear } from "../.././slice/adminSlice/adminProductSlice";
 import { toast } from "react-toastify";
 
-const ProductForm = () => {
+const EditProductForm = () => {
   const { category, toggleState } = useSelector((state) => state.AdminCategory);
-  const { productId, AdminSingleProduct } = useSelector(
-    (state) => state.AdminProduct
-  );
+  const { productId, AdminSingleProduct } = useSelector((state) => state.AdminProduct)
 
   const [productName, setProductName] = useState();
   const [sku, setSku] = useState();
@@ -29,6 +20,7 @@ const ProductForm = () => {
   const [sharingImage, setSharingImage] = useState([]);
 
   const [image, setImage] = useState([]);
+  const [images2, setImage2] = useState([]);
 
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -37,6 +29,8 @@ const ProductForm = () => {
   const categoryFiltered = category.filter(
     (item) => item._id === selectedOption?.id
   );
+
+  // console.log("adming prod", AdminSingleProduct)
 
   const arraySorted = [];
   category.map((item) => arraySorted.push([item.category_name, item._id]));
@@ -50,6 +44,21 @@ const ProductForm = () => {
     })
   );
 
+  useEffect(() => {
+    setProductName(AdminSingleProduct?.product_name)
+   
+    setSku(AdminSingleProduct?.sku)
+    setBuyingPrice(AdminSingleProduct?.buying_price)
+    setResellingPrice(AdminSingleProduct?.reselling_price)
+    setImage("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" + AdminSingleProduct?.main_image?.[0].filename)
+    setImage2("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" + AdminSingleProduct?.sharing_images?.[0].filename)
+  }, [AdminSingleProduct])
+
+
+  useEffect(() => {
+    dispatch(admingetCategory());
+  }, []);
+
   const handleChecked = (e) => {
     const { value, checked } = e.target;
     if (checked) setSizes([...sizes, value]);
@@ -62,29 +71,30 @@ const ProductForm = () => {
     e.preventDefault();
 
     if (!selectedOption) {
-      return toast.warn("please select category");
+      return toast.warn("please select category")
     }
     if (!productName) {
-      return toast.warn("please select product name");
+      return toast.warn("please select product name")
     }
     if (!sku) {
-      return toast.warn("please select sku");
+      return toast.warn("please select sku")
     }
     if (!buyingPrice) {
-      return toast.warn("please select buyingPrice");
+      return toast.warn("please select buyingPrice")
     }
     if (!resellingPrice) {
-      return toast.warn("please select resellingPrice");
+      return toast.warn("please select resellingPrice")
     }
     if (!sizes) {
-      return toast.warn("please select sizes");
+      return toast.warn("please select sizes")
     }
-    if (mainImage?.length === 0 ) {
-      return toast.warn("please select main Image");
+    if (!mainImage) {
+      return toast.warn("please select mainImage")
     }
-    if (!sharingImage?.length) {
-      return toast.warn("please select sharing Image");
-    } else {
+    if (!sharingImage) {
+      return toast.warn("please select sharingImage")
+    }
+    else {
       dispatch(
         createProduct({
           product_name: productName,
@@ -103,79 +113,55 @@ const ProductForm = () => {
       }, 1500);
       toast.success("product created successfully");
     }
+
+
   };
 
   const updateProduct = (e) => {
-    e.preventDefault();
-    dispatch(
-      editProduct({
-        buying_price: buyingPrice,
-        mainImage: image,
-        product_name: productName,
-        reselling_price: resellingPrice,
-        sharingImages: image,
+    e.preventDefault()
+    dispatch(editProduct({
+      buying_price: buyingPrice,
+      mainImage: image,
+      product_name: productName,
+      reselling_price: resellingPrice,
+      sharingImages: image,
+      // id,
+      productId,
+      category_id: selectedOption?.id,
+      sizes,
+      sku,
+    }))
 
-        productId,
-        category_id: selectedOption?.id,
-        sizes,
-        sku,
-      })
-    );
-
-    dispatch(setSingleProductClear());
+    dispatch(setSingleProductClear())
     setTimeout(() => {
-      navigate("/dashboard/user");
+      navigate("/dashboard/user")
     }, 1500);
-  };
 
-  const imageMainUpload = (e) => {
-    const imageMainUploadType = /image\/(jpg|jpeg|png|webp)/i;
-    if (!e.target.files[0]?.type.match(imageMainUploadType)) {
-      toast.warning("Invalid image type, please select image type format");
-      return setFile([]);
-    }
-    const sizeTest = Object.values(e.target.files);
-    let error = false;
-    sizeTest.forEach((item) => {
-      if (item.size >= 5000000) {
-        error = true;
-        setMainImage([]);
-        return toast.warn("Image size should be  5 mb");
-      }
-    });
-    if (error === true) {
-      return;  
-    }
-    setMainImage(e.target.files[0]);
-    setImage(URL.createObjectURL(e.currentTarget.files[0]));
-  };
-  const [file, setFiles] = useState([]);
 
-  const imageSharingUpload = (e) => {
-    setSharingImage([...e.target.files]);
-    const imageSharingUploadType = /image\/(jpg|jpeg|png|webp)/i;
-    if (!e.target.files[0]?.type.match(imageSharingUploadType)) {
-      toast.warning("Invalid image type, please select image type format");
-      return setFile([]);
-    }
-    const sizeTest = Object.values(e.target.files);
-    let error = false;
-    sizeTest.forEach((item) => {
-      if (item.size >= 5000000) {
-        error = true;
-        setSharingImage([]);
-        return toast.warn("Image size should be  5 mb");
-      }
-    });
-    if (error === true) {
-      return;
-    }
 
-    for (let i = 0; i < e.target.files.length; i++) {
-      const sharingUrl = URL.createObjectURL(e.target.files[i]);
-      setFiles((prevState) => [...prevState, sharingUrl]);
-    }
-  };
+  }
+
+
+
+const imageMainUpload = (e) =>{
+  setMainImage(e.target.files[0]); 
+  setImage(URL.createObjectURL(e.currentTarget.files[0])) 
+  // console.log(image, "image url")
+}
+
+const [file, setFiles]=useState([])
+
+const imageSharingUpload = (e) =>{
+  setSharingImage([...e.target.files]); 
+ console.log("iamge url sharing", sharingImage);
+
+  for(let i=0; i<e.target.files.length; i++){
+    const sharingUrl = URL.createObjectURL(e.target.files[i]);
+    setFiles(prevState=>[...prevState, sharingUrl])
+   }
+  // setImage2(URL.createObjectURL(e.currentTarget.files[0])) 
+}
+
 
   return (
     <div className="productForm">
@@ -274,17 +260,23 @@ const ProductForm = () => {
               type="file"
               name="main_image"
               accept=".png, .jpg, .jpeg"
-              onChange={(e) => {
-                imageMainUpload(e);
-              }}
+              // value={image| ""}
+              onChange={(e) => {imageMainUpload(e)}}
             />
           </div>
+          {/* {images.length > 0 && <div className="category-image-filled">
+                { <img  src={images} alt="images" />}
+              </div> }  */}
+              {/* <img src={image} /> */}
 
-          {image.length > 0 && (
+          {AdminSingleProduct.main_image?.filename ?
             <div className="category-image-filled">
-              {<img src={image} alt="images" />}
-            </div>
-          )}
+            </div> : ""}
+          {image?.length > 0 && <div className="category-image-filled">
+
+            <img src={image} alt="images" />
+
+          </div>}
 
           <div className="product-image-sharing">
             <p className="categoryForm-title">
@@ -294,25 +286,37 @@ const ProductForm = () => {
               type="file"
               accept=".png, .jpg, .jpeg"
               multiple
-              onChange={(e) => {
-                imageSharingUpload(e);
-              }}
+              // value={sharingImage | ""}
+              onChange={(e) => {imageSharingUpload(e)}}
             />
+
           </div>
+          {/* {images2?.length > 0 && <div className="category">
+          <img src={images2} alt="sharingImage"/>
+         </div>} */}
+          {/* {images.length > 0 && <div className="category-image-filled">
+            {<img src={images2} alt="images" />}
+          </div>} */}
+
 
           <div className="category-image-filled">
-            {file &&
-              file?.map((pic, index) => {
-                return <img key={index} src={pic} alt="images" />;
-              })}
+          {file && file?.map((pic,index)=>{
+return <img key={index} src={pic} alt="images" />
+ })}
+            
           </div>
+          {AdminSingleProduct.sharing_images?.filename ?
+            <div className="category-image-filled">
+            </div> : ""}
+          {image?.length > 0 && <div className="category-image-filled">
+
+            <img src={image} alt="images" />
+
+          </div>}
+
         </div>
         <div className="productForm-button">
-          <Link
-            to="/dashboard/user"
-            className="Back-link"
-            onClick={() => dispatch(setToggleTrue())}
-          >
+          <Link to="/dashboard/user" className="Back-link" onClick={() => dispatch(setToggleTrue())} >
             back
           </Link>
           {toggleState ? (
@@ -322,10 +326,11 @@ const ProductForm = () => {
               update
             </button>
           )}
+
         </div>
       </div>
     </div>
   );
 };
 
-export default ProductForm;
+export default EditProductForm;

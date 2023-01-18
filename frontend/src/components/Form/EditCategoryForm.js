@@ -11,7 +11,7 @@ import {
 } from "src/slice/adminSlice/adminCategorySlice";
 import { toast } from "react-toastify";
 
-const CategoryForm = () => {
+const EditCategoryForm = () => {
   const { toggleState, category_id } = useSelector(
     (state) => state.AdminCategory
   );
@@ -163,11 +163,11 @@ const CategoryForm = () => {
               ) : (
                 ""
               )}
-              {images?.length > 0 && (
+              {/* {images?.length > 0 && (
                 <div className="category-image-filled">
                   <img src={images} alt="images" />
                 </div>
-              )}
+              )} */}
             </p>
           </div>
           <div className="categoryForm-button">
@@ -202,4 +202,4 @@ const CategoryForm = () => {
   );
 };
 
-export default CategoryForm;
+export default EditCategoryForm;

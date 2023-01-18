@@ -22,7 +22,6 @@
     "react-hooks",
     "react"
   ],
-  
   "browserslist": {
     "production": [
       ">0.2%",
@@ -48,6 +47,7 @@
     "@reduxjs/toolkit": "^1.9.1",
     "apexcharts": "^3.36.0",
     "axios": "^1.2.1",
+    "bootstrap": "^5.2.3",
     "change-case": "^4.1.2",
     "date-fns": "^2.29.3",
     "file-saver": "^2.0.5",
