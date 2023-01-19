@@ -11,6 +11,7 @@ import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { UserProduct } from "src/slice/userSlice/userProductSlice";
 import { useNavigate, useParams } from "react-router-dom";
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 const sorting = [
   {
@@ -25,86 +26,115 @@ const sorting = [
 
 const UserCategoryPage = () => {
   const { user } = useSelector((store) => store.login);
-const [inputData, setInputData] =useState("");
-const [sortData, setSortData] =useState("");
-const navigate=useNavigate()
+  const [inputData, setInputData] = useState("");
+  const [sortData, setSortData] = useState("");
+  const navigate = useNavigate();
   const { product } = useSelector((store) => store.product);
   const dispatch = useDispatch();
   const id = useParams();
   const categoryId = id?.id;
- 
-const handleChange = (e) =>{
-  console.log("chnage")
-  setInputData(e.target.value);
-}
 
-const handlesort=(e)=>{
-  console.log("filter", e.target.value)
-setSortData(e.target.value)
-}
+  const PAGE_LIMIT = 1;
+  let pageNo = 1;
+  
 
-  const queryParams = "?filter=" + sortData +"&category_id=" +categoryId + "&product_name=" + inputData;
+  const handleChange = (e) => {
+    setInputData(e.target.value);
+  };
+
+  const handlesort = (e) => {
+    setSortData(e.target.value);
+  };
+
+  const queryParams =
+    "?page=" +
+    pageNo +
+    "?&limit=" +
+    PAGE_LIMIT +
+    "?filter=" +
+    sortData +
+    "&category_id=" +
+    categoryId +
+    "&product_name=" +
+    inputData;
 
   useEffect(() => {
     // console.log('user');
     dispatch(UserProduct(queryParams));
-  }, [inputData, sortData]);
-console.log("product", product)
+  }, [inputData, sortData,pageNo,PAGE_LIMIT]);
 
-const handleDetailpage = (id) =>{
-  
-  if (user) navigate(`/dashboard/userimgdown/${id}`);
-    else{
-      navigate(`/userimgdown/${id}`)
+  const handleDetailpage = (id) => {
+    if (user) navigate(`/dashboard/userimgdown/${id}`);
+    else {
+      navigate(`/userimgdown/${id}`);
     }
-}
+  };
 
-const handleBack = (id) =>{
- 
-  if (user)  navigate(`/dashboard/userpage`);
-    else{
-      navigate(`/userpage`)
+  const handleBack = (id) => {
+    if (user) navigate(`/dashboard/userpage`);
+    else {
+      navigate(`/userpage`);
     }
-}
+  };
 
   return (
     <>
       <Button
         style={{ display: "flex", marginTop: "10px" }}
         variant="contained"
-        onClick={()=>{handleBack()}}
+        onClick={() => {
+          handleBack();
+        }}
       >
         Back
       </Button>
       <br />
-      <TextField id="outlined-basic" placeholder="Search here" variant="outlined" defaultValue={inputData}
-       onChange={(e)=>{handleChange(e)}} />
-       <br />
+      <TextField
+        id="outlined-basic"
+        placeholder="Search here"
+        variant="outlined"
+        defaultValue={inputData}
+        onChange={(e) => {
+          handleChange(e);
+        }}
+      />
+      <br />
       <TextField
         style={{ marginTop: "10px" }}
         id="outlined-select-sorting"
         select
         defaultValue={sortData}
-        onChange={(e)=>{handlesort(e)}}
+        onChange={(e) => {
+          handlesort(e);
+        }}
         SelectProps={{
           native: true,
         }}
       >
         {sorting.map((option) => (
-          <option key={option.value} value={option.value} >
+          <option key={option.value} value={option.value}>
             {option.label}
-            
           </option>
         ))}
       </TextField>
-      <div style={{display: "flex"}}>
+      <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
         {product.map((item) => {
           return (
-            <Card key={item?.id} style={{ maxWidth:"301px", height:"450px", color:'red', "marginLeft":"5px"}} 
-            onClick={()=>{handleDetailpage(item.id)}}>
-              {product? (
+            <Card
+              key={item?.id}
+              style={{
+                maxWidth: "301px",
+                height: "450px",
+                color: "red",
+                marginLeft: "5px",
+              }}
+              onClick={() => {
+                handleDetailpage(item.id);
+              }}
+            >
+              {product ? (
                 <img
-                  style={{ width: "300px", height:"250px" }}
+                  style={{ width: "300px", height: "250px" }}
                   className="custom-card-img rounded-1"
                   src={
                     "http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" +
@@ -114,14 +144,14 @@ const handleBack = (id) =>{
                   alt={item?.product_name}
                 />
               ) : (
-               <img
+                <img
                   style={{ width: "300px" }}
                   className="custom-card-img rounded-1"
                   src="https://www.shutterstock.com/image-vector/shopping-cart-vector-icon-flat-600w-1690453492.jpg"
                   alt={item?.product_name}
                 />
               )}
-               <Typography>{item.product_name}</Typography>
+              <Typography>{item.product_name}</Typography>
               <Typography>Price: {item.buying_price}</Typography>
               <div>
                 {item.sizes.map((size) => {

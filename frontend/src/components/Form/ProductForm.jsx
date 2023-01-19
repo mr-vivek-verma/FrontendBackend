@@ -31,9 +31,11 @@ const ProductForm = () => {
   const [image, setImage] = useState([]);
 
   const [selectedOption, setSelectedOption] = useState(null);
+  let validationError  =false
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
+
   const categoryFiltered = category.filter(
     (item) => item._id === selectedOption?.id
   );
@@ -79,12 +81,17 @@ const ProductForm = () => {
     if (!sizes) {
       return toast.warn("please select sizes");
     }
-    if (mainImage?.length === 0 ) {
+    if (!mainImage) {
+      validationError=true
       return toast.warn("please select main Image");
+    }
+    if (sharingImage?.length > 5) {
+      validationError=true
+      return toast.warn("More than 5 sharing images are not allowed.");
     }
     if (!sharingImage?.length) {
       return toast.warn("please select sharing Image");
-    } else {
+    }else {
       dispatch(
         createProduct({
           product_name: productName,
@@ -93,7 +100,7 @@ const ProductForm = () => {
           reselling_price: resellingPrice,
           category_id: selectedOption.id,
           mainImage: mainImage,
-          sharingImages: mainImage,
+          sharingImages:mainImage ,
           sizes: sizes,
         })
       );
@@ -130,17 +137,19 @@ const ProductForm = () => {
 
   const imageMainUpload = (e) => {
     const imageMainUploadType = /image\/(jpg|jpeg|png|webp)/i;
+ 
     if (!e.target.files[0]?.type.match(imageMainUploadType)) {
-      toast.warning("Invalid image type, please select image type format");
+    
+      toast.warning("Invalid image format, please select correct image type format");
       return setFile([]);
     }
     const sizeTest = Object.values(e.target.files);
     let error = false;
     sizeTest.forEach((item) => {
-      if (item.size >= 5000000) {
+      if (item.size >= 10000000) {
         error = true;
         setMainImage([]);
-        return toast.warn("Image size should be  5 mb");
+        return toast.warn("Image size should be  10 mb");
       }
     });
     if (error === true) {
@@ -154,22 +163,31 @@ const ProductForm = () => {
   const imageSharingUpload = (e) => {
     setSharingImage([...e.target.files]);
     const imageSharingUploadType = /image\/(jpg|jpeg|png|webp)/i;
+    // console.log("file imggg",e.target.files[0])
     if (!e.target.files[0]?.type.match(imageSharingUploadType)) {
       toast.warning("Invalid image type, please select image type format");
+     
       return setFile([]);
     }
     const sizeTest = Object.values(e.target.files);
     let error = false;
     sizeTest.forEach((item) => {
-      if (item.size >= 5000000) {
+      if (item.size >= 10000000) {
         error = true;
         setSharingImage([]);
-        return toast.warn("Image size should be  5 mb");
+        return toast.warn("Image size should be  10 mb");
       }
     });
     if (error === true) {
       return;
     }
+
+    if (e.target.files?.length > 5) {
+      setSharingImage([]);
+      return toast.warn("More than 5 images are not allowed.");
+    }
+
+    setSharingImage([...e.target.files]);
 
     for (let i = 0; i < e.target.files.length; i++) {
       const sharingUrl = URL.createObjectURL(e.target.files[i]);

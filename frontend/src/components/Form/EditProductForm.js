@@ -18,7 +18,8 @@ const EditProductForm = () => {
   const [sizes, setSizes] = useState([]);
   const [mainImage, setMainImage] = useState();
   const [sharingImage, setSharingImage] = useState([]);
-
+  const [category_id, setCategory_id] =useState();
+  const [category_name , setCategory_name] = useState();
   const [image, setImage] = useState([]);
   const [images2, setImage2] = useState([]);
 
@@ -30,7 +31,9 @@ const EditProductForm = () => {
     (item) => item._id === selectedOption?.id
   );
 
-  // console.log("adming prod", AdminSingleProduct)
+
+
+
 
   const arraySorted = [];
   category.map((item) => arraySorted.push([item.category_name, item._id]));
@@ -46,7 +49,8 @@ const EditProductForm = () => {
 
   useEffect(() => {
     setProductName(AdminSingleProduct?.product_name)
-   
+    setCategory_id(AdminSingleProduct?.category_id)
+    setCategory_name(AdminSingleProduct?.category_name)
     setSku(AdminSingleProduct?.sku)
     setBuyingPrice(AdminSingleProduct?.buying_price)
     setResellingPrice(AdminSingleProduct?.reselling_price)
@@ -101,7 +105,8 @@ const EditProductForm = () => {
           sku: sku,
           buying_price: buyingPrice,
           reselling_price: resellingPrice,
-          category_id: selectedOption.id,
+          category_id: AdminSingleProduct?.category_id,
+          category_name:AdminSingleProduct?.category_name,
           mainImage: mainImage,
           sharingImages: mainImage,
           sizes: sizes,
@@ -125,9 +130,9 @@ const EditProductForm = () => {
       product_name: productName,
       reselling_price: resellingPrice,
       sharingImages: image,
-      // id,
       productId,
-      category_id: selectedOption?.id,
+      category_id: category_id,
+      category_name: category_name,
       sizes,
       sku,
     }))
@@ -137,16 +142,10 @@ const EditProductForm = () => {
       navigate("/dashboard/user")
     }, 1500);
 
-
-
   }
-
-
-
-const imageMainUpload = (e) =>{
+  const imageMainUpload = (e) =>{
   setMainImage(e.target.files[0]); 
   setImage(URL.createObjectURL(e.currentTarget.files[0])) 
-  // console.log(image, "image url")
 }
 
 const [file, setFiles]=useState([])
@@ -159,7 +158,6 @@ const imageSharingUpload = (e) =>{
     const sharingUrl = URL.createObjectURL(e.target.files[i]);
     setFiles(prevState=>[...prevState, sharingUrl])
    }
-  // setImage2(URL.createObjectURL(e.currentTarget.files[0])) 
 }
 
 
@@ -172,9 +170,11 @@ const imageSharingUpload = (e) =>{
           </label>
           <br />
           <Select
+            isDisabled
             defaultValue={selectedOption}
             onChange={setSelectedOption}
             options={SelectionArray}
+            placeholder="Category Selected"
             isClearable
             className="select-category-productForm"
           />
