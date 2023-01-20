@@ -95,12 +95,12 @@ export const editCategory = createAsyncThunk(
   console.log("edit category me data",data) 
 
     const {category_name,items,fieldImage,category_id} = data
-    console.log("all data",category_name,items,fieldImage,category_id)
+    console.log("all data",category_name,items,category_id)
     let newFormData = new FormData();
     newFormData.append("category_name", category_name);
     newFormData.append("category_id",category_id);
-    items.forEach((item) => newFormData.append("sizes[]", item.name));
-    newFormData.append("category_image",fieldImage,fieldImage.name);
+    items.forEach((item) => newFormData.append("sizes[]", item));
+    fieldImage!==undefined &&  newFormData.append("category_image",fieldImage);
 
 
     try {

@@ -21,32 +21,20 @@ const CategoryForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // useEffect(()=>{   
-  //   setCategory_name(AdminSingleCategory?.category_name)
-  //    setFieldImage("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/"+ AdminSingleCategory?.category_image?.filename)
-  //   setImage("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/"+ AdminSingleCategory?.category_image?.filename)
-  // },[AdminSingleCategory])
-  useEffect(() => {
-    setCategory_name(AdminSingleCategory?.category_name);
-    setSizes(AdminSingleCategory?.sizes);
-    setImage(
-      "http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" +
-        AdminSingleCategory?.category_image?.filename
-    );
-  }, [AdminSingleCategory]);
-
   const [sizes, setSizes] = useState("");
   const [items, setItems] = useState([]);
   const [category_name, setCategory_name] = useState("");
   const [images, setImage] = useState([]);
   const [fieldImage, setFieldImage] = useState();
 
+
   const saveCategory = (e) => {
+    
+   
     e.preventDefault();
     if (!category_name) {
       return toast.warn("category name is missing");
     }
-
     if (!sizes && items.length < 1) {
       return toast.warn("sizes can't be empty");
     }
@@ -63,18 +51,12 @@ const CategoryForm = () => {
         .then(() => navigate("/dashboard/products"));
     }
   };
-
-  const updateCategory = (e) => {
-    e.preventDefault();
-
-    dispatch(editCategory({ category_name, items, fieldImage, category_id }))
-      .unwrap()
-      .then(() => navigate("/dashboard/products"));
-
-    dispatch(singleCategoryClear());
-  };
   const addSizes = () => {
     const allpost = { id: new Date().getTime().toString(), name: sizes };
+    if (allpost.name?.length < 1) {
+      return toast.warn("Please fill the sizes field");
+    }
+
     setItems([...items, allpost]);
     setSizes("");
   };
@@ -83,6 +65,28 @@ const CategoryForm = () => {
       return current_index !== val.id;
     });
     setItems(updatedItems);
+  };
+
+  const handleChange = (e) => {
+    const {
+      target: { name, value },
+    } = e;
+    if (name === "sizes") {
+      let specialChar = /[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+/;
+
+      if (value.length < 4) 
+      if (!specialChar.test(value)) 
+      setSizes(value);
+    } else {
+      if (name === "category_name") {
+        let specialChar = /[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+/;
+
+        if (value.length < 8)
+          if (!specialChar.test(value)) 
+          setCategory_name(value);
+          else e.preventDefault();
+      }
+    }
   };
 
   return (
@@ -105,9 +109,9 @@ const CategoryForm = () => {
                 id="category"
                 placeholder="Enter New Category"
                 className="category-input"
-                defaultValue={category_name}
+                value={category_name}
                 onChange={(e) => {
-                  setCategory_name(e.target.value);
+                  handleChange(e);
                 }}
               />
             </div>
@@ -122,9 +126,9 @@ const CategoryForm = () => {
                 id="size"
                 placeholder="Enter size"
                 className="size-input"
-                defaultValue={sizes}
+                value={sizes}
                 onChange={(e) => {
-                  setSizes(e.target.value);
+                  handleChange(e);
                 }}
               />
 
@@ -152,17 +156,11 @@ const CategoryForm = () => {
                 className="category-file"
                 name="category_image"
                 onChange={(e) => {
+                  handleChange(e);
                   setFieldImage(e.target.files[0]);
                   setImage(URL.createObjectURL(e.currentTarget.files[0]));
                 }}
               />
-              {AdminSingleCategory?.category_image?.filename ? (
-                <div className="category-image-filled">
-                  <img src={images} />
-                </div>
-              ) : (
-                ""
-              )}
               {images?.length > 0 && (
                 <div className="category-image-filled">
                   <img src={images} alt="images" />

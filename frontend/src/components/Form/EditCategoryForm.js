@@ -12,6 +12,11 @@ import {
 import { toast } from "react-toastify";
 
 const EditCategoryForm = () => {
+  const [sizes, setSizes] = useState("");
+  const [items, setItems] = useState([]);
+  const [category_name, setCategory_name] = useState("");
+  const [images, setImage] = useState([]);
+  const [fieldImage, setFieldImage] = useState();
   const { toggleState, category_id } = useSelector(
     (state) => state.AdminCategory
   );
@@ -21,27 +26,22 @@ const EditCategoryForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // useEffect(()=>{   
-  //   setCategory_name(AdminSingleCategory?.category_name)
-  //    setFieldImage("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/"+ AdminSingleCategory?.category_image?.filename)
-  //   setImage("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/"+ AdminSingleCategory?.category_image?.filename)
-  // },[AdminSingleCategory])
+  
   useEffect(() => {
     setCategory_name(AdminSingleCategory?.category_name);
-    setSizes(AdminSingleCategory?.sizes);
+   
+    setItems(AdminSingleCategory?.sizes)
+    
     setImage(
       "http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" +
         AdminSingleCategory?.category_image?.filename
     );
   }, [AdminSingleCategory]);
 
-  const [sizes, setSizes] = useState("");
-  const [items, setItems] = useState([]);
-  const [category_name, setCategory_name] = useState("");
-  const [images, setImage] = useState([]);
-  const [fieldImage, setFieldImage] = useState();
 
-  const saveCategory = (e) => {
+ 
+
+  const updateCategory = (e) => {
     e.preventDefault();
     if (!category_name) {
       return toast.warn("category name is missing");
@@ -57,38 +57,36 @@ const EditCategoryForm = () => {
 
     if (images?.length < 1) {
       return toast.warn("Please select image");
-    } else {
-      dispatch(createCategory({ category_name, items, fieldImage }))
+    } 
+    else {
+      console.log("details",{category_name, items, fieldImage, category_id}  )
+      dispatch(editCategory({ category_name, items, fieldImage, category_id }))
         .unwrap()
         .then(() => navigate("/dashboard/products"));
+        dispatch(singleCategoryClear());
     }
   };
 
-  const updateCategory = (e) => {
-    e.preventDefault();
 
-    dispatch(editCategory({ category_name, items, fieldImage, category_id }))
-      .unwrap()
-      .then(() => navigate("/dashboard/products"));
+  const addSizes = (e) => {
 
-    dispatch(singleCategoryClear());
+    if(sizes?.length < 1){
+      return toast.warn("Please fill the sizes field");
+    }
+
+  setItems((prevCount)=> [...prevCount, sizes]),
+    setSizes("")
+    
   };
-  const addSizes = () => {
-    const allpost = { id: new Date().getTime().toString(), name: sizes };
-    setItems([...items, allpost]);
-    setSizes("");
-  };
-  const deleteItem = (current_index) => {
-    const updatedItems = items.filter((val) => {
-      return current_index !== val.id;
-    });
-    setItems(updatedItems);
+const deleteItem = ({index}) => { 
+ setItems(items.filter((val, valueIndex)=> (valueIndex !== index)));
+
   };
 
   return (
     <div className="categoryForm">
       <div>
-        <p className="categoryForm_heading">Create Categories</p>
+        <p className="categoryForm_heading">Edit Categories</p>
         <hr />
       </div>
       <div className="categoryForm-main">
@@ -122,7 +120,7 @@ const EditCategoryForm = () => {
                 id="size"
                 placeholder="Enter size"
                 className="size-input"
-                defaultValue={sizes}
+                value={sizes}
                 onChange={(e) => {
                   setSizes(e.target.value);
                 }}
@@ -132,11 +130,13 @@ const EditCategoryForm = () => {
                 Add Size
               </button>
               <div className="category-size custom-flexwrap">
-                {items?.map((item, id) => {
+            
+                {items?.map((item, index) => {
                   return (
-                    <div className="save-sizes" key={id}>
-                      {item?.name}{" "}
-                      <RxCross2 onClick={() => deleteItem(item?.id)} />
+                    <div className="save-sizes" key={index}  style={{border:"1px solid black"}}>
+                      {item}{" "}
+                      <RxCross2 onClick={(e) => deleteItem({index})} />
+                      {/* <RxCross2 onClick={(e) => console.log("dnex", index)} /> */}
                     </div>
                   );
                 })}
