@@ -31,10 +31,15 @@ const ProductForm = () => {
   const [image, setImage] = useState([]);
 
   const [selectedOption, setSelectedOption] = useState(null);
-  let validationError  =false
-
+  let validationError = false;
+const [error, seterror]=useState(false);
+const [errorsharing, setErrorSharing]=useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(admingetCategory());
+  }, []);
 
   const categoryFiltered = category.filter(
     (item) => item._id === selectedOption?.id
@@ -82,16 +87,27 @@ const ProductForm = () => {
       return toast.warn("please select sizes");
     }
     if (!mainImage) {
-      validationError=true
+      validationError = true;
       return toast.warn("please select main Image");
     }
     if (sharingImage?.length > 5) {
-      validationError=true
+      validationError = true;
       return toast.warn("More than 5 sharing images are not allowed.");
     }
     if (!sharingImage?.length) {
       return toast.warn("please select sharing Image");
-    }else {
+    
+  } 
+  if(error){
+    toast.warn("please choose proper main image size or format")
+    return "";
+  } 
+  if(errorsharing){
+    toast.warn("please choose proper Sharing image sizes or format")
+    return "";
+  }
+
+  else {
       dispatch(
         createProduct({
           product_name: productName,
@@ -100,7 +116,7 @@ const ProductForm = () => {
           reselling_price: resellingPrice,
           category_id: selectedOption.id,
           mainImage: mainImage,
-          sharingImages:mainImage ,
+          sharingImages: sharingImage,
           sizes: sizes,
         })
       );
@@ -112,6 +128,10 @@ const ProductForm = () => {
     }
   };
 
+
+  console.log("error", error)
+  
+  console.log("errorsharing", errorsharing)
   const updateProduct = (e) => {
     e.preventDefault();
     dispatch(
@@ -121,42 +141,71 @@ const ProductForm = () => {
         product_name: productName,
         reselling_price: resellingPrice,
         sharingImages: image,
-
         productId,
         category_id: selectedOption?.id,
         sizes,
         sku,
       })
-    );
-
+    )
+      .unwrap()
+      .then(() => navigate("/dashboard/user"));
     dispatch(setSingleProductClear());
-    setTimeout(() => {
-      navigate("/dashboard/user");
-    }, 1500);
+  };
+
+  const handleChange = (e) => {
+    const {
+      target: { name, value },
+    } = e;
+    if (name === "sku") {
+      let specialChar = /[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+/;
+
+      if (value.length < 15) if (!specialChar.test(value)) setSku(value);
+    } else if (name === "buying_price") {
+      let specialChar = /^[0-9]*$/;
+      if (value.length < 7) if (specialChar.test(value)) setBuyingPrice(value);
+    } else if (name === "reselling_price") {
+      let specialChar = /^[0-9]*$/;
+      if (value.length < 7)
+        if (specialChar.test(value)) setResellingPrice(value);
+    } else {
+      if (name === "product_name") {
+        let specialChar = /[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+/;
+
+        if (value.length < 10)
+          if (!specialChar.test(value)) setProductName(value);
+          else e.preventDefault();
+      }
+    }
   };
 
   const imageMainUpload = (e) => {
+    let error = false;
     const imageMainUploadType = /image\/(jpg|jpeg|png|webp)/i;
- 
-    if (!e.target.files[0]?.type.match(imageMainUploadType)) {
-    
-      toast.warning("Invalid image format, please select correct image type format");
+     if (!e.target.files[0]?.type.match(imageMainUploadType)) {
+      toast.warning(
+        "Invalid image format, please select correct image type format"
+      );
+      seterror(true)
+error= true;
+      setImage([])
       return setFile([]);
     }
     const sizeTest = Object.values(e.target.files);
-    let error = false;
     sizeTest.forEach((item) => {
       if (item.size >= 10000000) {
-        error = true;
+        seterror(true);
+        error = true
         setMainImage([]);
+        setImage([])
         return toast.warn("Image size should be  10 mb");
       }
     });
     if (error === true) {
-      return;  
+      return;
     }
     setMainImage(e.target.files[0]);
     setImage(URL.createObjectURL(e.currentTarget.files[0]));
+    seterror(false);
   };
   const [file, setFiles] = useState([]);
 
@@ -166,7 +215,8 @@ const ProductForm = () => {
     // console.log("file imggg",e.target.files[0])
     if (!e.target.files[0]?.type.match(imageSharingUploadType)) {
       toast.warning("Invalid image type, please select image type format");
-     
+      setErrorSharing(true);
+error=true;
       return setFile([]);
     }
     const sizeTest = Object.values(e.target.files);
@@ -174,7 +224,9 @@ const ProductForm = () => {
     sizeTest.forEach((item) => {
       if (item.size >= 10000000) {
         error = true;
+        setErrorSharing(true)
         setSharingImage([]);
+        setImage([])
         return toast.warn("Image size should be  10 mb");
       }
     });
@@ -193,6 +245,7 @@ const ProductForm = () => {
       const sharingUrl = URL.createObjectURL(e.target.files[i]);
       setFiles((prevState) => [...prevState, sharingUrl]);
     }
+    setErrorSharing(false)
   };
 
   return (
@@ -219,8 +272,12 @@ const ProductForm = () => {
           <input
             type="text"
             placeholder="Enter New Product"
-            defaultValue={productName}
-            onChange={(e) => setProductName(e.target.value)}
+            name="product_name"
+            value={productName}
+            // onChange={(e) => setProductName(e.target.value)}
+            onChange={(e) => {
+              handleChange(e);
+            }}
           />
         </div>
         <div className="SKU">
@@ -231,8 +288,12 @@ const ProductForm = () => {
           <input
             type="text"
             placeholder="Enter New SKU"
-            defaultValue={sku}
-            onChange={(e) => setSku(e.target.value)}
+            name="sku"
+            value={sku}
+            // onChange={(e) => setSku(e.target.value)}
+            onChange={(e) => {
+              handleChange(e);
+            }}
           />
         </div>
         <div className="product-price">
@@ -244,8 +305,12 @@ const ProductForm = () => {
             <input
               type="text"
               placeholder="Enter buying price"
-              defaultValue={buyingPrice}
-              onChange={(e) => setBuyingPrice(e.target.value)}
+              name="buying_price"
+              value={buyingPrice}
+              // onChange={(e) => setBuyingPrice(e.target.value)}
+              onChange={(e) => {
+                handleChange(e);
+              }}
             />
           </div>
           <div>
@@ -256,8 +321,12 @@ const ProductForm = () => {
             <input
               type="text"
               placeholder="Enter reselling price"
-              defaultValue={resellingPrice}
-              onChange={(e) => setResellingPrice(e.target.value)}
+              name="reselling_price"
+              value={resellingPrice}
+              // onChange={(e) => setResellingPrice(e.target.value)}
+              onChange={(e) => {
+                handleChange(e);
+              }}
             />
           </div>
         </div>

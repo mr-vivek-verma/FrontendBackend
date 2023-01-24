@@ -59,7 +59,7 @@ const EditCategoryForm = () => {
       return toast.warn("Please select image");
     } 
     else {
-      console.log("details",{category_name, items, fieldImage, category_id}  )
+     
       dispatch(editCategory({ category_name, items, fieldImage, category_id }))
         .unwrap()
         .then(() => navigate("/dashboard/products"));
@@ -83,6 +83,54 @@ const deleteItem = ({index}) => {
 
   };
 
+  const handleChange = (e) => {
+    const {
+      target: { name, value },
+    } = e;
+    if (name === "sizes") {
+      let specialChar = /[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+/;
+
+      if (value.length < 4) 
+      if (!specialChar.test(value)) 
+      setSizes(value);
+    } else {
+      if (name === "category_name") {
+        let specialChar = /[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+/;
+
+        if (value.length < 8)
+          if (!specialChar.test(value)) 
+          setCategory_name(value);
+          else e.preventDefault();
+      }
+    }
+    const imageUpload = /image\/(jpg|jpeg|png|webp)/i;
+    if (!e.target.files[0]?.type.match(imageUpload)) {
+    
+      toast.warning("Invalid image format, please select correct image type format");
+    
+      return setFile([]);
+    }
+    const sizeTest = Object.values(e.target.files);
+    let error = false;
+    sizeTest.forEach((item) => {
+      if (item.size >= 10000000) {
+        error = true;
+        setImage([]);
+        
+        
+        setFieldImage('');
+        return toast.warn("Image size should be  10 mb");
+
+      }
+    });
+    if (error === true) {
+      return;  
+    }
+    setFieldImage(e.target.files[0]);
+    setImage(URL.createObjectURL(e.currentTarget.files[0]));
+  };
+  
+
   return (
     <div className="categoryForm">
       <div>
@@ -103,9 +151,10 @@ const deleteItem = ({index}) => {
                 id="category"
                 placeholder="Enter New Category"
                 className="category-input"
-                defaultValue={category_name}
+                value={category_name}
                 onChange={(e) => {
-                  setCategory_name(e.target.value);
+                  // setCategory_name(e.target.value);
+                  handleChange(e)
                 }}
               />
             </div>
@@ -122,7 +171,8 @@ const deleteItem = ({index}) => {
                 className="size-input"
                 value={sizes}
                 onChange={(e) => {
-                  setSizes(e.target.value);
+                  // setSizes(e.target.value);
+                  handleChange(e)
                 }}
               />
 
@@ -152,8 +202,9 @@ const deleteItem = ({index}) => {
                 className="category-file"
                 name="category_image"
                 onChange={(e) => {
-                  setFieldImage(e.target.files[0]);
-                  setImage(URL.createObjectURL(e.currentTarget.files[0]));
+                  handleChange(e)
+                  // setFieldImage(e.target.files[0]);
+                  // setImage(URL.createObjectURL(e.currentTarget.files[0]));
                 }}
               />
               {AdminSingleCategory?.category_image?.filename ? (
@@ -182,7 +233,7 @@ const deleteItem = ({index}) => {
               <button
                 className="Back-link"
                 type="submit"
-                onClick={saveCategory}
+                
               >
                 Submit
               </button>

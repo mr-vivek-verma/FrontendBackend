@@ -1,14 +1,11 @@
 import "../.././App.css";
 import { useEffect } from "react";
-import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
-import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserCategory } from "../../slice/userSlice/userSlice";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const { userCat } = useSelector((store) => store.usercategory);
@@ -17,24 +14,15 @@ const HomePage = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    // console.log('user');
     dispatch(getUserCategory());
   }, []);
 
-  // useEffect (() => {
-  //   window.addEventListener("scroll", handleScroll)
-  // })
-
   const handleClick = (prop) => {
     if (user) navigate(`/dashboard/usercategorypage/${prop}`);
-    else{
-      navigate(`/usercategorypage/${prop}`)
+    else {
+      navigate(`/usercategorypage/${prop}`);
     }
   };
-
-  //  const handleScroll = () => {
-
-  //  }
 
   return (
     <div

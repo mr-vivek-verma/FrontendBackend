@@ -1,21 +1,15 @@
 import { useEffect, useState } from "react";
-import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserCategory } from "../../slice/userSlice/userSlice";
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { UserProduct } from "src/slice/userSlice/userProductSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import InfiniteScroll from 'react-infinite-scroll-component'
 
 const sorting = [
   {
-    value: "asc",
+    value: "ace",
     label: "Filter Max to Min Price",
   },
   {
@@ -26,42 +20,19 @@ const sorting = [
 
 const UserCategoryPage = () => {
   const { user } = useSelector((store) => store.login);
+  const { product } = useSelector((store) => store.product);
+  const { scrollPageNo } = useSelector((store) => store.product);
   const [inputData, setInputData] = useState("");
   const [sortData, setSortData] = useState("");
+  const [productData, setproductData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const navigate = useNavigate();
-  const { product } = useSelector((store) => store.product);
   const dispatch = useDispatch();
   const id = useParams();
   const categoryId = id?.id;
 
-  const PAGE_LIMIT = 1;
   let pageNo = 1;
-  
-
-  const handleChange = (e) => {
-    setInputData(e.target.value);
-  };
-
-  const handlesort = (e) => {
-    setSortData(e.target.value);
-  };
-
-  const queryParams =
-    "?page=" +
-    pageNo +
-    "?&limit=" +
-    PAGE_LIMIT +
-    "?filter=" +
-    sortData +
-    "&category_id=" +
-    categoryId +
-    "&product_name=" +
-    inputData;
-
-  useEffect(() => {
-    // console.log('user');
-    dispatch(UserProduct(queryParams));
-  }, [inputData, sortData,pageNo,PAGE_LIMIT]);
 
   const handleDetailpage = (id) => {
     if (user) navigate(`/dashboard/userimgdown/${id}`);
@@ -70,13 +41,71 @@ const UserCategoryPage = () => {
     }
   };
 
-  const handleBack = (id) => {
-    if (user) navigate(`/dashboard/userpage`);
-    else {
-      navigate(`/userpage`);
+  useEffect(() => {
+    setproductData([...productData.concat(product)]);
+  }, [product]);
+
+  useEffect(() => {
+    setproductData([]);
+  }, []);
+  console.log("first", productData);
+
+  const handleBack = () => {
+    setproductData([]);
+    if (user) {
+      return setproductData([]), navigate(`/dashboard/userpage`);
+    } else {
+      return setproductData([]), navigate(`/userpage`);
     }
   };
 
+  const handleChange = (e) => {
+    setproductData([]);
+    setInputData(e.target.value);
+  };
+
+  const handlesort = (e) => {
+    setproductData([]);
+    setSortData(e.target.value);
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+    if (currentPage < totalPages) {
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleScroll = () => {
+    const { clientHeight, scrollTop, scrollHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight) {
+      if (currentPage < scrollPageNo) {
+        return setCurrentPage(currentPage + 1);
+      }
+    }
+  };
+
+  const queryParams =
+    "?page=" +
+    currentPage +
+    "&filter=" +
+    sortData +
+    "&category_id=" +
+    categoryId +
+    "&product_name=" +
+    inputData;
+  useEffect(() => {
+    dispatch(UserProduct(queryParams));
+  }, [currentPage, inputData, sortData, pageNo]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+  }, [currentPage, scroll, scrollPageNo]);
   return (
     <>
       <Button
@@ -117,22 +146,24 @@ const UserCategoryPage = () => {
           </option>
         ))}
       </TextField>
-      <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
-        {product.map((item) => {
+      <div
+        style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}
+      >
+        {productData?.map((item) => {
           return (
             <Card
               key={item?.id}
               style={{
                 maxWidth: "301px",
-                height: "450px",
+                height: "300px",
                 color: "red",
-                marginLeft: "5px",
+                margin: "10px",
               }}
               onClick={() => {
                 handleDetailpage(item.id);
               }}
             >
-              {product ? (
+              {item.main_image && item.main_image[0] ? (
                 <img
                   style={{ width: "300px", height: "250px" }}
                   className="custom-card-img rounded-1"
@@ -152,9 +183,9 @@ const UserCategoryPage = () => {
                 />
               )}
               <Typography>{item.product_name}</Typography>
-              <Typography>Price: {item.buying_price}</Typography>
+              <Typography>Price: {item.reselling_price}</Typography>
               <div>
-                {item.sizes.map((size) => {
+                {item.sizes?.map((size) => {
                   return (
                     <>
                       <div key={size}>{size}</div>
@@ -165,6 +196,15 @@ const UserCategoryPage = () => {
             </Card>
           );
         })}
+      </div>
+      <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+        Previous Page
+      </button>
+      <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+        Next Page
+      </button>
+      <div>
+        Page {currentPage} of {totalPages}
       </div>
     </>
   );

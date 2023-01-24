@@ -5,7 +5,6 @@ const { createAsyncThunk } = require("@reduxjs/toolkit");
 import { toast } from "react-toastify";
 const createSlice = require("@reduxjs/toolkit").createSlice;
 
-
 export const admingetProduct = createAsyncThunk(
   "product/productList",
   async (_, thunkAPI) => {
@@ -14,7 +13,6 @@ export const admingetProduct = createAsyncThunk(
         "http://localhost:5001/api/v1/product/productList",
         authHeader(thunkAPI)
       );
-      // console.log("pro data",response)
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.response.data.msg);
@@ -24,7 +22,6 @@ export const admingetProduct = createAsyncThunk(
 export const createProduct = createAsyncThunk(
   "product/productList",
   async (data, thunkAPI) => {
-    console.log(data, "fromo");
     const {
       buying_price,
       category_id,
@@ -37,11 +34,10 @@ export const createProduct = createAsyncThunk(
     } = data;
     try {
       let newFormData = new FormData();
-      newFormData.append("mainImage", mainImage, mainImage.name);
-      //       for (let i = 0; i < sharingImages.length; i++) {
-      //   newFormData.append("sharingImages[]", sharingImages, sharingImages[i].name);
-      //  }
-      newFormData.append("sharingImages", sharingImages, mainImage.name);
+      newFormData.append("mainImage", mainImage);
+      sharingImages.forEach((elem) => {
+        return newFormData.append("sharingImages", elem);
+      });
       newFormData.append("product_name", product_name);
       newFormData.append("buying_price", buying_price);
       newFormData.append("reselling_price", reselling_price);
@@ -81,7 +77,7 @@ export const deleteProduct = createAsyncThunk(
 export const editProduct = createAsyncThunk(
   "product/updateproduct",
   async (data, thunkAPI) => {
- console.log("product data get",data)
+    console.log("first", data);
     const {
       buying_price,
       mainImage,
@@ -93,34 +89,31 @@ export const editProduct = createAsyncThunk(
       sizes,
       sku,
     } = data;
-    console.log("typeof", typeof(mainImage));
-    let newFormData = new FormData();
-    // newFormData.append("main_image", mainImage);
-    // newFormData.append("sharing_images", sharingImages);
-      newFormData.append("product_name", product_name);
-      newFormData.append("buying_price", buying_price);
-      newFormData.append("reselling_price", reselling_price);
-      newFormData.append("sku", sku);
-      // newFormData.append("sizes[]", sizes);
-      sizes.forEach(item => newFormData.append("sizes[]", item));
-      // typeof(mainImage)!==string && newFormData.append("main_image", mainImage);
-      // typeof(sharingmages)!==string &&
-      //   sharingImages.forEach(element => {
-      //     return newFormData.append("sharing_images", element);
-      //   });
-      newFormData.append("product_id", productId);
-      // newFormData.append("is_draft", true);
 
-     // newFormData.append("product_id", productId);
-      newFormData.append("category_id", category_id);
+    let newFormData = new FormData();
+    newFormData.append("product_name", product_name);
+    newFormData.append("buying_price", buying_price);
+    newFormData.append("reselling_price", reselling_price);
+    newFormData.append("sku", sku);
+
+    sizes.forEach((item) => newFormData.append("sizes[]", item));
+
+    newFormData.append("product_id", productId);
+
+    newFormData.append("category_id", category_id);
+
+    mainImage !== undefined && newFormData.append("main_image", mainImage);
+    sharingImages !== undefined &&
+      sharingImages.forEach((elem) => {
+        return newFormData.append("sharing_images", elem);
+      });
     try {
-   
-         const response = await axios.put(
-        `http://localhost:5001/api/v1/product/updateProduct`,newFormData,
+      const response = await axios.put(
+        `http://localhost:5001/api/v1/product/updateProduct`,
+        newFormData,
         authHeader(thunkAPI)
-        
       );
-    
+
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.response.data.msg);
@@ -128,17 +121,15 @@ export const editProduct = createAsyncThunk(
   }
 );
 
-
 export const singleProduct = createAsyncThunk(
   "product/getProduct",
   async (data, thunkAPI) => {
-    console.log("data product id", data)
     try {
-        const response = await axios.get(
-        `http://localhost:5001/api/v1/product/getProduct/${data}`,       
+      const response = await axios.get(
+        `http://localhost:5001/api/v1/product/getProduct/${data}`,
         authHeader(thunkAPI)
-        );
-           return response.data;
+      );
+      return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.response.data.msg);
     }
@@ -149,37 +140,37 @@ const initialState = {
   loading: false,
   product: [],
   error: false,
-  toggleState:true,
-  productId:null,
-  AdminSingleProduct:[]
+  toggleState: true,
+  productId: null,
+  AdminSingleProduct: [],
 };
 
 const adminProductSlice = createSlice({
   name: "data",
   initialState,
   reducers: {
-    setToggleFalse:(state,action)=>{
-      state.toggleState=false
+    setToggleFalse: (state, action) => {
+      state.toggleState = false;
     },
-    setToggleTrue:(state,action)=>{
-      state.toggleState=true
+    setToggleTrue: (state, action) => {
+      state.toggleState = true;
     },
-    setProductId:(state,action)=>{
-      console.log(action.payload)
-      state.productId= action.payload
+    setProductId: (state, action) => {
+      state.productId = action.payload;
+    },
+    setSingleProductClear: (state, action) => {
+      state.AdminSingleProduct = [];
+    },
   },
-  setSingleProductClear:(state,action)=>{
-   state.AdminSingleProduct=[]},
-},
 
   extraReducers: {
     [editProduct.pending]: (state) => {
       state.loading = true;
     },
-    [editProduct.fulfilled]: (state,{payload}) => {
+    [editProduct.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.product = payload.data;
-      toast.success('product updated successfully');
+      toast.success("product updated successfully");
     },
 
     [deleteProduct.pending]: (state) => {
@@ -216,5 +207,10 @@ const adminProductSlice = createSlice({
   },
 });
 
-export const {setToggleFalse,setToggleTrue,setProductId,setSingleProductClear} = adminProductSlice.actions
+export const {
+  setToggleFalse,
+  setToggleTrue,
+  setProductId,
+  setSingleProductClear,
+} = adminProductSlice.actions;
 export default adminProductSlice.reducer;

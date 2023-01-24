@@ -1,5 +1,4 @@
 import { Helmet } from "react-helmet-async";
-// @mui
 import { styled } from "@mui/material/styles";
 import {
   Link,
@@ -12,14 +11,11 @@ import {
 // hooks
 import useResponsive from "../hooks/useResponsive";
 // components
-import Logo from "../components/logo";
-import Iconify from "../components/iconify";
-import { toast } from "react-toastify";
-import { LoginForm } from "../sections/auth/login";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserLogin } from "../slice/loginSlice/userLoginSlice.jsx";
 import { Navigate, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled("div")(({ theme }) => ({
@@ -58,28 +54,21 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const { user, role } = useSelector((state) => state.login);
   const handleChange = (e) => {
-    //console.log(e.target.value)
     setEmail(e.target.value);
   };
   const handleChangePass = (e) => {
-    //   console.log(e.target.value)
     setPassword(e.target.value);
   };
 
   const data = { email, password };
 
   const handleSubmit = (e) => {
-    // dispatch(getUserLogin(data));
-    // if (user!==null ) {
-    // /  navigate("/dashboard/app")
-    // }
     if (!email) {
-     return toast.warn("Please enter email!");
+      return toast.warn("Please enter email!");
     }
-      if(!password ){
-       return toast.warn("Please enter password!");
-      }
-    else {
+    if (!password) {
+      return toast.warn("Please enter password!");
+    } else {
       dispatch(getUserLogin(data));
     }
   };
@@ -141,7 +130,6 @@ export default function LoginPage() {
               }}
             />
             <Button onClick={(e) => handleSubmit(e)}>submit</Button>
-           
           </StyledContent>
         </Container>
       </StyledRoot>

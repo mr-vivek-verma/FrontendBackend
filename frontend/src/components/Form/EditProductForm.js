@@ -21,7 +21,7 @@ const EditProductForm = () => {
   const [category_id, setCategory_id] =useState();
   const [category_name , setCategory_name] = useState();
   const [image, setImage] = useState([]);
-  const [images2, setImage2] = useState([]);
+  const [image2, setImage2] = useState([]);
 
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -30,9 +30,6 @@ const EditProductForm = () => {
   const categoryFiltered = category.filter(
     (item) => item._id === selectedOption?.id
   );
-
-
-
 
 
   const arraySorted = [];
@@ -47,6 +44,8 @@ const EditProductForm = () => {
     })
   );
 
+
+
   useEffect(() => {
     setProductName(AdminSingleProduct?.product_name)
     setCategory_id(AdminSingleProduct?.category_id)
@@ -55,15 +54,27 @@ const EditProductForm = () => {
     setBuyingPrice(AdminSingleProduct?.buying_price)
     setResellingPrice(AdminSingleProduct?.reselling_price)
     setImage("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" + AdminSingleProduct?.main_image?.[0].filename)
-    setImage2("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" + AdminSingleProduct?.sharing_images?.[0].filename)
+    // setImage2("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" + AdminSingleProduct?.sharing_images?.[0].filename)
+ 
+  
   }, [AdminSingleProduct])
 
+  const shareServer=[];
+
+   for(let i=0; i <AdminSingleProduct?.sharing_images?.length; i++) { 
+      console.log("inside")
+      shareServer.push("http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" + `${AdminSingleProduct?.sharing_images[i]?.filename}`)
+     
+      console.log("urlimg", shareServer)
+   }
+
+ 
 
   useEffect(() => {
     dispatch(admingetCategory());
   }, []);
 
-  const handleChecked = (e) => {
+  const handleChecked = (e) => { 
     const { value, checked } = e.target;
     if (checked) setSizes([...sizes, value]);
     else {
@@ -108,7 +119,7 @@ const EditProductForm = () => {
           category_id: AdminSingleProduct?.category_id,
           category_name:AdminSingleProduct?.category_name,
           mainImage: mainImage,
-          sharingImages: mainImage,
+          sharingImages: sharingImage,
           sizes: sizes,
         })
       );
@@ -126,10 +137,10 @@ const EditProductForm = () => {
     e.preventDefault()
     dispatch(editProduct({
       buying_price: buyingPrice,
-      mainImage: image,
+      mainImage: mainImage,
       product_name: productName,
       reselling_price: resellingPrice,
-      sharingImages: image,
+      sharingImages: sharingImage,
       productId,
       category_id: category_id,
       category_name: category_name,
@@ -152,7 +163,7 @@ const [file, setFiles]=useState([])
 
 const imageSharingUpload = (e) =>{
   setSharingImage([...e.target.files]); 
- console.log("iamge url sharing", sharingImage);
+//  console.log("iamge url sharing", sharingImage);
 
   for(let i=0; i<e.target.files.length; i++){
     const sharingUrl = URL.createObjectURL(e.target.files[i]);
@@ -271,6 +282,7 @@ const imageSharingUpload = (e) =>{
 
           {AdminSingleProduct.main_image?.filename ?
             <div className="category-image-filled">
+            {/* <img/> */}
             </div> : ""}
           {image?.length > 0 && <div className="category-image-filled">
 
@@ -300,19 +312,24 @@ const imageSharingUpload = (e) =>{
 
 
           <div className="category-image-filled">
+          
           {file && file?.map((pic,index)=>{
 return <img key={index} src={pic} alt="images" />
  })}
-            
-          </div>
-          {AdminSingleProduct.sharing_images?.filename ?
+                      </div>
+          
             <div className="category-image-filled">
-            </div> : ""}
-          {image?.length > 0 && <div className="category-image-filled">
+            {console.log("inside lol;", shareServer)}
+           {shareServer?.map((item, index)=>{
+            {/* console.log("shr img",item) */}
+            return <img key={index} src={item} alt="images" />
+            })}
+            </div> 
+          {/* {image?.length > 0 && <div className="category-image-filled">
 
             <img src={image} alt="images" />
 
-          </div>}
+          </div>} */}
 
         </div>
         <div className="productForm-button">

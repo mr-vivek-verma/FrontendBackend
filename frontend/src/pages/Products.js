@@ -1,7 +1,6 @@
 import "../App.css";
 import { Helmet } from "react-helmet-async";
 import { useEffect, useMemo, useState } from "react";
-// @mui
 import { Container, Typography } from "@mui/material";
 // components
 
@@ -34,18 +33,17 @@ export default function UserPage() {
       Header: "Product",
       accessor: "product_name",
       Cell: (tableProps) => {
-        console.log(tableProps);
         return (
           <div className="product-table-main">
             <img
               style={{ display: "flex", width: "80px" }}
               src={
                 "http://chapshopbackend.s3-website.ap-south-1.amazonaws.com/" +
-                tableProps.row.original.main_image[0]?.filename
+                tableProps?.row.original.main_image[0]?.filename
               }
             />
             <p style={{ display: "flex", justifyContent: "center" }}>
-              {tableProps.row.original.product_name}
+              {tableProps?.row.original.product_name}
             </p>
           </div>
         );
@@ -82,9 +80,6 @@ export default function UserPage() {
       Cell: (tableProps) => {
         const deleteId = tableProps.row.original.id;
         const editId = tableProps.row.original.id;
-        // console.log(editId);
-        // console.log(tableProps);
-
         const [openPopup, setOpenPopup] = useState(false);
 
         const confirmation = () => {
@@ -128,8 +123,6 @@ export default function UserPage() {
   const handleCloseFilter = () => {
     setOpenFilter(false);
   };
-
-  console.log(data);
 
   return (
     <>

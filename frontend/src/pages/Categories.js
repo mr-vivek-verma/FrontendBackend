@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import {
   admingetCategory,
   setToggleTrue,
-  singleCategoryClear
+  singleCategoryClear,
 } from "src/slice/adminSlice/adminCategorySlice";
 
 // ----------------------------------------------------------------------
@@ -36,11 +36,10 @@ export default function Categories() {
     setOpenFilter(false);
   };
 
-
-  const handleCreate=() => { 
-    dispatch(singleCategoryClear())
-    dispatch(setToggleTrue())
-   }
+  const handleCreate = () => {
+    dispatch(singleCategoryClear());
+    dispatch(setToggleTrue());
+  };
   return (
     <>
       <Helmet>
@@ -59,7 +58,9 @@ export default function Categories() {
           >
             <button
               className="Back-link"
-              onClick={() =>{handleCreate()}}
+              onClick={() => {
+                handleCreate();
+              }}
             >
               {" "}
               Create New{" "}
@@ -71,7 +72,6 @@ export default function Categories() {
           <CategoryTable />
         </Typography>
       </Container>
-      
     </>
   );
 }

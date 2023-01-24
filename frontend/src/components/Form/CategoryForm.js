@@ -87,6 +87,31 @@ const CategoryForm = () => {
           else e.preventDefault();
       }
     }
+    const imageUpload = /image\/(jpg|jpeg|png|webp)/i;
+ 
+    if (!e.target.files[0]?.type.match(imageUpload)) {
+
+    
+      toast.warning("Invalid image format, please select correct image type format");
+      
+      return setFile([]);
+    }
+    const sizeTest = Object.values(e.target.files);
+    let error = false;
+    sizeTest.forEach((item) => {
+      if (item.size >= 10000000) {
+        error = true;
+        setImage([]);
+        setFieldImage('');
+        return toast.warn("Image size should be  10 mb");
+
+      }
+    });
+    if (error === true) {
+      return;  
+    }
+    setFieldImage(e.target.files[0]);
+    setImage(URL.createObjectURL(e.currentTarget.files[0]));
   };
 
   return (
@@ -111,7 +136,7 @@ const CategoryForm = () => {
                 className="category-input"
                 value={category_name}
                 onChange={(e) => {
-                  handleChange(e);
+                  handleChange(e)
                 }}
               />
             </div>
@@ -128,7 +153,7 @@ const CategoryForm = () => {
                 className="size-input"
                 value={sizes}
                 onChange={(e) => {
-                  handleChange(e);
+                  handleChange(e)
                 }}
               />
 
@@ -157,8 +182,6 @@ const CategoryForm = () => {
                 name="category_image"
                 onChange={(e) => {
                   handleChange(e);
-                  setFieldImage(e.target.files[0]);
-                  setImage(URL.createObjectURL(e.currentTarget.files[0]));
                 }}
               />
               {images?.length > 0 && (
